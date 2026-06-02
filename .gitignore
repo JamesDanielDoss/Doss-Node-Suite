@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Local config and credentials
+.env
+.env.*
+*.key
+*.pem
+*.token
+secrets/
+credentials/
+
+# ComfyUI outputs and temporary files
+output/
+temp/
+input/
+user/
+raw/
+exports/
+raw_exports/
+
+# AI model files should not be committed
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.onnx
+*.gguf
+
+# Large/generated media
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.webm
+*.wav
+*.flac
+*.zip
+*.7z
+*.rar
+
+# Cache and temporary files
+cache/
+tmp/
+*.tmp
+*.bak
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
