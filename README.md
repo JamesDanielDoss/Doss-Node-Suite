@@ -74,7 +74,7 @@ Input fields:
 | --- | --- | --- |
 | `image_a` | `IMAGE` | Required first image input. |
 | `image_b` | `IMAGE` | Optional second image input. |
-| `comparer_mode` | dropdown | `Side By Side`, `Slide`, or `Click`. |
+| `comparer_mode` | dropdown | `Side By Side` or `Slider`. |
 
 Output fields:
 
@@ -82,15 +82,15 @@ Output fields:
 | --- | --- | --- |
 | `image_a` | `IMAGE` | Pass-through first comparison image. |
 | `image_b` | `IMAGE` | Pass-through second comparison image. Mirrors `image_a` if no second image is available. |
-| `selected_image` | `IMAGE` | V0.1 selected output. Defaults to `image_a`. |
 
 Behavior:
 
 - If `image_b` is connected, the node compares `image_a` and `image_b`.
 - If `image_b` is not connected and `image_a` has a batch of at least two images, the node compares the first two images from `image_a`.
 - If only one image is available, the node shows and returns `image_a` safely.
-- `Side By Side` is the V0.1 default and most stable display mode.
-- `Slide` and `Click` are included as basic proof-of-work modes and may be expanded later.
+- `Side By Side` displays image A and image B inside the node.
+- `Slider` compares image A and image B with a simple in-node slider.
+- The comparer does not create a persistent floating center preview.
 
 ## Example Workflows
 
@@ -120,8 +120,10 @@ Manual ComfyUI validation:
 5. Try unsafe characters such as `/`, `:`, `*`, and `?` in `topic` or `title`; confirm they are replaced with the selected separator.
 6. Search for `Doss Image Comparer`.
 7. Connect two IMAGE outputs to `image_a` and `image_b`.
-8. Queue the prompt and confirm the node displays or safely passes the image outputs.
-9. Confirm no console errors prevent ComfyUI from loading.
+8. Queue the prompt and confirm the node displays Side By Side inside the node.
+9. Switch to `Slider` and confirm the slider stays inside the node.
+10. Confirm no `Click` mode appears and no `selected_image` output exists.
+11. Confirm no console errors prevent ComfyUI from loading.
 
 ## License
 

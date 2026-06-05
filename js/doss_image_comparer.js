@@ -3,7 +3,7 @@ import { api } from "../../scripts/api.js";
 
 const NODE_TYPE = "DossImageComparer";
 const DEFAULT_MODE = "Side By Side";
-const MODES = new Set(["Side By Side", "Slide", "Click"]);
+const MODES = new Set(["Side By Side", "Slider"]);
 
 function makeImageUrl(imageData) {
   const params = new URLSearchParams({
@@ -130,7 +130,6 @@ class DossImageComparerWidget {
       image.src = entry.url;
       return { ...entry, image };
     });
-    this.node.imgs = this.entries.map((entry) => entry.image);
     this.node.setDirtyCanvas?.(true, true);
   }
 
@@ -150,10 +149,8 @@ class DossImageComparerWidget {
     const top = y + 4;
     const mode = getMode(node, this.mode);
 
-    if (mode === "Slide") {
-      this.drawSlide(ctx, node, x, top, width, height);
-    } else if (mode === "Click") {
-      this.drawClick(ctx, node, x, top, width, height);
+    if (mode === "Slider") {
+      this.drawSlider(ctx, node, x, top, width, height);
     } else {
       this.drawSideBySide(ctx, x, top, width, height);
     }
@@ -169,13 +166,13 @@ class DossImageComparerWidget {
     drawImageInBounds(ctx, imageB, x + panelWidth + gap, y, panelWidth, height);
   }
 
-  drawSlide(ctx, node, x, y, width, height) {
+  drawSlider(ctx, node, x, y, width, height) {
     const imageA = this.entries[0];
     const imageB = this.entries[1];
 
     drawImageInBounds(ctx, imageA, x, y, width, height);
     if (!imageB?.image?.naturalWidth || !imageB?.image?.naturalHeight) {
-      drawLabel(ctx, "Slide: connect image_b or use a batch", x, y);
+      drawLabel(ctx, "Slider: connect image_b or use a batch", x, y);
       return;
     }
 
@@ -200,14 +197,7 @@ class DossImageComparerWidget {
     ctx.lineTo(cropX, y + height);
     ctx.stroke();
     ctx.restore();
-    drawLabel(ctx, "Slide", x, y);
-  }
-
-  drawClick(ctx, node, x, y, width, height) {
-    // TODO: Add persistent A/B selection controls after the proof-of-work display is stable.
-    const entry = node.dossComparerPointerDown && this.entries[1] ? this.entries[1] : this.entries[0];
-    drawImageInBounds(ctx, entry, x, y, width, height);
-    drawLabel(ctx, node.dossComparerPointerDown ? "Click: B" : "Click: A", x, y);
+    drawLabel(ctx, "Slider", x, y);
   }
 
   computeSize(width) {
@@ -230,17 +220,12 @@ app.registerExtension({
     const originalOnNodeCreated = nodeType.prototype.onNodeCreated;
     const originalOnExecuted = nodeType.prototype.onExecuted;
     const originalOnMouseMove = nodeType.prototype.onMouseMove;
-    const originalOnMouseDown = nodeType.prototype.onMouseDown;
-    const originalOnMouseUp = nodeType.prototype.onMouseUp;
     const originalOnMouseLeave = nodeType.prototype.onMouseLeave;
 
     nodeType.prototype.onNodeCreated = function () {
       originalOnNodeCreated?.apply(this, arguments);
       try {
         this.dossComparerPointerX = this.size?.[0] ? this.size[0] / 2 : 180;
-        this.dossComparerPointerDown = false;
-        this.imageIndex = 0;
-        this.imgs = [];
         this.dossComparerWidget = this.addCustomWidget(new DossImageComparerWidget(this));
         const width = Math.max(this.size?.[0] || 360, 360);
         const height = Math.max(this.size?.[1] || 280, 320);
@@ -265,29 +250,11 @@ app.registerExtension({
     nodeType.prototype.onMouseMove = function (event, pos, canvas) {
       originalOnMouseMove?.apply(this, arguments);
       this.dossComparerPointerX = pos?.[0] ?? this.dossComparerPointerX ?? this.size[0] / 2;
-      this.imageIndex = this.dossComparerPointerX > this.size[0] / 2 ? 1 : 0;
       this.setDirtyCanvas?.(true, false);
-    };
-
-    nodeType.prototype.onMouseDown = function (event, pos, canvas) {
-      const result = originalOnMouseDown?.apply(this, arguments);
-      this.dossComparerPointerDown = true;
-      this.imageIndex = 1;
-      this.setDirtyCanvas?.(true, false);
-      return result;
-    };
-
-    nodeType.prototype.onMouseUp = function (event, pos, canvas) {
-      const result = originalOnMouseUp?.apply(this, arguments);
-      this.dossComparerPointerDown = false;
-      this.imageIndex = 0;
-      this.setDirtyCanvas?.(true, false);
-      return result;
     };
 
     nodeType.prototype.onMouseLeave = function (event) {
       originalOnMouseLeave?.apply(this, arguments);
-      this.dossComparerPointerDown = false;
       this.setDirtyCanvas?.(true, false);
     };
   },

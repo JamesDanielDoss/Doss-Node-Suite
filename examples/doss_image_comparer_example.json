@@ -40,12 +40,6 @@
           "type": "IMAGE",
           "links": null,
           "slot_index": 1
-        },
-        {
-          "name": "selected_image",
-          "type": "IMAGE",
-          "links": null,
-          "slot_index": 2
         }
       ],
       "properties": {

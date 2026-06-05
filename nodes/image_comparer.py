@@ -8,7 +8,7 @@ except Exception:  # pragma: no cover - ComfyUI provides this at runtime.
     ComfyPreviewImage = object
 
 
-COMPARER_MODES = ("Side By Side", "Slide", "Click")
+COMPARER_MODES = ("Side By Side", "Slider")
 DEFAULT_COMPARER_MODE = COMPARER_MODES[0]
 
 
@@ -39,8 +39,8 @@ def normalize_comparer_mode(comparer_mode: str) -> str:
     return DEFAULT_COMPARER_MODE
 
 
-def choose_comparison_images(image_a: Any, image_b: Any = None) -> tuple[Any, Any, Any]:
-    """Return image_a, image_b, selected_image outputs for the comparer."""
+def choose_comparison_images(image_a: Any, image_b: Any = None) -> tuple[Any, Any]:
+    """Return image_a and image_b outputs for the comparer."""
 
     if image_a is None and image_b is not None:
         image_a = image_b
@@ -52,8 +52,7 @@ def choose_comparison_images(image_a: Any, image_b: Any = None) -> tuple[Any, An
         output_a = image_a
         output_b = image_b if image_b is not None else image_a
 
-    selected_image = output_a
-    return output_a, output_b, selected_image
+    return output_a, output_b
 
 
 class DossImageComparer(ComfyPreviewImage):
@@ -75,8 +74,8 @@ class DossImageComparer(ComfyPreviewImage):
             },
         }
 
-    RETURN_TYPES = ("IMAGE", "IMAGE", "IMAGE")
-    RETURN_NAMES = ("image_a", "image_b", "selected_image")
+    RETURN_TYPES = ("IMAGE", "IMAGE")
+    RETURN_NAMES = ("image_a", "image_b")
     FUNCTION = "compare_images"
     CATEGORY = "Doss Node Suite / Image"
     OUTPUT_NODE = True
@@ -91,7 +90,7 @@ class DossImageComparer(ComfyPreviewImage):
         extra_pnginfo=None,
     ):
         comparer_mode = normalize_comparer_mode(comparer_mode)
-        output_a, output_b, selected_image = choose_comparison_images(image_a, image_b)
+        output_a, output_b = choose_comparison_images(image_a, image_b)
 
         ui = {
             "a_images": self._preview_images(output_a, "doss.compare.a.", prompt, extra_pnginfo),
@@ -102,7 +101,7 @@ class DossImageComparer(ComfyPreviewImage):
 
         return {
             "ui": ui,
-            "result": (output_a, output_b, selected_image),
+            "result": (output_a, output_b),
         }
 
     def _preview_images(self, images, filename_prefix, prompt, extra_pnginfo):
