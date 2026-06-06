@@ -43,6 +43,7 @@ The frontend extension:
 - Uses `app.registerExtension`.
 - Targets only `DossImageComparer`.
 - Draws a custom canvas widget inside the node.
+- Removes stale `selected_image` outputs from older placed node instances when the workflow reloads.
 - Avoids setting `node.imgs`, so ComfyUI should not create an extra floating preview for this node.
 - Avoids returning generic `ui.images`, so ComfyUI's built-in preview overlay is not triggered.
 - Catches widget setup/rendering errors so ComfyUI can keep loading.

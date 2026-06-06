@@ -43,10 +43,10 @@ text_to_image_production_workflow_02_06_2026
 5. Connect two IMAGE outputs to `image_a` and `image_b`.
 6. Queue the prompt.
 7. Confirm Side By Side displays image A and image B inside the node.
-8. Switch `comparer_mode` to `Slider` and confirm the slider comparison stays inside the node.
+8. Switch `comparer_mode` to `Slider` and confirm the slider comparison stays inside the node without overlapping canvas labels.
 9. Confirm no persistent floating center image, popup preview, lightbox thumbnail, or centered overlay appears in front of the comparer.
 10. Confirm `Click` mode does not appear in the mode dropdown.
-11. Confirm the node has only `image_a` and `image_b` outputs; `selected_image` should not exist.
+11. Confirm the node has only `image_a` and `image_b` outputs; `selected_image` should not exist, including on older workflow nodes after reload.
 12. Confirm `image_a` and `image_b` outputs still pass images to downstream nodes.
 13. Disconnect `image_b`, send a batch of at least two images into `image_a`, and confirm the first two batch images are used.
 14. Test a single image connected to `image_a` and confirm the node does not crash.

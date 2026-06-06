@@ -90,7 +90,7 @@ function drawPlaceholder(ctx, text, x, y, width, height) {
   ctx.restore();
 }
 
-function drawImageInBounds(ctx, entry, x, y, width, height) {
+function drawImageInBounds(ctx, entry, x, y, width, height, showLabel = true) {
   drawPanel(ctx, x, y, width, height);
   const image = entry?.image;
   if (!image?.naturalWidth || !image?.naturalHeight) {
@@ -100,7 +100,22 @@ function drawImageInBounds(ctx, entry, x, y, width, height) {
 
   const rect = fitRect(image, x, y, width, height);
   ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height);
-  drawLabel(ctx, entry.label, x, y);
+  if (showLabel) {
+    drawLabel(ctx, entry.label, x, y);
+  }
+}
+
+function removeStaleSelectedImageOutput(node) {
+  if (!Array.isArray(node.outputs)) {
+    return;
+  }
+
+  for (let index = node.outputs.length - 1; index >= 0; index -= 1) {
+    if (node.outputs[index]?.name === "selected_image") {
+      node.disconnectOutput?.(index);
+      node.outputs.splice(index, 1);
+    }
+  }
 }
 
 class DossImageComparerWidget {
@@ -161,9 +176,8 @@ class DossImageComparerWidget {
     const imageA = this.entries[0];
     const imageB = this.entries[1];
 
-    drawImageInBounds(ctx, imageA, x, y, width, height);
+    drawImageInBounds(ctx, imageA, x, y, width, height, false);
     if (!imageB?.image?.naturalWidth || !imageB?.image?.naturalHeight) {
-      drawLabel(ctx, "Slider: connect image_b or use a batch", x, y);
       return;
     }
 
@@ -188,7 +202,6 @@ class DossImageComparerWidget {
     ctx.lineTo(cropX, y + height);
     ctx.stroke();
     ctx.restore();
-    drawLabel(ctx, "Slider", x, y);
   }
 
   computeSize(width) {
@@ -209,6 +222,7 @@ app.registerExtension({
     }
 
     const originalOnNodeCreated = nodeType.prototype.onNodeCreated;
+    const originalOnConfigure = nodeType.prototype.onConfigure;
     const originalOnExecuted = nodeType.prototype.onExecuted;
     const originalOnMouseMove = nodeType.prototype.onMouseMove;
     const originalOnMouseLeave = nodeType.prototype.onMouseLeave;
@@ -216,6 +230,7 @@ app.registerExtension({
     nodeType.prototype.onNodeCreated = function () {
       originalOnNodeCreated?.apply(this, arguments);
       try {
+        removeStaleSelectedImageOutput(this);
         this.dossComparerPointerX = this.size?.[0] ? this.size[0] / 2 : 180;
         this.dossComparerWidget = this.addCustomWidget(new DossImageComparerWidget(this));
         const width = Math.max(this.size?.[0] || 360, 360);
@@ -226,9 +241,15 @@ app.registerExtension({
       }
     };
 
+    nodeType.prototype.onConfigure = function () {
+      originalOnConfigure?.apply(this, arguments);
+      removeStaleSelectedImageOutput(this);
+    };
+
     nodeType.prototype.onExecuted = function (output) {
       originalOnExecuted?.apply(this, arguments);
       try {
+        removeStaleSelectedImageOutput(this);
         this.dossComparerWidget.value = {
           mode: output?.comparer_mode,
           images: buildImageEntries(output),

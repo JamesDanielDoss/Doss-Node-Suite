@@ -20,3 +20,5 @@ All notable changes to Doss-Node-Suite will be documented in this file.
 - Removed the `selected_image` output from Doss Image Comparer.
 - Removed frontend image-preview plumbing that could create a persistent floating center preview.
 - Removed generic `ui.images` preview metadata from Doss Image Comparer so only the in-node comparer widget displays images.
+- Added frontend cleanup for stale `selected_image` outputs on existing workflow nodes.
+- Removed overlapping canvas labels from Slider mode.
