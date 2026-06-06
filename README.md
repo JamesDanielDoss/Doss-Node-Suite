@@ -1,8 +1,10 @@
-# ComfyUI-Doss-Node-Suite
+# Doss Node Suite
 
-Doss-Node-Suite is a public ComfyUI custom node pack for practical workflow utilities and small visual helpers.
+Doss Node Suite is an early V0.1 public ComfyUI custom node pack for practical workflow utilities and small visual helpers.
 
-The initial nodes are:
+GitHub: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
+
+Current nodes:
 
 - **Doss File Name Formatter**: generates standardized, Windows-safe filename strings.
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
@@ -13,10 +15,17 @@ Clone this repository into your ComfyUI custom nodes folder:
 
 ```powershell
 cd C:\AI\ComfyUI\custom_nodes
-git clone <your-repository-url> ComfyUI-Doss-Node-Suite
+git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-Node-Suite
 ```
 
-Then restart ComfyUI. The node pack loads through the top-level `__init__.py` and exports:
+Then restart ComfyUI.
+
+Find the nodes by searching for `Doss`, or browse these categories:
+
+- `Doss Node Suite / Utilities`
+- `Doss Node Suite / Image`
+
+The node pack loads through the top-level `__init__.py` and exports:
 
 - `NODE_CLASS_MAPPINGS`
 - `NODE_DISPLAY_NAME_MAPPINGS`
