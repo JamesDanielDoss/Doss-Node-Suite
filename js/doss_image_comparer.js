@@ -27,28 +27,19 @@ function buildImageEntries(output) {
   const aImages = output?.a_images || [];
   const bImages = output?.b_images || [];
 
-  if (aImages.length || bImages.length) {
-    for (const [index, imageData] of aImages.entries()) {
-      images.push({
-        label: aImages.length > 1 ? `A${index + 1}` : "A",
-        url: makeImageUrl(imageData),
-      });
-    }
-    for (const [index, imageData] of bImages.entries()) {
-      images.push({
-        label: bImages.length > 1 ? `B${index + 1}` : "B",
-        url: makeImageUrl(imageData),
-      });
-    }
-    return images;
-  }
-
-  for (const [index, imageData] of (output?.images || []).entries()) {
+  for (const [index, imageData] of aImages.entries()) {
     images.push({
-      label: index === 0 ? "A" : "B",
+      label: aImages.length > 1 ? `A${index + 1}` : "A",
       url: makeImageUrl(imageData),
     });
   }
+  for (const [index, imageData] of bImages.entries()) {
+    images.push({
+      label: bImages.length > 1 ? `B${index + 1}` : "B",
+      url: makeImageUrl(imageData),
+    });
+  }
+
   return images;
 }
 

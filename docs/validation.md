@@ -44,7 +44,7 @@ text_to_image_production_workflow_02_06_2026
 6. Queue the prompt.
 7. Confirm Side By Side displays image A and image B inside the node.
 8. Switch `comparer_mode` to `Slider` and confirm the slider comparison stays inside the node.
-9. Confirm no persistent floating center image, popup preview, lightbox thumbnail, or centered overlay appears.
+9. Confirm no persistent floating center image, popup preview, lightbox thumbnail, or centered overlay appears in front of the comparer.
 10. Confirm `Click` mode does not appear in the mode dropdown.
 11. Confirm the node has only `image_a` and `image_b` outputs; `selected_image` should not exist.
 12. Confirm `image_a` and `image_b` outputs still pass images to downstream nodes.

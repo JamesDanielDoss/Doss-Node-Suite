@@ -44,6 +44,7 @@ The frontend extension:
 - Targets only `DossImageComparer`.
 - Draws a custom canvas widget inside the node.
 - Avoids setting `node.imgs`, so ComfyUI should not create an extra floating preview for this node.
+- Avoids returning generic `ui.images`, so ComfyUI's built-in preview overlay is not triggered.
 - Catches widget setup/rendering errors so ComfyUI can keep loading.
 
 ## Validation Note

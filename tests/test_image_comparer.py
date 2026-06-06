@@ -42,7 +42,9 @@ class DossImageComparerTests(unittest.TestCase):
 
         self.assertEqual(result["result"], (["a0"], ["a1"]))
         self.assertEqual(result["ui"]["comparer_mode"], ["Slider"])
-        self.assertEqual(result["ui"]["images"], [])
+        self.assertEqual(result["ui"]["a_images"], [])
+        self.assertEqual(result["ui"]["b_images"], [])
+        self.assertNotIn("images", result["ui"])
 
     def test_comfy_metadata_is_declared(self):
         self.assertEqual(DossImageComparer.RETURN_TYPES, ("IMAGE", "IMAGE"))

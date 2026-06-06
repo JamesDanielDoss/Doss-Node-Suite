@@ -97,7 +97,6 @@ class DossImageComparer(ComfyPreviewImage):
             "b_images": self._preview_images(output_b, "doss.compare.b.", prompt, extra_pnginfo),
             "comparer_mode": [comparer_mode],
         }
-        ui["images"] = [*ui["a_images"], *ui["b_images"]]
 
         return {
             "ui": ui,
