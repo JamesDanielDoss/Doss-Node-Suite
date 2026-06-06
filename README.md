@@ -1,12 +1,11 @@
 # Doss Node Suite
 
-Doss Node Suite is an early V0.1 public ComfyUI custom node pack for practical workflow utilities and small visual helpers.
+Doss Node Suite is an early V0.1 public ComfyUI custom node pack focused on practical visual workflow tools.
 
 GitHub: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
 
-Current nodes:
+Current node:
 
-- **Doss File Name Formatter**: generates standardized, Windows-safe filename strings.
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
 
 ## Installation
@@ -20,10 +19,11 @@ git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-No
 
 Then restart ComfyUI.
 
-Find the nodes by searching for `Doss`, or browse these categories:
+Find the node by searching for `Doss Image Comparer` or browsing:
 
-- `Doss Node Suite / Utilities`
-- `Doss Node Suite / Image`
+```text
+Doss Node Suite / Image
+```
 
 The node pack loads through the top-level `__init__.py` and exports:
 
@@ -34,40 +34,6 @@ The node pack loads through the top-level `__init__.py` and exports:
 `WEB_DIRECTORY` points to `./js` for the Doss Image Comparer frontend canvas widget.
 
 ## Nodes
-
-### Doss File Name Formatter
-
-Category: `Doss Node Suite / Utilities`
-
-Display name: `Doss File Name Formatter`
-
-Purpose: Generate a standardized filename string for ComfyUI outputs.
-
-Input fields:
-
-| Input | Type | Notes |
-| --- | --- | --- |
-| `topic` | `STRING` | Filename topic, such as `text to image`. |
-| `title` | `STRING` | Filename title, such as `production workflow`. |
-| `date_day` | `INT` | Day number, formatted as `DD`. |
-| `date_month` | `INT` | Month number, formatted as `MM`. |
-| `date_year` | `INT` | Year number, formatted as `YYYY`. |
-| `separator` | dropdown | Choose `_` or `-`. |
-| `lowercase` | `BOOLEAN` | Converts topic and title segments to lowercase when enabled. |
-
-Output fields:
-
-| Output | Type | Notes |
-| --- | --- | --- |
-| `filename` | `STRING` | A filename stem in `topic_title_DD_MM_YYYY` format. |
-
-Example:
-
-```text
-text_to_image_production_workflow_02_06_2026
-```
-
-The formatter replaces spaces and unsafe filename characters, collapses repeated separators, trims unsafe trailing characters, and keeps the result Windows-safe.
 
 ### Doss Image Comparer
 
@@ -101,16 +67,15 @@ Behavior:
 - `Slider` compares image A and image B with a simple in-node slider.
 - The comparer does not create a persistent floating center preview.
 
-## Example Workflows
+## Example Workflow
 
-Minimal example workflows are included at:
+A minimal placement/test example is included at:
 
 ```text
-examples/doss_file_name_formatter.workflow.json
 examples/doss_image_comparer_example.json
 ```
 
-These examples are only for placing and testing the nodes. They are not production workflow packs.
+This example is only for placing and testing the node. It is not a production workflow pack.
 
 ## Validation
 
@@ -124,15 +89,12 @@ Manual ComfyUI validation:
 
 1. Install the repo into `ComfyUI/custom_nodes/ComfyUI-Doss-Node-Suite`.
 2. Restart ComfyUI and confirm no import errors appear in the console.
-3. Add `Doss File Name Formatter` from `Doss Node Suite / Utilities`.
-4. Use the default values and confirm the `filename` output is `text_to_image_production_workflow_02_06_2026`.
-5. Try unsafe characters such as `/`, `:`, `*`, and `?` in `topic` or `title`; confirm they are replaced with the selected separator.
-6. Search for `Doss Image Comparer`.
-7. Connect two IMAGE outputs to `image_a` and `image_b`.
-8. Queue the prompt and confirm the node displays Side By Side inside the node.
-9. Switch to `Slider` and confirm the slider stays inside the node.
-10. Confirm no `Click` mode appears and no `selected_image` output exists.
-11. Confirm no console errors prevent ComfyUI from loading.
+3. Search for `Doss Image Comparer`.
+4. Connect two IMAGE outputs to `image_a` and `image_b`.
+5. Queue the prompt and confirm the node displays Side By Side inside the node.
+6. Switch to `Slider` and confirm the slider stays inside the node.
+7. Confirm no `Click` mode appears and no `selected_image` output exists.
+8. Confirm no console errors prevent ComfyUI from loading.
 
 ## License
 

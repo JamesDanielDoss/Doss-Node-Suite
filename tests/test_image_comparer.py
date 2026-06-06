@@ -1,4 +1,7 @@
 import unittest
+import importlib.util
+import sys
+from pathlib import Path
 
 from nodes.image_comparer import (
     DEFAULT_COMPARER_MODE,
@@ -9,6 +12,24 @@ from nodes.image_comparer import (
 
 
 class DossImageComparerTests(unittest.TestCase):
+    def test_package_exports_only_image_comparer(self):
+        repo = Path(__file__).resolve().parents[1]
+        spec = importlib.util.spec_from_file_location(
+            "ComfyUI-Doss-Node-Suite",
+            repo / "__init__.py",
+            submodule_search_locations=[str(repo)],
+        )
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+
+        self.assertEqual(set(module.NODE_CLASS_MAPPINGS), {"DossImageComparer"})
+        self.assertEqual(
+            module.NODE_DISPLAY_NAME_MAPPINGS,
+            {"DossImageComparer": "Doss Image Comparer"},
+        )
+        self.assertEqual(module.WEB_DIRECTORY, "./js")
+
     def test_batch_fallback_uses_first_two_images(self):
         output_a, output_b = choose_comparison_images(["a0", "a1", "a2"])
 

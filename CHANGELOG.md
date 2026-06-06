@@ -2,16 +2,23 @@
 
 All notable changes to Doss-Node-Suite will be documented in this file.
 
+## [0.1.1] - 2026-06-05
+
+### Changed
+
+- Updated package metadata for Registry node listing compatibility.
+- Simplified shipped node exports to `DossImageComparer` only.
+- Added `node_list.json` with `DossImageComparer` for Manager/Registry node discovery.
+- Removed old Doss File Name Formatter files and documentation from the shipped package.
+
 ## [0.1.0] - 2026-06-05
 
 ### Added
 
 - Initial ComfyUI custom node pack structure.
-- `Doss File Name Formatter` node under `Doss Node Suite / Utilities`.
 - `Doss Image Comparer` node under `Doss Node Suite / Image`.
 - Frontend canvas widget for basic side-by-side and slider comparison modes.
 - Chainable IMAGE outputs from the comparer: `image_a` and `image_b`.
-- Windows-safe filename sanitization with `_` and `-` separator options.
 - README documentation, dedicated node docs, minimal example workflows, validation notes, and unit tests.
 
 ### Changed

@@ -26,6 +26,7 @@
 - `js\`
 - `docs\`
 - `examples\`
+- `node_list.json`
 
 ## Required ComfyUI Exports
 
@@ -35,13 +36,7 @@ The top-level `__init__.py` must export:
 - `NODE_DISPLAY_NAME_MAPPINGS`
 - `WEB_DIRECTORY = "./js"` while frontend JavaScript is used
 
-## Current Completed Nodes
-
-### Doss File Name Formatter
-
-- Category: `Doss Node Suite / Utilities`
-- Output: `filename`
-- Purpose: Generate Windows-safe standardized filename strings.
+## Current Completed Node
 
 ### Doss Image Comparer
 
@@ -57,12 +52,13 @@ The top-level `__init__.py` must export:
 2. Confirm `[project.urls]` includes Repository and Issues.
 3. Confirm `[tool.comfy]` includes `PublisherId = "jamesdossai"`.
 4. Confirm `[tool.comfy]` includes `DisplayName = "Doss Node Suite"`.
-5. Confirm `.comfyignore` excludes development-only files.
-6. Confirm runtime files are not excluded.
-7. Run `python -m unittest discover -s tests`.
-8. Run the package mapping import check.
-9. Fresh clone the GitHub repo into ComfyUI `custom_nodes`.
-10. Restart ComfyUI and confirm both nodes load.
+5. Confirm `node_list.json` contains `DossImageComparer`.
+6. Confirm `.comfyignore` excludes development-only files.
+7. Confirm runtime files are not excluded.
+8. Run `python -m unittest discover -s tests`.
+9. Run the package mapping import check.
+10. Fresh clone the GitHub repo into ComfyUI `custom_nodes`.
+11. Restart ComfyUI and confirm Doss Image Comparer loads.
 
 ## Future Registry Steps
 
@@ -91,15 +87,14 @@ Then restart ComfyUI and search for `Doss`.
 1. Clone into a clean ComfyUI `custom_nodes` folder.
 2. Restart ComfyUI.
 3. Confirm there are no import errors.
-4. Confirm `Doss File Name Formatter` appears under `Doss Node Suite / Utilities`.
-5. Confirm `Doss Image Comparer` appears under `Doss Node Suite / Image`.
-6. Run `python -m unittest discover -s tests`.
-7. Run the package mapping import check.
-8. Place `Doss Image Comparer` in a workflow.
-9. Confirm only `image_a` and `image_b` outputs exist.
-10. Confirm Side By Side mode works.
-11. Confirm Slider mode works.
-12. Confirm no floating center preview remains.
+4. Confirm `Doss Image Comparer` appears under `Doss Node Suite / Image`.
+5. Run `python -m unittest discover -s tests`.
+6. Run the package mapping import check.
+7. Place `Doss Image Comparer` in a workflow.
+8. Confirm only `image_a` and `image_b` outputs exist.
+9. Confirm Side By Side mode works.
+10. Confirm Slider mode works.
+11. Confirm no floating center preview remains.
 
 ## ComfyUI Manager Publishing Checklist
 
