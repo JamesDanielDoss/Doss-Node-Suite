@@ -1,14 +1,12 @@
 # Node Index
 
-This file tracks public nodes as they are built.
+This file tracks public Doss Node Suite nodes.
 
-| Node Name | Status | Purpose | Tutorial |
+## Released Nodes
+
+| Node Class | Display Name | Category | Purpose |
 | --- | --- | --- | --- |
-| `Doss_Positive_Prompt` | Planned | Beginner-friendly positive prompt helper. | TBD |
-| `Doss_Negative_Prompt` | Planned | Beginner-friendly negative prompt helper. | TBD |
-| `Doss_Upscale_Image` | Planned | Simple image upscale helper. | TBD |
-| `Doss_LoRA_Loader` | Planned | Simple LoRA loading helper. | TBD |
-| `Doss_Save_Image` | Planned | Branded save image helper. | TBD |
+| `DossImageComparer` | `Doss Image Comparer` | `Doss Node Suite / Image` | Compare two IMAGE inputs visually while passing IMAGE tensors through. |
 
 ## Status Values
 
