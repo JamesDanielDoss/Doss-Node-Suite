@@ -1,12 +1,13 @@
 # Doss Node Suite
 
-Doss Node Suite is an early V0.1 public ComfyUI custom node pack focused on practical visual workflow tools.
+Doss Node Suite is a public ComfyUI custom node pack focused on practical visual workflow tools.
 
 GitHub: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
 
-Current shipped node:
+Current shipped nodes:
 
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
+- **Doss Save Image**: saves IMAGE batches to the ComfyUI output folder or an output subfolder and passes IMAGE tensors through.
 
 ## Installation
 
@@ -19,10 +20,11 @@ git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-No
 
 Then restart ComfyUI.
 
-Find the node by searching for `Doss Image Comparer` or browsing:
+Find the nodes by searching for `Doss`, or browse:
 
 ```text
 Doss Node Suite / Image
+Doss Node Suite
 ```
 
 The node pack loads through the top-level `__init__.py` and exports:
@@ -31,7 +33,7 @@ The node pack loads through the top-level `__init__.py` and exports:
 - `NODE_DISPLAY_NAME_MAPPINGS`
 - `WEB_DIRECTORY`
 
-`WEB_DIRECTORY` points to `./js` for the Doss Image Comparer frontend canvas widget.
+`WEB_DIRECTORY` points to `./js` for the Doss Image Comparer frontend canvas widget and the Doss Save Image Browse button.
 
 ## Nodes
 
@@ -67,12 +69,50 @@ Behavior:
 - `Slider` compares image A and image B with a simple in-node slider.
 - The comparer does not create a persistent floating center preview.
 
+### Doss Save Image
+
+Category: `Doss Node Suite`
+
+Display name: `Doss Save Image`
+
+Purpose: Save images to the normal ComfyUI output folder or an output subfolder while passing the original IMAGE batch through unchanged.
+
+Wire connections:
+
+| Direction | Name | Type |
+| --- | --- | --- |
+| Input | `image` | `IMAGE` |
+| Output | `image` | `IMAGE` |
+
+Widgets:
+
+| Widget | Type | Notes |
+| --- | --- | --- |
+| `filename` | `STRING` | Default `ComfyUI`. Invalid Windows filename characters are replaced with `_`. |
+| `save_location` | `STRING` | Default `output`, which means the normal ComfyUI output folder. Subfolders are output-relative, such as `Doss Test` or `portraits/session_01`. |
+| `file_format` | dropdown | `JPEG`, `PNG`, `PDF`, `WEBP`, `TIFF`, `ICO`, or `BMP`. |
+| `save_metadata` | boolean | Attempts to embed available metadata when the selected format supports it. |
+| `save_metadata_text_file` | boolean | Writes a `.txt` sidecar tied to the full saved image filename, such as `ComfyUI.png.txt`, with available generation metadata and save details. |
+
+Behavior:
+
+- The Browse button only browses folders inside the normal ComfyUI output directory.
+- `output`, `output/`, and an empty value all resolve to the base ComfyUI output folder.
+- Absolute paths, drive letters, `..` traversal, and paths outside output are rejected.
+- Existing files are not overwritten; names auto-increment like `ComfyUI.png`, `ComfyUI(1).png`, `ComfyUI(2).png`.
+- Batches save every image using the same settings.
+- JPEG and PDF flatten transparency onto white.
+- PNG and WEBP preserve transparency when possible.
+- ICO saves one 256x256 `.ico` file per batch image.
+- No quality or compression sliders are exposed.
+
 ## Example Workflow
 
 A minimal placement/test example is included at:
 
 ```text
 examples/doss_image_comparer_example.json
+examples/doss_save_image_example.json
 ```
 
 This example is only for placing and testing the node. It is not a production workflow pack.
@@ -96,6 +136,11 @@ Manual ComfyUI validation:
 6. Switch to `Slider` and confirm the slider stays inside the node.
 7. Confirm no `Click` mode appears and no `selected_image` output exists.
 8. Confirm no console errors prevent ComfyUI from loading.
+9. Search for `Doss Save Image`.
+10. Confirm only `image` input and `image` output wire connections exist.
+11. Click Browse and confirm only ComfyUI output folders can be selected.
+12. Save a PNG batch and confirm auto-incremented filenames.
+13. Try invalid filename characters and confirm this warning appears: `Bad filename due to special characters. Characters have been changed to underscores "_".`
 
 ## License
 

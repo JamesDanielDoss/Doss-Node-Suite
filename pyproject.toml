@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "doss-node-suite"
-version = "0.1.0"
-description = "Custom ComfyUI node pack for Doss Node Suite, currently shipping the Doss Image Comparer visual workflow node."
+version = "0.2.0"
+description = "Custom ComfyUI node pack for Doss Node Suite, shipping practical image comparison and save workflow nodes."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }

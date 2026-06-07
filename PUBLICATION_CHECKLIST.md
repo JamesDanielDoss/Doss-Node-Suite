@@ -49,6 +49,18 @@ The top-level `__init__.py` must export:
 - Modes: `Side By Side`, `Slider`
 - Removed: `Click` mode, `selected_image` output, persistent floating center preview
 
+### Doss Save Image
+
+- Class: `DossSaveImage`
+- Display name: `Doss Save Image`
+- Category: `Doss Node Suite`
+- Input connection: `image`
+- Output connection: `image`
+- Widgets: `filename`, `save_location`, `file_format`, `save_metadata`, `save_metadata_text_file`
+- Formats: `JPEG`, `PNG`, `PDF`, `WEBP`, `TIFF`, `ICO`, `BMP`
+- Browse scope: ComfyUI output directory only
+- ICO behavior: one 256x256 `.ico` file
+
 ## Registry Preparation Checklist
 
 1. Confirm `pyproject.toml` has `[project]` metadata.
@@ -63,6 +75,8 @@ The top-level `__init__.py` must export:
 10. Run a package mapping import check.
 11. Fresh clone the GitHub repo into ComfyUI `custom_nodes`.
 12. Restart ComfyUI and confirm the shipped nodes load.
+13. Confirm public mappings include only `DossImageComparer` and `DossSaveImage`.
+14. Confirm no `DossFileNameFormatter` references are active.
 
 ## User Install Instructions
 
@@ -72,6 +86,7 @@ git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-No
 ```
 
 Then restart ComfyUI and search for `Doss Image Comparer`.
+Search for `Doss Save Image` to place the save node.
 
 ## Fresh Clone Testing Checklist
 
@@ -87,6 +102,10 @@ Then restart ComfyUI and search for `Doss Image Comparer`.
 10. Confirm Side By Side mode works.
 11. Confirm Slider mode works.
 12. Confirm no floating center preview remains.
+13. Place `Doss Save Image` in a workflow.
+14. Confirm Browse is limited to the ComfyUI output directory.
+15. Confirm batch saving and auto-incremented filenames work.
+16. Confirm invalid filename warning appears when needed.
 
 ## Public Safety Checklist
 
