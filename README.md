@@ -8,6 +8,7 @@ Current shipped nodes:
 
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
 - **Doss Save Image**: saves IMAGE batches to the ComfyUI output folder or an output subfolder and passes IMAGE tensors through.
+- **Doss Workflow Timer and Alarm**: displays a live workflow timer on the canvas and optionally plays a completion alarm.
 
 ## Installation
 
@@ -33,7 +34,7 @@ The node pack loads through the top-level `__init__.py` and exports:
 - `NODE_DISPLAY_NAME_MAPPINGS`
 - `WEB_DIRECTORY`
 
-`WEB_DIRECTORY` points to `./js` for the Doss Image Comparer frontend canvas widget and the Doss Save Image Browse button.
+`WEB_DIRECTORY` points to `./js` for the Doss Image Comparer frontend canvas widget, the Doss Save Image Browse button, and the Doss Workflow Timer and Alarm canvas widget.
 
 ## Nodes
 
@@ -84,7 +85,15 @@ Wire connections:
 | Input | `image` | `IMAGE` |
 | Output | `image` | `IMAGE` |
 
-Widgets:
+Visible UI:
+
+- Large timer dashboard card.
+- `Customize` button.
+- Double-click the timer card to open `Customize`.
+- Settings are edited in a popup and stored internally so they persist with the workflow.
+- `Display-only mode` hides the visible button, keeps internal widgets collapsed, and minimizes the normal ComfyUI node shell as much as LiteGraph allows while keeping double-click customization available.
+
+Stored settings:
 
 | Widget | Type | Notes |
 | --- | --- | --- |
@@ -105,6 +114,50 @@ Behavior:
 - PNG and WEBP preserve transparency when possible.
 - ICO saves one 256x256 `.ico` file per batch image.
 - No quality or compression sliders are exposed.
+
+### Doss Workflow Timer and Alarm
+
+Category: `Doss Node Suite`
+
+Display name: `Doss Workflow Timer and Alarm`
+
+Purpose: Display a live workflow timer directly on the ComfyUI canvas and optionally play a generated completion alarm.
+
+Wire connections:
+
+None. This is a visual utility/display node only.
+
+Widgets:
+
+| Widget | Type | Notes |
+| --- | --- | --- |
+| `timer_label` | `STRING` | Default `Workflow Timer`. |
+| `show_timer_label` | boolean | Shows or hides the small title/label text on the timer card. |
+| `show_status` | boolean | Shows Ready, Running, Complete, Error, or Canceled. |
+| `show_milliseconds` | boolean | Adds milliseconds to the timer display. |
+| `hide_node_ui` | boolean | Internal persisted setting for user-facing `Display-only mode`. |
+| `font_size` | integer | Timer value size, range 12 to 96. |
+| `font_color` | `STRING` | Default `#ffffff`; edited with preset swatches including `transparent`. |
+| `background_color` | `STRING` | Default `#111111`; edited with preset swatches including `transparent`. |
+| `background_opacity` | float | Default `0.85`, range 0.0 to 1.0. |
+| `border_color` | `STRING` | Default `#3b82f6`; edited with preset swatches including `transparent`. |
+| `border_radius` | integer | Default `8`, range 0 to 32. |
+| `alarm_enabled` | boolean | Plays a completion sound after successful workflow completion. |
+| `alarm_sound` | dropdown | `Ping` or `Beep`. |
+| `alarm_volume` | integer | Default `70`, range 0 to 100. |
+
+Behavior:
+
+- Starts on ComfyUI `execution_start`.
+- Updates live while the workflow is running.
+- Stops on ComfyUI `execution_success` and shows the final elapsed time.
+- Shows Error or Canceled when ComfyUI emits those states.
+- Does not treat `executing` with a null node as workflow completion.
+- Transparent background skips the card fill, and transparent border skips the border stroke.
+- `Show title/label` controls whether the small timer label text is drawn; the main timer remains visible.
+- Display-only mode tightens the node size, hides the title text/button, minimizes the normal node shell, allows dragging from the timer card, and keeps double-click customization available.
+- Uses generated browser audio only; no external audio files are required.
+- Does not play audio if the alarm is disabled or volume is `0`.
 
 ## Example Workflow
 
@@ -141,6 +194,15 @@ Manual ComfyUI validation:
 11. Click Browse and confirm only ComfyUI output folders can be selected.
 12. Save a PNG batch and confirm auto-incremented filenames.
 13. Try invalid filename characters and confirm this warning appears: `Bad filename due to special characters. Characters have been changed to underscores "_".`
+14. Search for `Doss Workflow Timer and Alarm`.
+15. Confirm it has no input or output wire connections.
+16. Confirm the node shows a large clean timer display and a `Customize` button.
+17. Confirm `Customize` opens a modal with color swatches instead of browser color picker inputs.
+18. Confirm double-clicking the timer card opens `Customize`.
+19. Confirm transparent background and transparent border work.
+20. Confirm `Display-only mode` hides the button, minimizes the normal node chrome, and double-click still opens `Customize`.
+21. Queue a workflow and confirm the timer changes Ready -> Running -> Complete only after the workflow is truly complete.
+22. Confirm the completion alarm plays only when enabled and volume is above `0`.
 
 ## License
 

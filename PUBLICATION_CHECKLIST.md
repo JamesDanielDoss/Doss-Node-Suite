@@ -61,6 +61,17 @@ The top-level `__init__.py` must export:
 - Browse scope: ComfyUI output directory only
 - ICO behavior: one 256x256 `.ico` file
 
+### Doss Workflow Timer and Alarm
+
+- Class: `DossWorkflowTimerAndAlarm`
+- Display name: `Doss Workflow Timer and Alarm`
+- Category: `Doss Node Suite`
+- Input connections: none
+- Output connections: none
+- Visual canvas timer card
+- Statuses: `Ready`, `Running`, `Complete`, `Error`, `Canceled`
+- Alarm sounds: `Ping`, `Beep`
+
 ## Registry Preparation Checklist
 
 1. Confirm `pyproject.toml` has `[project]` metadata.
@@ -75,7 +86,7 @@ The top-level `__init__.py` must export:
 10. Run a package mapping import check.
 11. Fresh clone the GitHub repo into ComfyUI `custom_nodes`.
 12. Restart ComfyUI and confirm the shipped nodes load.
-13. Confirm public mappings include only `DossImageComparer` and `DossSaveImage`.
+13. Confirm public mappings include only `DossImageComparer`, `DossSaveImage`, and `DossWorkflowTimerAndAlarm`.
 14. Confirm no `DossFileNameFormatter` references are active.
 
 ## User Install Instructions
@@ -87,6 +98,7 @@ git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-No
 
 Then restart ComfyUI and search for `Doss Image Comparer`.
 Search for `Doss Save Image` to place the save node.
+Search for `Doss Workflow Timer and Alarm` to place the visual timer node.
 
 ## Fresh Clone Testing Checklist
 
@@ -106,6 +118,10 @@ Search for `Doss Save Image` to place the save node.
 14. Confirm Browse is limited to the ComfyUI output directory.
 15. Confirm batch saving and auto-incremented filenames work.
 16. Confirm invalid filename warning appears when needed.
+17. Place `Doss Workflow Timer and Alarm` in a workflow.
+18. Confirm it has no input or output wire connections.
+19. Confirm it starts on workflow execution and stops on completion.
+20. Confirm completion alarm behavior respects `alarm_enabled` and `alarm_volume`.
 
 ## Public Safety Checklist
 

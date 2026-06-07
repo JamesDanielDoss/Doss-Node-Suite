@@ -216,13 +216,14 @@ class DossSaveImageTests(unittest.TestCase):
 
         self.assertEqual(
             set(module.NODE_CLASS_MAPPINGS),
-            {"DossImageComparer", "DossSaveImage"},
+            {"DossImageComparer", "DossSaveImage", "DossWorkflowTimerAndAlarm"},
         )
         self.assertEqual(
             module.NODE_DISPLAY_NAME_MAPPINGS,
             {
                 "DossImageComparer": "Doss Image Comparer",
                 "DossSaveImage": "Doss Save Image",
+                "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },
         )
         self.assertNotIn("DossFileNameFormatter", module.NODE_CLASS_MAPPINGS)
