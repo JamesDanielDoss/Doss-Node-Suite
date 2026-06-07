@@ -43,7 +43,7 @@ The top-level `__init__.py` must export:
 
 - Class: `DossImageComparer`
 - Display name: `Doss Image Comparer`
-- Category: `Doss Node Suite / Image`
+- Category: `⚡ Doss Node Suite`
 - Inputs: `image_a`, optional `image_b`, `comparer_mode`
 - Outputs: `image_a`, `image_b`
 - Modes: `Side By Side`, `Slider`
@@ -53,7 +53,7 @@ The top-level `__init__.py` must export:
 
 - Class: `DossSaveImage`
 - Display name: `Doss Save Image`
-- Category: `Doss Node Suite`
+- Category: `⚡ Doss Node Suite`
 - Input connection: `image`
 - Output connection: `image`
 - Widgets: `filename`, `save_location`, `file_format`, `save_metadata`, `save_metadata_text_file`
@@ -65,7 +65,7 @@ The top-level `__init__.py` must export:
 
 - Class: `DossWorkflowTimerAndAlarm`
 - Display name: `Doss Workflow Timer and Alarm`
-- Category: `Doss Node Suite`
+- Category: `⚡ Doss Node Suite`
 - Input connections: none
 - Output connections: none
 - Visual canvas timer card
@@ -105,7 +105,7 @@ Search for `Doss Workflow Timer and Alarm` to place the visual timer node.
 1. Clone into a clean ComfyUI `custom_nodes` folder.
 2. Restart ComfyUI.
 3. Confirm there are no import errors.
-4. Confirm `Doss Image Comparer` appears under `Doss Node Suite / Image`.
+4. Confirm `Doss Image Comparer` appears under `⚡ Doss Node Suite`.
 5. Run `python -m unittest discover -s tests`.
 6. Run `python -m pytest`.
 7. Run the package mapping import check.

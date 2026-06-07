@@ -2,11 +2,18 @@
 
 All notable changes to Doss Node Suite will be documented in this file.
 
+## [0.3.1] - 2026-06-07
+
+### Changed
+
+- Flattened all active nodes into one `⚡ Doss Node Suite` category.
+- Added `⚡` category branding while keeping node display names unchanged.
+
 ## [0.3.0] - 2026-06-07
 
 ### Added
 
-- `Doss Workflow Timer and Alarm` node under `Doss Node Suite`.
+- `Doss Workflow Timer and Alarm` node under `⚡ Doss Node Suite`.
 - Visual canvas timer card with Ready, Running, Complete, Error, and Canceled states.
 - Workflow timing through ComfyUI frontend execution events.
 - Optional generated browser alarm sounds for successful workflow completion.
@@ -20,7 +27,7 @@ All notable changes to Doss Node Suite will be documented in this file.
 
 ### Added
 
-- `Doss Save Image` node under `Doss Node Suite`.
+- `Doss Save Image` node under `⚡ Doss Node Suite`.
 - Output-rooted Browse button for selecting or creating save subfolders inside the ComfyUI output directory.
 - Save support for JPEG, PNG, PDF, WEBP, TIFF, ICO, and BMP.
 - Auto-incrementing filenames to avoid overwrites.
@@ -33,7 +40,7 @@ All notable changes to Doss Node Suite will be documented in this file.
 ### Added
 
 - Initial ComfyUI custom node pack structure.
-- `Doss Image Comparer` node under `Doss Node Suite / Image`.
+- `Doss Image Comparer` node under `⚡ Doss Node Suite`.
 - Frontend canvas widget for basic side-by-side and slider comparison modes.
 - Chainable IMAGE outputs from the comparer: `image_a` and `image_b`.
 - README documentation, dedicated node docs, minimal example workflow, validation notes, and unit tests.

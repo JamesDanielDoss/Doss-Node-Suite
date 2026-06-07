@@ -339,7 +339,7 @@ class DossSaveImage:
     RETURN_TYPES = ("IMAGE",)
     RETURN_NAMES = ("image",)
     FUNCTION = "save_image"
-    CATEGORY = "Doss Node Suite"
+    CATEGORY = "⚡ Doss Node Suite"
     OUTPUT_NODE = True
     DESCRIPTION = "Save images to the ComfyUI output folder or an output subfolder."
 

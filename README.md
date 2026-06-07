@@ -24,8 +24,7 @@ Then restart ComfyUI.
 Find the nodes by searching for `Doss`, or browse:
 
 ```text
-Doss Node Suite / Image
-Doss Node Suite
+⚡ Doss Node Suite
 ```
 
 The node pack loads through the top-level `__init__.py` and exports:
@@ -40,7 +39,7 @@ The node pack loads through the top-level `__init__.py` and exports:
 
 ### Doss Image Comparer
 
-Category: `Doss Node Suite / Image`
+Category: `⚡ Doss Node Suite`
 
 Display name: `Doss Image Comparer`
 
@@ -72,7 +71,7 @@ Behavior:
 
 ### Doss Save Image
 
-Category: `Doss Node Suite`
+Category: `⚡ Doss Node Suite`
 
 Display name: `Doss Save Image`
 
@@ -117,7 +116,7 @@ Behavior:
 
 ### Doss Workflow Timer and Alarm
 
-Category: `Doss Node Suite`
+Category: `⚡ Doss Node Suite`
 
 Display name: `Doss Workflow Timer and Alarm`
 

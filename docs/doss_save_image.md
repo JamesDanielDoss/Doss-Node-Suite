@@ -1,6 +1,6 @@
 # Doss Save Image
 
-Category: `Doss Node Suite`
+Category: `⚡ Doss Node Suite`
 
 Display name: `Doss Save Image`
 

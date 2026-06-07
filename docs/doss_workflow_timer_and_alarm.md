@@ -8,7 +8,7 @@ It has no wire inputs and no wire outputs. It sits on the canvas as a display ut
 
 - Class: `DossWorkflowTimerAndAlarm`
 - Display name: `Doss Workflow Timer and Alarm`
-- Category: `Doss Node Suite`
+- Category: `⚡ Doss Node Suite`
 - Input connections: none
 - Output connections: none
 

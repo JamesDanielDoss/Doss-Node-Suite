@@ -77,7 +77,7 @@ class DossImageComparer(ComfyPreviewImage):
     RETURN_TYPES = ("IMAGE", "IMAGE")
     RETURN_NAMES = ("image_a", "image_b")
     FUNCTION = "compare_images"
-    CATEGORY = "Doss Node Suite / Image"
+    CATEGORY = "⚡ Doss Node Suite"
     OUTPUT_NODE = True
     DESCRIPTION = "Compare two images visually and pass the selected tensors through."
 

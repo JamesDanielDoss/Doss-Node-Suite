@@ -6,7 +6,7 @@ ALARM_SOUNDS = ("Ping", "Beep")
 
 
 class DossWorkflowTimerAndAlarm:
-    CATEGORY = "Doss Node Suite"
+    CATEGORY = "⚡ Doss Node Suite"
     FUNCTION = "noop"
     RETURN_TYPES = ()
 

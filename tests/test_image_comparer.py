@@ -49,7 +49,7 @@ class DossImageComparerTests(unittest.TestCase):
     def test_comfy_metadata_is_declared(self):
         self.assertEqual(DossImageComparer.RETURN_TYPES, ("IMAGE", "IMAGE"))
         self.assertEqual(DossImageComparer.RETURN_NAMES, ("image_a", "image_b"))
-        self.assertEqual(DossImageComparer.CATEGORY, "Doss Node Suite / Image")
+        self.assertEqual(DossImageComparer.CATEGORY, "⚡ Doss Node Suite")
         self.assertTrue(DossImageComparer.OUTPUT_NODE)
 
         input_types = DossImageComparer.INPUT_TYPES()

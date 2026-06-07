@@ -226,6 +226,14 @@ class DossSaveImageTests(unittest.TestCase):
                 "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },
         )
+        self.assertEqual(
+            {name: node.CATEGORY for name, node in module.NODE_CLASS_MAPPINGS.items()},
+            {
+                "DossImageComparer": "⚡ Doss Node Suite",
+                "DossSaveImage": "⚡ Doss Node Suite",
+                "DossWorkflowTimerAndAlarm": "⚡ Doss Node Suite",
+            },
+        )
         self.assertNotIn("DossFileNameFormatter", module.NODE_CLASS_MAPPINGS)
 
 

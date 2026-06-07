@@ -1,6 +1,6 @@
 # Doss Image Comparer
 
-Category: `Doss Node Suite / Image`
+Category: `⚡ Doss Node Suite`
 
 Display name: `Doss Image Comparer`
 
@@ -50,4 +50,4 @@ The frontend extension:
 
 ## Validation Note
 
-Install the repository into `ComfyUI/custom_nodes/ComfyUI-Doss-Node-Suite`, restart ComfyUI, add `Doss Image Comparer` from `Doss Node Suite / Image`, connect two IMAGE outputs, queue the prompt, and confirm Side By Side and Slider both render inside the node without a floating center preview.
+Install the repository into `ComfyUI/custom_nodes/ComfyUI-Doss-Node-Suite`, restart ComfyUI, add `Doss Image Comparer` from `⚡ Doss Node Suite`, connect two IMAGE outputs, queue the prompt, and confirm Side By Side and Slider both render inside the node without a floating center preview.

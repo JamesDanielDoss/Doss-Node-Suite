@@ -32,7 +32,7 @@ The tests cover:
 1. Clone or copy the repository into `ComfyUI/custom_nodes/ComfyUI-Doss-Node-Suite`.
 2. Restart ComfyUI.
 3. Search for `Doss Image Comparer`.
-4. Confirm it appears under `Doss Node Suite / Image`.
+4. Confirm it appears under `⚡ Doss Node Suite`.
 5. Connect two IMAGE outputs to `image_a` and `image_b`.
 6. Queue the prompt.
 7. Confirm Side By Side displays image A and image B inside the node.
@@ -52,7 +52,7 @@ If the frontend widget fails, the backend should still return the two IMAGE outp
 1. Clone or copy the repository into `ComfyUI/custom_nodes/ComfyUI-Doss-Node-Suite`.
 2. Restart ComfyUI.
 3. Search for `Doss Save Image`.
-4. Confirm the node appears under `Doss Node Suite`.
+4. Confirm the node appears under `⚡ Doss Node Suite`.
 5. Confirm the only wire input is `image`.
 6. Confirm the only wire output is `image`.
 7. Confirm the widgets are `filename`, `save_location`, `file_format`, `save_metadata`, and `save_metadata_text_file`.
@@ -77,7 +77,7 @@ Bad filename due to special characters. Characters have been changed to undersco
 1. Clone or copy the repository into `ComfyUI/custom_nodes/ComfyUI-Doss-Node-Suite`.
 2. Restart ComfyUI.
 3. Search for `Doss Workflow Timer and Alarm`.
-4. Confirm the node appears under `Doss Node Suite`.
+4. Confirm the node appears under `⚡ Doss Node Suite`.
 5. Confirm the node has no input wire connections.
 6. Confirm the node has no output wire connections.
 7. Confirm the node shows a large clean timer dashboard card and a `Customize` button.
