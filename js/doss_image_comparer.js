@@ -4,6 +4,11 @@ import { api } from "../../scripts/api.js";
 const NODE_TYPE = "DossImageComparer";
 const DEFAULT_MODE = "Side By Side";
 const MODES = new Set(["Side By Side", "Slider"]);
+const MIN_PREVIEW_WIDTH = 280;
+const MIN_PREVIEW_HEIGHT = 160;
+const PREVIEW_TOP_PADDING = 4;
+const PREVIEW_BOTTOM_PADDING = 8;
+const NODE_BOTTOM_PADDING = 12;
 
 function makeImageUrl(imageData) {
   const params = new URLSearchParams({
@@ -29,12 +34,14 @@ function buildImageEntries(output) {
 
   for (const [index, imageData] of aImages.entries()) {
     images.push({
+      inputName: "image_a",
       label: aImages.length > 1 ? `A${index + 1}` : "A",
       url: makeImageUrl(imageData),
     });
   }
   for (const [index, imageData] of bImages.entries()) {
     images.push({
+      inputName: "image_b",
       label: bImages.length > 1 ? `B${index + 1}` : "B",
       url: makeImageUrl(imageData),
     });
@@ -79,6 +86,43 @@ function drawLabel(ctx, text, x, y) {
   ctx.restore();
 }
 
+function drawRoundedRect(ctx, x, y, width, height, radius) {
+  const safeRadius = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + safeRadius, y);
+  ctx.lineTo(x + width - safeRadius, y);
+  ctx.quadraticCurveTo(x + width, y, x + width, y + safeRadius);
+  ctx.lineTo(x + width, y + height - safeRadius);
+  ctx.quadraticCurveTo(x + width, y + height, x + width - safeRadius, y + height);
+  ctx.lineTo(x + safeRadius, y + height);
+  ctx.quadraticCurveTo(x, y + height, x, y + height - safeRadius);
+  ctx.lineTo(x, y + safeRadius);
+  ctx.quadraticCurveTo(x, y, x + safeRadius, y);
+  ctx.closePath();
+}
+
+function drawBadge(ctx, text, x, y, align = "left") {
+  ctx.save();
+  ctx.font = "12px sans-serif";
+  ctx.textBaseline = "top";
+
+  const paddingX = 8;
+  const paddingY = 5;
+  const textWidth = ctx.measureText(text).width;
+  const width = textWidth + paddingX * 2;
+  const height = 22;
+  const left = align === "right" ? x - width : x;
+
+  drawRoundedRect(ctx, left, y, width, height, 6);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.62)";
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.18)";
+  ctx.stroke();
+  ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+  ctx.fillText(text, left + paddingX, y + paddingY);
+  ctx.restore();
+}
+
 function drawPlaceholder(ctx, text, x, y, width, height) {
   drawPanel(ctx, x, y, width, height);
   ctx.save();
@@ -91,6 +135,10 @@ function drawPlaceholder(ctx, text, x, y, width, height) {
 }
 
 function drawImageInBounds(ctx, entry, x, y, width, height, showLabel = true) {
+  if (width <= 0 || height <= 0) {
+    return;
+  }
+
   drawPanel(ctx, x, y, width, height);
   const image = entry?.image;
   if (!image?.naturalWidth || !image?.naturalHeight) {
@@ -103,6 +151,29 @@ function drawImageInBounds(ctx, entry, x, y, width, height, showLabel = true) {
   if (showLabel) {
     drawLabel(ctx, entry.label, x, y);
   }
+}
+
+function getDefaultPreviewHeight(width) {
+  return Math.max(
+    MIN_PREVIEW_HEIGHT,
+    Math.round(Math.max(width || MIN_PREVIEW_WIDTH, MIN_PREVIEW_WIDTH) * 0.56),
+  );
+}
+
+function getPreviewHeight(node, width, y = 0) {
+  const widthFallback = getDefaultPreviewHeight(width);
+  const nodeHeight = Number(node?.size?.[1]);
+
+  if (!Number.isFinite(nodeHeight)) {
+    return widthFallback;
+  }
+
+  const availableHeight = nodeHeight - y - PREVIEW_TOP_PADDING - NODE_BOTTOM_PADDING;
+  return Math.max(0, availableHeight);
+}
+
+function getInputEntry(entries, inputName) {
+  return entries.find((entry) => entry.inputName === inputName);
 }
 
 function removeStaleSelectedImageOutput(node) {
@@ -125,6 +196,7 @@ class DossImageComparerWidget {
     this.node = node;
     this.mode = DEFAULT_MODE;
     this.entries = [];
+    this.lastY = 0;
   }
 
   set value(value) {
@@ -143,6 +215,7 @@ class DossImageComparerWidget {
     return {
       mode: this.mode,
       images: this.entries.map((entry) => ({
+        inputName: entry.inputName,
         label: entry.label,
         url: entry.url,
       })),
@@ -150,9 +223,10 @@ class DossImageComparerWidget {
   }
 
   draw(ctx, node, width, y) {
-    const height = this.computeSize(width)[1] - 8;
+    this.lastY = y;
+    const height = getPreviewHeight(node, width, y);
     const x = 0;
-    const top = y + 4;
+    const top = y + PREVIEW_TOP_PADDING;
     const mode = getMode(node, this.mode);
 
     if (mode === "Slider") {
@@ -164,20 +238,23 @@ class DossImageComparerWidget {
 
   drawSideBySide(ctx, x, y, width, height) {
     const gap = 8;
-    const panelWidth = (width - gap) / 2;
-    const imageA = this.entries[0];
-    const imageB = this.entries[1] || this.entries[0];
+    const panelWidth = Math.max(0, (width - gap) / 2);
+    const imageA = getInputEntry(this.entries, "image_a");
+    const imageB = getInputEntry(this.entries, "image_b") || imageA;
 
     drawImageInBounds(ctx, imageA, x, y, panelWidth, height);
     drawImageInBounds(ctx, imageB, x + panelWidth + gap, y, panelWidth, height);
   }
 
   drawSlider(ctx, node, x, y, width, height) {
-    const imageA = this.entries[0];
-    const imageB = this.entries[1];
+    const imageA = getInputEntry(this.entries, "image_a");
+    const imageB = getInputEntry(this.entries, "image_b") || imageA;
 
-    drawImageInBounds(ctx, imageA, x, y, width, height, false);
-    if (!imageB?.image?.naturalWidth || !imageB?.image?.naturalHeight) {
+    drawImageInBounds(ctx, imageB, x, y, width, height, false);
+    if (width <= 0 || height <= 0) {
+      return;
+    }
+    if (!imageA?.image?.naturalWidth || !imageA?.image?.naturalHeight) {
       return;
     }
 
@@ -185,13 +262,13 @@ class DossImageComparerWidget {
       ? node.dossComparerPointerX
       : width / 2;
     const cropX = Math.max(0, Math.min(width, pointerX));
-    const rect = fitRect(imageB.image, x, y, width, height);
+    const rect = fitRect(imageA.image, x, y, width, height);
 
     ctx.save();
     ctx.beginPath();
     ctx.rect(x, y, cropX, height);
     ctx.clip();
-    ctx.drawImage(imageB.image, rect.x, rect.y, rect.width, rect.height);
+    ctx.drawImage(imageA.image, rect.x, rect.y, rect.width, rect.height);
     ctx.restore();
 
     ctx.save();
@@ -202,11 +279,15 @@ class DossImageComparerWidget {
     ctx.lineTo(cropX, y + height);
     ctx.stroke();
     ctx.restore();
+
+    const labelPadding = 8;
+    drawBadge(ctx, "A: Original", x + labelPadding, y + labelPadding);
+    drawBadge(ctx, "B: Result", x + width - labelPadding, y + labelPadding, "right");
   }
 
   computeSize(width) {
-    const targetWidth = Math.max(width || 360, 320);
-    return [targetWidth, Math.max(220, Math.round(targetWidth * 0.62))];
+    const targetWidth = Math.max(width || 360, MIN_PREVIEW_WIDTH);
+    return [targetWidth, MIN_PREVIEW_HEIGHT + PREVIEW_TOP_PADDING + PREVIEW_BOTTOM_PADDING];
   }
 
   serializeValue() {
@@ -226,6 +307,7 @@ app.registerExtension({
     const originalOnExecuted = nodeType.prototype.onExecuted;
     const originalOnMouseMove = nodeType.prototype.onMouseMove;
     const originalOnMouseLeave = nodeType.prototype.onMouseLeave;
+    const originalOnResize = nodeType.prototype.onResize;
 
     nodeType.prototype.onNodeCreated = function () {
       originalOnNodeCreated?.apply(this, arguments);
@@ -268,6 +350,11 @@ app.registerExtension({
     nodeType.prototype.onMouseLeave = function (event) {
       originalOnMouseLeave?.apply(this, arguments);
       this.setDirtyCanvas?.(true, false);
+    };
+
+    nodeType.prototype.onResize = function () {
+      originalOnResize?.apply(this, arguments);
+      this.setDirtyCanvas?.(true, true);
     };
   },
 });

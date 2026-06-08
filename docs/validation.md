@@ -11,6 +11,7 @@ python -m pytest
 
 The tests cover:
 
+- Doss Image Comparer resize, ordering, and slider label behavior.
 - Doss Image Comparer batch fallback behavior.
 - Doss Image Comparer single-image safe fallback behavior.
 - Connected `image_b` preservation.
@@ -35,15 +36,17 @@ The tests cover:
 4. Confirm it appears under `⚡ Doss Node Suite`.
 5. Connect two IMAGE outputs to `image_a` and `image_b`.
 6. Queue the prompt.
-7. Confirm Side By Side displays image A and image B inside the node.
-8. Switch `comparer_mode` to `Slider` and confirm the slider comparison stays inside the node without overlapping canvas labels.
-9. Confirm no persistent floating center image, popup preview, lightbox thumbnail, or centered overlay appears in front of the comparer.
-10. Confirm `Click` mode does not appear in the mode dropdown.
-11. Confirm the node has only `image_a` and `image_b` outputs; `selected_image` should not exist, including on older workflow nodes after reload.
-12. Confirm `image_a` and `image_b` outputs still pass images to downstream nodes.
-13. Disconnect `image_b`, send a batch of at least two images into `image_a`, and confirm the first two batch images are used.
-14. Test a single image connected to `image_a` and confirm the node does not crash.
-15. Confirm no console errors prevent ComfyUI loading.
+7. Confirm Side By Side displays `image_a` on the left and `image_b` on the right.
+8. Resize the node larger and smaller and confirm the preview fits inside the current node bounds.
+9. Switch `comparer_mode` to `Slider` and confirm `image_a` appears on the left side of the split and `image_b` appears on the right side.
+10. Confirm Slider mode shows `A: Original` in the top-left corner and `B: Result` in the top-right corner.
+11. Confirm no persistent floating center image, popup preview, lightbox thumbnail, or centered overlay appears in front of the comparer.
+12. Confirm `Click` mode does not appear in the mode dropdown.
+13. Confirm the node has only `image_a` and `image_b` outputs; `selected_image` should not exist, including on older workflow nodes after reload.
+14. Confirm `image_a` and `image_b` outputs still pass images to downstream nodes.
+15. Disconnect `image_b`, send a batch of at least two images into `image_a`, and confirm the first two batch images are used.
+16. Test a single image connected to `image_a` and confirm the node does not crash.
+17. Confirm no console errors prevent ComfyUI loading.
 
 If the frontend widget fails, the backend should still return the two IMAGE outputs safely.
 

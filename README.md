@@ -49,8 +49,8 @@ Input fields:
 
 | Input | Type | Notes |
 | --- | --- | --- |
-| `image_a` | `IMAGE` | Required first image input. |
-| `image_b` | `IMAGE` | Optional second image input. |
+| `image_a` | `IMAGE` | Required first image input. Displays on the left as A / Original. |
+| `image_b` | `IMAGE` | Optional second image input. Displays on the right as B / Result. |
 | `comparer_mode` | dropdown | `Side By Side` or `Slider`. |
 
 Output fields:
@@ -65,8 +65,9 @@ Behavior:
 - If `image_b` is connected, the node compares `image_a` and `image_b`.
 - If `image_b` is not connected and `image_a` has a batch of at least two images, the node compares the first two images from `image_a`.
 - If only one image is available, the node shows and returns `image_a` safely.
-- `Side By Side` displays image A and image B inside the node.
-- `Slider` compares image A and image B with a simple in-node slider.
+- `Side By Side` displays `image_a` on the left and `image_b` on the right.
+- `Slider` displays `image_a` on the left side of the split and `image_b` on the right side.
+- `Slider` shows corner labels: `A: Original` at top-left and `B: Result` at top-right.
 - The comparer does not create a persistent floating center preview.
 
 ### Doss Save Image

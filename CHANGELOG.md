@@ -2,6 +2,16 @@
 
 All notable changes to Doss Node Suite will be documented in this file.
 
+## [0.3.2] - 2026-06-08
+
+### Changed
+
+- Fixed Doss Image Comparer resize-down behavior.
+- Made Image Comparer layout use stable widget sizing and current node bounds for drawing.
+- Locked `image_a` to the left and `image_b` to the right in Side By Side and Slider modes.
+- Added Slider mode corner badges: `A: Original` and `B: Result`.
+- Kept socket identifiers `image_a` and `image_b` for workflow compatibility.
+
 ## [0.3.1] - 2026-06-07
 
 ### Changed

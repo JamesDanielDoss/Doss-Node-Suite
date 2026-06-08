@@ -14,8 +14,8 @@ The V0.1 goal is stable loading, useful pass-through outputs, and simple visual 
 
 | Input | Type | Description |
 | --- | --- | --- |
-| `image_a` | `IMAGE` | Required first image input. |
-| `image_b` | `IMAGE` | Optional second image input. |
+| `image_a` | `IMAGE` | Required first image input. Displays on the left as A / Original. |
+| `image_b` | `IMAGE` | Optional second image input. Displays on the right as B / Result. |
 | `comparer_mode` | dropdown | Choose `Side By Side` or `Slider`. |
 
 ## Outputs
@@ -30,8 +30,9 @@ The V0.1 goal is stable loading, useful pass-through outputs, and simple visual 
 - With `image_a` and `image_b` connected, the node compares those two inputs.
 - With only `image_a` connected and a batch of at least two images, the node uses the first two images from `image_a`.
 - With only one available image, the node displays and returns that image safely.
-- `Side By Side` is the default display mode and draws image A and image B inside the node.
-- `Slider` draws image A and image B inside the node with a simple pointer-position split.
+- `Side By Side` is the default display mode and draws `image_a` on the left and `image_b` on the right.
+- `Slider` draws `image_a` on the left side of the split and `image_b` on the right side.
+- `Slider` shows corner labels: `A: Original` at top-left and `B: Result` at top-right.
 - No persistent overlay, popup preview, or centered lightbox image is created by the Doss widget.
 
 ## Frontend

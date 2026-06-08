@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "doss-node-suite"
-version = "0.3.1"
+version = "0.3.2"
 description = "Custom ComfyUI node pack for Doss Node Suite, shipping practical image comparison, save, and workflow timing nodes."
 readme = "README.md"
 requires-python = ">=3.10"
