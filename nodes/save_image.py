@@ -188,6 +188,23 @@ def build_metadata_payload(
     }
 
 
+def build_preview_image_payload(path: Path, output_directory: Path | None = None) -> dict[str, str]:
+    output_root = (output_directory or get_comfy_output_directory()).resolve()
+    parent = path.resolve().parent
+    try:
+        subfolder = parent.relative_to(output_root).as_posix()
+    except ValueError:
+        subfolder = ""
+    if subfolder == ".":
+        subfolder = ""
+
+    return {
+        "filename": path.name,
+        "subfolder": subfolder,
+        "type": "output",
+    }
+
+
 def _metadata_text(payload: dict[str, Any]) -> str:
     if not payload.get("metadata_available"):
         header = "Generation metadata was unavailable.\n\n"
@@ -358,9 +375,11 @@ class DossSaveImage:
         normalized_format = validate_file_format(file_format)
         extension = FORMAT_EXTENSIONS[normalized_format]
         output_dir = resolve_save_directory(save_location)
+        output_root = get_comfy_output_directory()
         batch_count = _batch_length(image)
         paths = build_batch_paths(output_dir, safe_stem, extension, batch_count)
         saved_files = []
+        preview_images = []
 
         node_settings = {
             "filename": filename,
@@ -386,17 +405,20 @@ class DossSaveImage:
             text_file = None
             if save_metadata_text_file:
                 text_file = write_metadata_text_file(path, payload)
+            preview_images.append(build_preview_image_payload(path, output_root))
             saved_files.append(
                 {
                     "filename": path.name,
                     "path": str(path),
+                    "subfolder": preview_images[-1]["subfolder"],
+                    "type": preview_images[-1]["type"],
                     "text_file": str(text_file) if text_file else None,
                     "format": normalized_format,
                     "batch_index": batch_index,
                 }
             )
 
-        ui = {"saved_files": saved_files}
+        ui = {"images": preview_images, "saved_files": saved_files}
         if filename_changed:
             ui["warnings"] = [BAD_FILENAME_WARNING]
             ui["sanitized_filename"] = [safe_stem]

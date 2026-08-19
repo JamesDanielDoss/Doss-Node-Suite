@@ -7,7 +7,10 @@ GitHub: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
 Current shipped nodes:
 
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
-- **Doss Save Image**: saves IMAGE batches to the ComfyUI output folder or an output subfolder and passes IMAGE tensors through.
+- **Doss Motion Settings | LTX 2.5**: exposes curated prompt, timing, seed, motion, adherence, and FPS controls with derived frame math.
+- **Doss Motion Studio | LTX 2.5**: draws named motion paths over the upstream starting image before generation.
+- **Doss Resolve Motion Tracks | LTX 2.5**: validates and converts normalized paths into one LTX coordinate per frame for the official LTX motion path.
+- **Doss Save Image**: saves IMAGE batches to the ComfyUI output folder or an output subfolder, displays saved image previews inside the node, and passes IMAGE tensors through.
 - **Doss Workflow Timer and Alarm**: displays a live workflow timer on the canvas and optionally plays a completion alarm.
 
 ## Installation
@@ -33,9 +36,15 @@ The node pack loads through the top-level `__init__.py` and exports:
 - `NODE_DISPLAY_NAME_MAPPINGS`
 - `WEB_DIRECTORY`
 
-`WEB_DIRECTORY` points to `./js` for the Doss Image Comparer frontend canvas widget, the Doss Save Image Browse button, and the Doss Workflow Timer and Alarm canvas widget.
+`WEB_DIRECTORY` points to `./js` for the Doss Image Comparer, LTX Motion Studio, LTX Motion Settings, Doss Save Image, and Workflow Timer frontend interfaces.
 
 ## Nodes
+
+### Doss Motion Node | LTX 2.5
+
+Category: `⚡ Doss Node Suite/LTX-2.5`
+
+The divider makes the ownership boundary explicit: Doss supplies the control nodes, while LTX 2.5 and the Motion Track workflow are Lightricks technology. Motion Settings, Motion Studio, and Resolve Motion Tracks form one companion set for that official workflow. Motion Studio displays the upstream Load Image selection before a run, stores portable normalized paths, and blocks stale or invalid plans. The resolver creates one official-format coordinate per frame. See `docs/doss_ltx_motion.md` for the full interface and compatibility boundary.
 
 ### Doss Image Comparer
 
@@ -76,7 +85,7 @@ Category: `⚡ Doss Node Suite`
 
 Display name: `Doss Save Image`
 
-Purpose: Save images to the normal ComfyUI output folder or an output subfolder while passing the original IMAGE batch through unchanged.
+Purpose: Save images to the normal ComfyUI output folder or an output subfolder, show saved image previews inside the node, and pass the original IMAGE batch through unchanged.
 
 Wire connections:
 
@@ -87,11 +96,9 @@ Wire connections:
 
 Visible UI:
 
-- Large timer dashboard card.
-- `Customize` button.
-- Double-click the timer card to open `Customize`.
-- Settings are edited in a popup and stored internally so they persist with the workflow.
-- `Display-only mode` hides the visible button, keeps internal widgets collapsed, and minimizes the normal ComfyUI node shell as much as LiteGraph allows while keeping double-click customization available.
+- `filename`, `save_location`, `file_format`, `save_metadata`, and `save_metadata_text_file` widgets.
+- `Browse` button for choosing output-relative folders.
+- Saved image previews below the widgets/parameters after execution, using ComfyUI's standard image preview payload.
 
 Stored settings:
 
@@ -110,9 +117,11 @@ Behavior:
 - Absolute paths, drive letters, `..` traversal, and paths outside output are rejected.
 - Existing files are not overwritten; names auto-increment like `ComfyUI.png`, `ComfyUI(1).png`, `ComfyUI(2).png`.
 - Batches save every image using the same settings.
+- Batches display every saved image in the node preview list after execution.
 - JPEG and PDF flatten transparency onto white.
 - PNG and WEBP preserve transparency when possible.
 - ICO saves one 256x256 `.ico` file per batch image.
+- PDF and ICO files are returned in the standard preview payload, but ComfyUI/browser image preview support for those formats may be limited.
 - No quality or compression sliders are exposed.
 
 ### Doss Workflow Timer and Alarm
@@ -193,16 +202,18 @@ Manual ComfyUI validation:
 10. Confirm only `image` input and `image` output wire connections exist.
 11. Click Browse and confirm only ComfyUI output folders can be selected.
 12. Save a PNG batch and confirm auto-incremented filenames.
-13. Try invalid filename characters and confirm this warning appears: `Bad filename due to special characters. Characters have been changed to underscores "_".`
-14. Search for `Doss Workflow Timer and Alarm`.
-15. Confirm it has no input or output wire connections.
-16. Confirm the node shows a large clean timer display and a `Customize` button.
-17. Confirm `Customize` opens a modal with color swatches instead of browser color picker inputs.
-18. Confirm double-clicking the timer card opens `Customize`.
-19. Confirm transparent background and transparent border work.
-20. Confirm `Display-only mode` hides the button, minimizes the normal node chrome, and double-click still opens `Customize`.
-21. Queue a workflow and confirm the timer changes Ready -> Running -> Complete only after the workflow is truly complete.
-22. Confirm the completion alarm plays only when enabled and volume is above `0`.
+13. Confirm saved image previews display inside Doss Save Image below the widgets/parameters.
+14. Confirm downstream nodes still receive the original IMAGE through the `image` output.
+15. Try invalid filename characters and confirm this warning appears: `Bad filename due to special characters. Characters have been changed to underscores "_".`
+16. Search for `Doss Workflow Timer and Alarm`.
+17. Confirm it has no input or output wire connections.
+18. Confirm the node shows a large clean timer display and a `Customize` button.
+19. Confirm `Customize` opens a modal with color swatches instead of browser color picker inputs.
+20. Confirm double-clicking the timer card opens `Customize`.
+21. Confirm transparent background and transparent border work.
+22. Confirm `Display-only mode` hides the button, minimizes the normal node chrome, and double-click still opens `Customize`.
+23. Queue a workflow and confirm the timer changes Ready -> Running -> Complete only after the workflow is truly complete.
+24. Confirm the completion alarm plays only when enabled and volume is above `0`.
 
 ## License
 

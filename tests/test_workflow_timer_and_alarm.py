@@ -57,6 +57,9 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
 
         expected = {
             "DossImageComparer",
+            "DossLTXMotionSettings",
+            "DossLTXMotionStudio",
+            "DossLTXResolveMotionTracks",
             "DossSaveImage",
             "DossWorkflowTimerAndAlarm",
         }
@@ -65,6 +68,9 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
             module.NODE_DISPLAY_NAME_MAPPINGS,
             {
                 "DossImageComparer": "Doss Image Comparer",
+                "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
+                "DossLTXMotionStudio": "Doss Motion Studio | LTX 2.5",
+                "DossLTXResolveMotionTracks": "Doss Resolve Motion Tracks | LTX 2.5",
                 "DossSaveImage": "Doss Save Image",
                 "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },
@@ -79,6 +85,9 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
             node_list,
             {
                 "DossImageComparer": "Doss Image Comparer",
+                "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
+                "DossLTXMotionStudio": "Doss Motion Studio | LTX 2.5",
+                "DossLTXResolveMotionTracks": "Doss Resolve Motion Tracks | LTX 2.5",
                 "DossSaveImage": "Doss Save Image",
                 "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },

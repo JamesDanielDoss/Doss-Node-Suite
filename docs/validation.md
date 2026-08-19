@@ -24,6 +24,9 @@ The tests cover:
 - ICO 256x256 size behavior.
 - Metadata text sidecar creation.
 - Doss Save Image pass-through behavior.
+- Doss Save Image standard `ui.images` preview payload.
+- Doss Save Image batch preview entries.
+- Doss Save Image output-relative preview subfolder metadata.
 - Doss Workflow Timer and Alarm widget defaults.
 - Doss Workflow Timer and Alarm no-wire visual node behavior.
 - Public node mappings for `DossImageComparer`, `DossSaveImage`, and `DossWorkflowTimerAndAlarm` only.
@@ -65,15 +68,20 @@ If the frontend widget fails, the backend should still return the two IMAGE outp
 11. Create or select an output subfolder if needed.
 12. Queue a prompt and confirm images save to the selected output-relative folder.
 13. Queue a batch and confirm every image saves with auto-incremented names.
-14. Enter invalid filename characters and confirm the warning appears:
+14. Confirm saved image previews display inside Doss Save Image below the widgets/parameters.
+15. Confirm the `image` output still passes the original IMAGE to downstream nodes.
+16. Test PNG first.
+17. Test batch save if practical and confirm each saved batch image appears in the preview list.
+18. Enter invalid filename characters and confirm the warning appears:
 
 ```text
 Bad filename due to special characters. Characters have been changed to underscores "_".
 ```
 
-15. Confirm JPEG and PDF flatten transparency onto white.
-16. Confirm ICO saves a single 256x256 `.ico` file.
-17. Enable `save_metadata_text_file` and confirm `.txt` sidecar files are written beside saved images.
+19. Confirm JPEG and PDF flatten transparency onto white.
+20. Confirm ICO saves a single 256x256 `.ico` file.
+21. Enable `save_metadata_text_file` and confirm `.txt` sidecar files are written beside saved images.
+22. Note whether PDF or ICO previews render in the ComfyUI/browser image viewer; preview support for those formats may be limited.
 
 ## Manual ComfyUI Check: Workflow Timer and Alarm
 

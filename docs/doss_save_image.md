@@ -6,7 +6,7 @@ Display name: `Doss Save Image`
 
 ## Purpose
 
-Save ComfyUI IMAGE batches to the normal ComfyUI output folder or an output subfolder while passing the original IMAGE batch through unchanged.
+Save ComfyUI IMAGE batches to the normal ComfyUI output folder or an output subfolder, display saved image previews inside the node after execution, and pass the original IMAGE batch through unchanged.
 
 ## Connections
 
@@ -38,6 +38,24 @@ The Browse button opens a ComfyUI-styled folder browser rooted at the normal Com
 - `save_location` stores `output` for the base output folder or an output-relative folder path for subfolders.
 - `output`, `output/`, and empty `save_location` all mean the base ComfyUI output folder.
 - `output` never creates or resolves to a nested `output/output` folder.
+
+## Saved Image Preview
+
+After execution, Doss Save Image returns ComfyUI's standard saved-image UI payload:
+
+```text
+ui.images = [{ filename, subfolder, type }]
+```
+
+This lets ComfyUI display saved image previews inside the Doss Save Image node, below the widgets/parameters, similar to the normal ComfyUI Save Image node.
+
+- `filename` is the actual saved file name, including auto-increment suffixes.
+- `subfolder` is the output-relative subfolder, or an empty string for the base output folder.
+- `type` is `output`.
+- Batch saves include one preview entry for every saved batch image.
+- The node still returns the original IMAGE batch through its `image` output.
+
+PNG, JPEG, WEBP, BMP, and TIFF are expected to be preview-friendly in normal image viewers. PDF and ICO files are returned in the standard preview payload, but ComfyUI/browser image preview support for those formats may be limited.
 
 ## Filename Safety
 

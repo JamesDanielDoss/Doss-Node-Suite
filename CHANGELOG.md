@@ -2,6 +2,20 @@
 
 All notable changes to Doss Node Suite will be documented in this file.
 
+## [0.4.0] - 2026-08-19
+
+### Added
+
+- Added Doss Motion Settings | LTX 2.5 with curated Basic/Advanced controls and deterministic 8n+1 frame math.
+- Added Doss Motion Studio | LTX 2.5 with pre-run upstream image display, named/color tracks, static tracks, editing history, playhead preview, normalized coordinates, and stale-image fencing.
+- Added Doss Resolve Motion Tracks | LTX 2.5 with validated Catmull-Rom interpolation and one LTX coordinate per frame.
+- Added unit coverage for frame math, plan validation, source changes, static paths, interpolation, and resolved coordinates.
+
+### Changed
+
+- Updated Doss Save Image to return ComfyUI's standard `ui.images` preview payload so saved images display inside the node after execution.
+- Preserved Doss Save Image pass-through output, `saved_files` UI metadata, invalid filename warnings, Browse behavior, batch saving, auto-increment naming, and metadata sidecars.
+
 ## [0.3.2] - 2026-06-08
 
 ### Changed

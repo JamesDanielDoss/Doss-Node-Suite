@@ -16,6 +16,7 @@ from nodes.save_image import (
     ICO_SIZES,
     DossSaveImage,
     build_batch_paths,
+    build_preview_image_payload,
     flatten_transparency_to_white,
     next_available_path,
     normalize_output_relative_path,
@@ -158,6 +159,23 @@ class DossSaveImageTests(unittest.TestCase):
                 text = (Path(temp_dir) / sidecar).read_text(encoding="utf-8")
                 self.assertIn(sidecar.removesuffix(".txt"), text)
 
+    def test_preview_payload_uses_standard_comfyui_image_fields(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_dir = Path(temp_dir).resolve()
+            image_path = output_dir / "Doss Test" / "ComfyUI.png"
+            image_path.parent.mkdir()
+
+            payload = build_preview_image_payload(image_path, output_dir)
+
+            self.assertEqual(
+                payload,
+                {
+                    "filename": "ComfyUI.png",
+                    "subfolder": "Doss Test",
+                    "type": "output",
+                },
+            )
+
     def test_save_location_rejects_paths_outside_output(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             output_dir = Path(temp_dir)
@@ -200,8 +218,57 @@ class DossSaveImageTests(unittest.TestCase):
 
             self.assertIs(result["result"][0], image)
             self.assertEqual(result["ui"]["warnings"], [BAD_FILENAME_WARNING])
+            self.assertEqual(
+                result["ui"]["images"],
+                [{"filename": "bad_name.png", "subfolder": "", "type": "output"}],
+            )
+            self.assertEqual(result["ui"]["saved_files"][0]["subfolder"], "")
+            self.assertEqual(result["ui"]["saved_files"][0]["type"], "output")
             self.assertTrue((Path(temp_dir) / "bad_name.png").exists())
             self.assertTrue((Path(temp_dir) / "bad_name.png.txt").exists())
+
+    def test_save_image_returns_preview_images_for_each_batch_item(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            image = np.zeros((3, 2, 2, 4), dtype=np.float32)
+            node = DossSaveImage()
+            with patch("nodes.save_image.get_comfy_output_directory", return_value=Path(temp_dir)):
+                result = node.save_image(image=image, filename="ComfyUI", file_format="PNG")
+
+            self.assertIs(result["result"][0], image)
+            self.assertEqual(
+                result["ui"]["images"],
+                [
+                    {"filename": "ComfyUI.png", "subfolder": "", "type": "output"},
+                    {"filename": "ComfyUI(1).png", "subfolder": "", "type": "output"},
+                    {"filename": "ComfyUI(2).png", "subfolder": "", "type": "output"},
+                ],
+            )
+            self.assertEqual(
+                [saved["filename"] for saved in result["ui"]["saved_files"]],
+                ["ComfyUI.png", "ComfyUI(1).png", "ComfyUI(2).png"],
+            )
+
+    def test_preview_images_preserve_output_relative_subfolder(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            image = np.zeros((2, 2, 2, 4), dtype=np.float32)
+            node = DossSaveImage()
+            with patch("nodes.save_image.get_comfy_output_directory", return_value=Path(temp_dir)):
+                result = node.save_image(
+                    image=image,
+                    filename="ComfyUI",
+                    save_location="portraits/session_01",
+                    file_format="WEBP",
+                )
+
+            self.assertEqual(
+                result["ui"]["images"],
+                [
+                    {"filename": "ComfyUI.webp", "subfolder": "portraits/session_01", "type": "output"},
+                    {"filename": "ComfyUI(1).webp", "subfolder": "portraits/session_01", "type": "output"},
+                ],
+            )
+            self.assertTrue((Path(temp_dir) / "portraits" / "session_01" / "ComfyUI.webp").exists())
+            self.assertTrue((Path(temp_dir) / "portraits" / "session_01" / "ComfyUI(1).webp").exists())
 
     def test_node_mappings_include_only_public_nodes(self):
         package_path = Path(__file__).resolve().parents[1] / "__init__.py"
@@ -216,12 +283,22 @@ class DossSaveImageTests(unittest.TestCase):
 
         self.assertEqual(
             set(module.NODE_CLASS_MAPPINGS),
-            {"DossImageComparer", "DossSaveImage", "DossWorkflowTimerAndAlarm"},
+            {
+                "DossImageComparer",
+                "DossLTXMotionSettings",
+                "DossLTXMotionStudio",
+                "DossLTXResolveMotionTracks",
+                "DossSaveImage",
+                "DossWorkflowTimerAndAlarm",
+            },
         )
         self.assertEqual(
             module.NODE_DISPLAY_NAME_MAPPINGS,
             {
                 "DossImageComparer": "Doss Image Comparer",
+                "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
+                "DossLTXMotionStudio": "Doss Motion Studio | LTX 2.5",
+                "DossLTXResolveMotionTracks": "Doss Resolve Motion Tracks | LTX 2.5",
                 "DossSaveImage": "Doss Save Image",
                 "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },
@@ -230,6 +307,9 @@ class DossSaveImageTests(unittest.TestCase):
             {name: node.CATEGORY for name, node in module.NODE_CLASS_MAPPINGS.items()},
             {
                 "DossImageComparer": "⚡ Doss Node Suite",
+                "DossLTXMotionSettings": "⚡ Doss Node Suite/LTX-2.5",
+                "DossLTXMotionStudio": "⚡ Doss Node Suite/LTX-2.5",
+                "DossLTXResolveMotionTracks": "⚡ Doss Node Suite/LTX-2.5",
                 "DossSaveImage": "⚡ Doss Node Suite",
                 "DossWorkflowTimerAndAlarm": "⚡ Doss Node Suite",
             },
