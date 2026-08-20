@@ -2,6 +2,14 @@
 
 All notable changes to Doss Node Suite will be documented in this file.
 
+## [0.5.0] - 2026-08-19
+
+### Added
+
+- Added Doss Canvas Label, a frontend-only resizable floating-text utility that is saved in workflow JSON and excluded from prompt execution.
+- Added double-click editing, explicit multiline labels, word wrapping, fit-to-text, font/alignment properties, and optional transparent or colored backgrounds.
+- Added a selection-only Doss green outline so the label has no persistent node shell.
+
 ## [0.4.0] - 2026-08-19
 
 ### Added
