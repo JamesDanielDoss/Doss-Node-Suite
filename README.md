@@ -6,7 +6,7 @@ GitHub: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
 
 Current shipped nodes:
 
-- **Doss Canvas Label**: adds resizable free-floating text to the workflow without entering prompt execution.
+- **Doss Label Maker**: adds fully customizable, resizable free-floating text to the workflow without entering prompt execution.
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
 - **Doss Motion Settings | LTX 2.5**: exposes curated prompt, timing, seed, motion, adherence, and FPS controls with derived frame math.
 - **Doss Motion Studio | LTX 2.5**: draws named motion paths over the upstream starting image before generation.
@@ -41,13 +41,13 @@ The node pack loads through the top-level `__init__.py` and exports:
 
 ## Nodes
 
-### Doss Canvas Label
+### Doss Label Maker
 
 Category: `⚡ Doss Node Suite`
 
-Display name: `Doss Canvas Label`
+Display name: `Doss Label Maker`
 
-Purpose: Add Paint-style free-floating text to the workflow canvas. The label is a frontend-only virtual node: it is saved in workflow JSON but has no sockets, does not execute, and consumes no generation resources. It is transparent by default, shows a temporary green dashed selection boundary, supports normal bottom-right resizing, and exposes font, alignment, wrapping, background, padding, and radius properties. Double-click to edit its text. See `docs/doss_canvas_label.md`.
+Purpose: Add fully formatted free-floating text to the workflow canvas. The frontend-only virtual node is saved in workflow JSON but has no sockets, does not execute, and consumes no generation resources. When deselected, only its text is drawn. A single click shows a temporary selection outline and bottom-right resize handle; clicking elsewhere removes them. Double-click anywhere inside the text area to open the full editor for content, more than 80 curated installed-font choices, custom fonts, color, opacity, style, weight, explicit condensed/expanded stretch, case, alignment, direction, line height, letter/word spacing, indentation, wrapping, underline, strikethrough, small caps, kerning, text outline, and shadow. Explicit checkboxes enable Outline, Shadow, and Shadow Blur; enabling one provides a visible starting value and unlocks its related controls. Large text is scaled to fit the editor preview and the canvas bounds expand as needed to prevent clipping. See `docs/doss_canvas_label.md`.
 
 ### Doss Motion Node | LTX 2.5
 

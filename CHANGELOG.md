@@ -6,9 +6,11 @@ All notable changes to Doss Node Suite will be documented in this file.
 
 ### Added
 
-- Added Doss Canvas Label, a frontend-only resizable floating-text utility that is saved in workflow JSON and excluded from prompt execution.
-- Added double-click editing, explicit multiline labels, word wrapping, fit-to-text, font/alignment properties, and optional transparent or colored backgrounds.
-- Added a selection-only Doss green outline so the label has no persistent node shell.
+- Added Doss Label Maker, a frontend-only resizable floating-text utility that remains excluded from prompt execution and retains `DossCanvasLabel` as a hidden compatibility alias for existing workflows.
+- Expanded the double-click editor with a scaled, unclipped preview and comprehensive font, spacing, alignment, direction, decoration, outline, shadow, custom-font, and custom-color controls.
+- Made large text expand its canvas bounds instead of clipping, and added a selection-only outline with a visible bottom-right resize handle while keeping deselected labels text-only.
+- Audited every label-editor control for a real canvas effect, replaced unreliable font-stretch hints with explicit scaling, removed the redundant text-rendering selector, clarified content-dependent settings, and expanded the installed-font menu to more than 80 choices plus a custom entry.
+- Replaced implicit outline/shadow activation with explicit Outline, Shadow, and Shadow Blur checkboxes; activating an effect now applies a visible starting value and reliably enables its color and numeric controls.
 
 ## [0.4.0] - 2026-08-19
 

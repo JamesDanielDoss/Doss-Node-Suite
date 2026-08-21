@@ -29,7 +29,22 @@ The tests cover:
 - Doss Save Image output-relative preview subfolder metadata.
 - Doss Workflow Timer and Alarm widget defaults.
 - Doss Workflow Timer and Alarm no-wire visual node behavior.
-- Public node mappings for `DossImageComparer`, `DossSaveImage`, and `DossWorkflowTimerAndAlarm` only.
+- Public node mappings for `DossImageComparer`, `DossSaveImage`, `DossWorkflowTimerAndAlarm`,
+  `DossLTXMotionSettings`, `DossLTXMotionStudio`, and `DossLTXResolveMotionTracks`.
+- LTX 2.5 duration/frame math, motion-plan validation, stale-source fencing,
+  normalized/static paths, interpolation, and one coordinate per output frame.
+- Doss Label Maker virtual-node registration, legacy label compatibility, resize and
+  unclipped-text behavior, selection-only outline, font catalog, formatting controls,
+  explicit outline/shadow switches, and absence from backend prompt execution.
+
+Current 0.5.0 release-candidate result on 2026-08-20:
+
+```text
+63 passed
+```
+
+`node --check` also passes for every JavaScript file in `js/`, and `git diff --check`
+reports no whitespace errors.
 
 ## Manual ComfyUI Check: Image Comparer
 
@@ -123,3 +138,33 @@ Bad filename due to special characters. Characters have been changed to undersco
 36. Cancel or error a workflow if practical and confirm the timer shows `Canceled` or `Error`.
 
 Browser autoplay rules may block alarm playback until the user has interacted with the ComfyUI page.
+
+## Manual ComfyUI Check: Doss Motion Node | LTX 2.5
+
+1. Load the approved LTX 2.5 Motion Control workflow in managed ComfyUI Desktop.
+2. Confirm Motion Settings, Motion Studio, and Resolve Motion Tracks load without red or missing nodes.
+3. Select a starting image and confirm Motion Studio displays it before model execution.
+4. Enter a positive prompt, leave the negative prompt empty, choose 5 seconds and 24 FPS,
+   and confirm the summary reports 121 frames.
+5. Create two named moving tracks, place the first point of each track on its intended object,
+   and confirm the paths, point numbers, START/END labels, colors, Undo, and Redo update visibly.
+6. Scrub Path preview from START to END and confirm both preview markers move without queueing.
+7. Change the source image and confirm the existing plan becomes stale and Run is blocked until
+   Keep & rescale or Clear tracks resolves it.
+8. Queue the approved workflow once and bind the prompt/history record to both a decodable motion
+   preview and a decodable final video.
+
+## Manual ComfyUI Check: Doss Label Maker
+
+1. Add `Doss Label Maker` and confirm only its formatted text is visible while deselected.
+2. Click once and confirm the temporary selection outline and bottom-right resize handle appear;
+   click elsewhere and confirm both disappear.
+3. Drag the resize handle and confirm the text area resizes without clipping large text.
+4. Double-click anywhere inside the label and confirm `Customize Doss Label Maker` opens.
+5. Change font family, size, weight, style, stretch, color, opacity, case, alignment, direction,
+   line height, letter/word spacing, indentation, wrapping, underline, strikethrough, small caps,
+   and kerning; confirm every applicable choice changes the preview and saved canvas rendering.
+6. Enable Outline, Shadow, and Shadow Blur individually. Confirm each switch supplies a visible
+   starting value, enables its related controls, and allows its color and numeric values to change.
+7. Use Save and Save and Fit to Text and confirm both preserve the intended text without clipping.
+8. Save/reload the workflow and confirm the label persists but never appears in the executable prompt.
