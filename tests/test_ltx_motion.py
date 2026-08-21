@@ -1,4 +1,6 @@
 import json
+import shutil
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -155,6 +157,36 @@ class LTXMotionTests(unittest.TestCase):
             'backdropFilter: "blur(18px) saturate(125%)"',
         ]:
             self.assertIn(contract, source)
+
+    def test_settings_panel_executes_saved_value_lifecycle(self):
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("Node.js is required for the frontend lifecycle harness.")
+        harness = Path(__file__).with_name("test_ltx_motion_frontend.mjs")
+        result = subprocess.run(
+            [node, str(harness)],
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("frontend lifecycle: PASS", result.stdout)
+
+    def test_motion_studio_executes_responsive_canvas_lifecycle(self):
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("Node.js is required for the frontend lifecycle harness.")
+        harness = Path(__file__).with_name("test_ltx_motion_studio_frontend.mjs")
+        result = subprocess.run(
+            [node, str(harness)],
+            capture_output=True,
+            text=True,
+            timeout=20,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("responsive canvas lifecycle: PASS", result.stdout)
 
 
 if __name__ == "__main__":

@@ -166,6 +166,8 @@ function installResponsiveWidget(node, root, {
 }
 
 function setupSettings(node) {
+  if (node.dossMotionSettingsInitialized) return;
+  node.dossMotionSettingsInitialized = true;
   const names = [
     "positive_prompt",
     "duration_seconds",
@@ -267,12 +269,14 @@ function setupSettings(node) {
   });
   advancedBody.append(labeledControl("Frame rate", fps));
 
+  const numericControls = new Map();
   for (const [name, label, help] of [
     ["motion_strength", "Motion strength", "Strength of the official motion-track IC-LoRA."],
     ["image_adherence", "Image adherence", "How strongly the opening image conditions the video."],
   ]) {
     const control = numberInput(widget(node, name)?.value ?? (name === "motion_strength" ? 1 : 0.7), 0, name === "motion_strength" ? 1.5 : 1, 0.05);
     control.addEventListener("input", () => setWidget(node, name, Number(control.value)));
+    numericControls.set(name, control);
     advancedBody.append(labeledControl(label, control, help));
   }
   advanced.append(summary, advancedBody);
@@ -289,6 +293,24 @@ function setupSettings(node) {
     initialWidth: 500,
     initialHeight: 540,
   });
+  const syncSettingsControls = () => {
+    positive.value = String(widget(node, "positive_prompt")?.value ?? "");
+    duration.value = String(widget(node, "duration_seconds")?.value ?? 5);
+    negative.value = String(widget(node, "negative_prompt")?.value ?? "");
+    seed.value = String(widget(node, "seed")?.value ?? 42);
+    fps.value = String(widget(node, "fps")?.value ?? "24");
+    numericControls.get("motion_strength").value = String(widget(node, "motion_strength")?.value ?? 1);
+    numericControls.get("image_adherence").value = String(widget(node, "image_adherence")?.value ?? 0.7);
+    updateFrameSummary();
+  };
+  const originalOnConfigure = node.onConfigure;
+  node.onConfigure = function () {
+    originalOnConfigure?.apply(this, arguments);
+    syncSettingsControls();
+    window.requestAnimationFrame(syncSettingsControls);
+  };
+  syncSettingsControls();
+  window.requestAnimationFrame(syncSettingsControls);
   advanced.addEventListener("toggle", () => {
     if (!advanced.open) return;
     window.requestAnimationFrame(() => {
@@ -365,16 +387,19 @@ function imageViewUrl(reference) {
 }
 
 function setupStudio(node) {
+  if (node.dossMotionStudioInitialized) return;
+  node.dossMotionStudioInitialized = true;
   hideWidget(widget(node, "motion_plan"));
   hideWidget(widget(node, "source_ref"));
 
+  const initialPlan = parsePlan(node);
   const state = {
-    plan: parsePlan(node),
+    plan: initialPlan,
     active: 0,
     image: null,
     imageRef: "",
-    imageWidth: 0,
-    imageHeight: 0,
+    imageWidth: Number(initialPlan.source?.width) || 0,
+    imageHeight: Number(initialPlan.source?.height) || 0,
     undo: [],
     redo: [],
     drag: null,
@@ -385,6 +410,7 @@ function setupStudio(node) {
   const root = applyStyles(el("div"), {
     display: "grid",
     gridTemplateRows: "auto auto auto minmax(240px, 1fr) auto auto auto",
+    gridTemplateAreas: '"title" "banner" "toolbar" "canvas" "status" "help" "preview"',
     gap: "8px",
     width: "100%",
     boxSizing: "border-box",
@@ -400,11 +426,13 @@ function setupStudio(node) {
   });
   root.dataset.testid = "doss-ltx-motion-studio";
   const title = applyStyles(el("div", { textContent: "DOSS MOTION STUDIO | LTX 2.5" }), {
+    gridArea: "title",
     color: BRAND.green,
     fontWeight: "800",
     letterSpacing: "0.12em",
   });
   const banner = applyStyles(el("div"), {
+    gridArea: "banner",
     display: "none",
     gap: "8px",
     alignItems: "center",
@@ -413,12 +441,14 @@ function setupStudio(node) {
     background: "rgba(127, 29, 29, 0.86)",
     color: "#ffedd5",
   });
+  banner.dataset.testid = "doss-motion-source-banner";
   const bannerText = el("span", { textContent: "Starting image changed. These paths are paused." });
   const keepButton = button("Keep & rescale", () => acceptSource(false), "primary");
   const clearForImageButton = button("Clear tracks", () => acceptSource(true), "danger");
   banner.append(bannerText, keepButton, clearForImageButton);
 
   const toolbar = applyStyles(el("div"), {
+    gridArea: "toolbar",
     display: "flex",
     gap: "6px",
     flexWrap: "wrap",
@@ -462,11 +492,13 @@ function setupStudio(node) {
 
   const canvas = applyStyles(el("canvas"), {
     display: "block",
-    width: "auto",
+    width: "100%",
     height: "auto",
     maxWidth: "100%",
     maxHeight: "100%",
-    minHeight: "240px",
+    minWidth: "0",
+    minHeight: "0",
+    boxSizing: "border-box",
     background: BRAND.ink,
     border: `1px solid ${BRAND.lineSoft}`,
     borderRadius: "10px",
@@ -475,6 +507,7 @@ function setupStudio(node) {
     pointerEvents: "auto",
   });
   const canvasFrame = applyStyles(el("div"), {
+    gridArea: "canvas",
     display: "grid",
     placeItems: "center",
     minWidth: "0",
@@ -487,6 +520,7 @@ function setupStudio(node) {
   canvasFrame.append(canvas);
   canvas.dataset.testid = "doss-motion-canvas";
   const status = applyStyles(el("div"), {
+    gridArea: "status",
     color: BRAND.white,
     minHeight: "18px",
   });
@@ -494,7 +528,7 @@ function setupStudio(node) {
     el("div", {
       textContent: "Click to add • drag to move • right-click a point to remove • point 1 is the object anchor",
     }),
-    { color: BRAND.muted, fontSize: "11px" },
+    { gridArea: "help", color: BRAND.muted, fontSize: "11px" },
   );
   const playhead = el("input", { type: "range", min: 0, max: 100, value: 0, step: 1 });
   playhead.style.width = "100%";
@@ -503,7 +537,9 @@ function setupStudio(node) {
     state.playhead = Number(playhead.value) / 100;
     render();
   });
-  root.append(title, banner, toolbar, canvasFrame, status, help, labeledControl("Path preview", playhead, "Scrub from START to END without generating."));
+  const previewControl = labeledControl("Path preview", playhead, "Scrub from START to END without generating.");
+  previewControl.style.gridArea = "preview";
+  root.append(title, banner, toolbar, canvasFrame, status, help, previewControl);
 
   function snapshot() {
     state.undo.push(clone(state.plan));
@@ -630,17 +666,33 @@ function setupStudio(node) {
   });
 
   function canvasGeometry() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    const width = Math.max(320, Math.round(rect.width * dpr));
-    const displayHeight = state.image ? rect.width * state.imageHeight / state.imageWidth : 300;
-    const height = Math.max(240 * dpr, Math.round(displayHeight * dpr));
+    const dpr = Math.max(1, Number(window.devicePixelRatio) || 1);
+    const sourceWidth = state.imageWidth || Number(state.plan.source?.width) || 3;
+    const sourceHeight = state.imageHeight || Number(state.plan.source?.height) || 2;
+    const aspect = sourceWidth > 0 && sourceHeight > 0 ? sourceWidth / sourceHeight : 1.5;
+    const fallbackWidth = Math.max(1, (Number(node.size?.[0]) || 340) - 20);
+    const availableWidth = Math.max(1, Math.floor(canvasFrame.clientWidth || root.clientWidth || fallbackWidth));
+    const availableHeight = Math.max(
+      1,
+      Math.floor(canvasFrame.clientHeight || root.clientHeight || Math.max(240, availableWidth / aspect)),
+    );
+    let displayWidth = availableWidth;
+    let displayHeight = displayWidth / aspect;
+    if (displayHeight > availableHeight) {
+      displayHeight = availableHeight;
+      displayWidth = displayHeight * aspect;
+    }
+    displayWidth = Math.max(1, Math.floor(displayWidth));
+    displayHeight = Math.max(1, Math.floor(displayHeight));
+    const width = Math.max(1, Math.round(displayWidth * dpr));
+    const height = Math.max(1, Math.round(displayHeight * dpr));
     if (canvas.width !== width || canvas.height !== height) {
       canvas.width = width;
       canvas.height = height;
-      canvas.style.height = `${height / dpr}px`;
     }
-    return { width, height, dpr };
+    canvas.style.width = `${displayWidth}px`;
+    canvas.style.height = `${displayHeight}px`;
+    return { width, height, dpr, displayWidth, displayHeight };
   }
 
   function eventPoint(event) {
@@ -821,25 +873,43 @@ function setupStudio(node) {
     image.src = imageViewUrl(reference);
   }
 
+  let pendingRender = 0;
+  const scheduleRender = () => {
+    if (pendingRender) return;
+    pendingRender = window.requestAnimationFrame(() => {
+      pendingRender = 0;
+      render();
+    });
+  };
+  const resizeObserver = typeof ResizeObserver === "function"
+    ? new ResizeObserver(scheduleRender)
+    : null;
+  resizeObserver?.observe(canvasFrame);
+
   const domWidget = node.addDOMWidget("motion_studio", "DossLTXMotionStudio", root, {
     serialize: false,
     hideOnZoom: false,
     getMinHeight: () => 360,
     afterResize: () => {
-      render();
+      scheduleRender();
       node.setDirtyCanvas?.(true, true);
     },
   });
   installResponsiveWidget(node, root, {
     initialWidth: 720,
     initialHeight: 680,
-    onResize: render,
+    onResize: scheduleRender,
   });
 
   state.poll = window.setInterval(loadUpstreamImage, 500);
   node.dossMotionOriginalRemoved = node.onRemoved;
   node.onRemoved = function () {
     window.clearInterval(state.poll);
+    if (pendingRender) {
+      window.cancelAnimationFrame?.(pendingRender);
+      pendingRender = 0;
+    }
+    resizeObserver?.disconnect();
     node.dossMotionOriginalRemoved?.apply(this, arguments);
   };
   node.dossMotionOriginalConfigure = node.onConfigure;
@@ -849,11 +919,13 @@ function setupStudio(node) {
     state.active = 0;
     refreshTrackControls();
     loadUpstreamImage();
+    scheduleRender();
   };
 
   refreshTrackControls();
   loadUpstreamImage();
   render();
+  scheduleRender();
 }
 
 function installWelcomeEnhancement() {

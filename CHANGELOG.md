@@ -2,6 +2,13 @@
 
 All notable changes to Doss Node Suite will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Resynchronized every visible Doss Motion Settings control after ComfyUI restores a saved workflow, preventing the custom panel from displaying stale defaults while its hidden executable widgets contain the saved values.
+- Kept the Doss Motion Studio starting image fully contained at its source aspect ratio through graph zooms, node resizes, point editing, saved-path restoration, and the hidden source-banner layout instead of feeding transformed screen dimensions back into the canvas or expanding an empty status row.
+
 ## [0.5.0] - 2026-08-19
 
 ### Added

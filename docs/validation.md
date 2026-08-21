@@ -33,17 +33,23 @@ The tests cover:
   `DossLTXMotionSettings`, `DossLTXMotionStudio`, and `DossLTXResolveMotionTracks`.
 - LTX 2.5 duration/frame math, motion-plan validation, stale-source fencing,
   normalized/static paths, interpolation, and one coordinate per output frame.
+- Doss Motion Settings saved-value restoration, visible-control synchronization,
+  deferred frontend configuration, and idempotent node setup.
+- Doss Motion Studio source-aspect containment across graph zoom and resize,
+  hidden-banner layout, zoomed click mapping, same-image plan restoration,
+  resize observation, redraw cleanup, and idempotent node setup.
 - Doss Label Maker virtual-node registration, legacy label compatibility, resize and
   unclipped-text behavior, selection-only outline, font catalog, formatting controls,
   explicit outline/shadow switches, and absence from backend prompt execution.
 
-Current 0.5.0 release-candidate result on 2026-08-20:
+Current source result on 2026-08-21:
 
 ```text
-63 passed
+65 passed
 ```
 
-`node --check` also passes for every JavaScript file in `js/`, and `git diff --check`
+`node --check` also passes for every JavaScript file in `js/`. The Motion Settings and
+Motion Studio frontend lifecycle harnesses pass under Node, and `git diff --check`
 reports no whitespace errors.
 
 ## Manual ComfyUI Check: Image Comparer
