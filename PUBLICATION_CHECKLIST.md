@@ -72,6 +72,35 @@ The top-level `__init__.py` must export:
 - Statuses: `Ready`, `Running`, `Complete`, `Error`, `Canceled`
 - Alarm sounds: `Ping`, `Beep`
 
+### Doss Motion Settings | LTX 2.5
+
+- Class: `DossLTXMotionSettings`
+- Display name: `Doss Motion Settings | LTX 2.5`
+- Category: `⚡ Doss Node Suite`
+- Curated prompt, duration, seed, FPS, motion-strength, and adherence controls
+- Saved workflows resynchronize every visible control with the executable widgets
+
+### Doss Motion Studio | LTX 2.5
+
+- Class: `DossLTXMotionStudio`
+- Display name: `Doss Motion Studio | LTX 2.5`
+- Category: `⚡ Doss Node Suite`
+- Starting-image motion-path editor with moving/static tracks, Undo, Redo, and preview scrubbing
+- Source-aspect image containment remains stable through graph zooms and node resizes
+
+### Doss Resolve Motion Tracks | LTX 2.5
+
+- Class: `DossLTXResolveMotionTracks`
+- Display name: `Doss Resolve Motion Tracks | LTX 2.5`
+- Category: `⚡ Doss Node Suite`
+- Validates and resolves normalized motion paths into one coordinate per output frame
+
+### Doss Label Maker
+
+- Frontend-only virtual node; it is intentionally absent from backend mappings and prompt execution
+- Display name: `Doss Label Maker`
+- Resizable free-floating text with selection-only bounds and a double-click customization panel
+
 ## Registry Preparation Checklist
 
 1. Confirm `pyproject.toml` has `[project]` metadata.
@@ -86,8 +115,9 @@ The top-level `__init__.py` must export:
 10. Run a package mapping import check.
 11. Fresh clone the GitHub repo into ComfyUI `custom_nodes`.
 12. Restart ComfyUI and confirm the shipped nodes load.
-13. Confirm public mappings include only `DossImageComparer`, `DossSaveImage`, and `DossWorkflowTimerAndAlarm`.
-14. Confirm no `DossFileNameFormatter` references are active.
+13. Confirm public backend mappings exactly match `node_list.json` and include the three LTX 2.5 motion nodes.
+14. Confirm Doss Label Maker registers in the frontend but never appears in the executable prompt.
+15. Confirm no `DossFileNameFormatter` references are active.
 
 ## User Install Instructions
 
@@ -99,6 +129,9 @@ git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-No
 Then restart ComfyUI and search for `Doss Image Comparer`.
 Search for `Doss Save Image` to place the save node.
 Search for `Doss Workflow Timer and Alarm` to place the visual timer node.
+Search for `Doss Motion Settings | LTX 2.5`, `Doss Motion Studio | LTX 2.5`, and
+`Doss Resolve Motion Tracks | LTX 2.5` to place the motion-control nodes.
+Search for `Doss Label Maker` to place the frontend-only canvas label.
 
 ## Fresh Clone Testing Checklist
 
@@ -122,6 +155,10 @@ Search for `Doss Workflow Timer and Alarm` to place the visual timer node.
 18. Confirm it has no input or output wire connections.
 19. Confirm it starts on workflow execution and stops on completion.
 20. Confirm completion alarm behavior respects `alarm_enabled` and `alarm_volume`.
+21. Load the LTX 2.5 motion nodes and confirm saved Motion Settings values appear in every visible control.
+22. Zoom and resize Motion Studio and confirm its starting image remains fully contained at the source aspect ratio.
+23. Confirm Motion Studio path editing, point selection, and preview scrubbing remain aligned after graph zoom changes.
+24. Place Doss Label Maker, customize it, save/reload, and confirm it remains excluded from prompt execution.
 
 ## Public Safety Checklist
 
