@@ -11,6 +11,7 @@ Current shipped nodes:
 - **Doss Motion Settings | LTX 2.5**: exposes curated prompt, timing, seed, motion, adherence, and FPS controls with derived frame math.
 - **Doss Motion Studio | LTX 2.5**: draws named motion paths over the upstream starting image before generation.
 - **Doss Resolve Motion Tracks | LTX 2.5**: validates and converts normalized paths into one LTX coordinate per frame for the official LTX motion path.
+- **Doss Multi-LoRA Loader**: adds, removes, enables, and weights an ordered stack of installed LoRAs inside one loader node.
 - **Doss Save Image**: saves IMAGE batches to the ComfyUI output folder or an output subfolder, displays saved image previews inside the node, and passes IMAGE tensors through.
 - **Doss Workflow Timer and Alarm**: displays a live workflow timer on the canvas and optionally plays a completion alarm.
 
@@ -19,7 +20,7 @@ Current shipped nodes:
 Clone this repository into your ComfyUI custom nodes folder:
 
 ```powershell
-cd C:\AI\ComfyUI\custom_nodes
+cd <ComfyUI installation>\custom_nodes
 git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-Node-Suite
 ```
 
@@ -37,7 +38,7 @@ The node pack loads through the top-level `__init__.py` and exports:
 - `NODE_DISPLAY_NAME_MAPPINGS`
 - `WEB_DIRECTORY`
 
-`WEB_DIRECTORY` points to `./js` for Doss Canvas Label, the Doss Image Comparer, LTX Motion Studio, LTX Motion Settings, Doss Save Image, and Workflow Timer frontend interfaces.
+`WEB_DIRECTORY` points to `./js` for Doss Canvas Label, the Doss Image Comparer, Doss Multi-LoRA Loader, LTX Motion Studio, LTX Motion Settings, Doss Save Image, and Workflow Timer frontend interfaces.
 
 ## Nodes
 
@@ -87,6 +88,22 @@ Behavior:
 - `Slider` displays `image_a` on the left side of the split and `image_b` on the right side.
 - `Slider` shows corner labels: `A: Original` at top-left and `B: Result` at top-right.
 - The comparer does not create a persistent floating center preview.
+
+### Doss Multi-LoRA Loader
+
+Category: `⚡ Doss Node Suite`
+
+Display name: `Doss Multi-LoRA Loader`
+
+Purpose: Apply multiple compatible LoRAs to one MODEL and CLIP pair without chaining separate loader nodes.
+
+- Click `+ Add LoRA` to create a row.
+- Select an installed LoRA, set its separate MODEL and CLIP weights, and use the checkbox to enable or visibly subdue/bypass it.
+- Remove rows with `×` and reload the installed inventory with `Refresh`.
+- Rows execute from top to bottom and persist in the workflow JSON.
+- Invalid JSON, missing files, unsupported stack versions, and incompatible LoRAs fail instead of silently substituting another file.
+
+See `docs/doss_multi_lora_loader.md`.
 
 ### Doss Save Image
 

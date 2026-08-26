@@ -60,6 +60,7 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
             "DossLTXMotionSettings",
             "DossLTXMotionStudio",
             "DossLTXResolveMotionTracks",
+            "DossMultiLoraLoader",
             "DossSaveImage",
             "DossWorkflowTimerAndAlarm",
         }
@@ -71,6 +72,7 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
                 "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
                 "DossLTXMotionStudio": "Doss Motion Studio | LTX 2.5",
                 "DossLTXResolveMotionTracks": "Doss Resolve Motion Tracks | LTX 2.5",
+                "DossMultiLoraLoader": "Doss Multi-LoRA Loader",
                 "DossSaveImage": "Doss Save Image",
                 "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },
@@ -88,6 +90,7 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
                 "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
                 "DossLTXMotionStudio": "Doss Motion Studio | LTX 2.5",
                 "DossLTXResolveMotionTracks": "Doss Resolve Motion Tracks | LTX 2.5",
+                "DossMultiLoraLoader": "Doss Multi-LoRA Loader",
                 "DossSaveImage": "Doss Save Image",
                 "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
             },

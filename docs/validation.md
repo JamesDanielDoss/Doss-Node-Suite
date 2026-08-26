@@ -29,8 +29,10 @@ The tests cover:
 - Doss Save Image output-relative preview subfolder metadata.
 - Doss Workflow Timer and Alarm widget defaults.
 - Doss Workflow Timer and Alarm no-wire visual node behavior.
+- Doss Multi-LoRA stack schema, validation, caching, sequential execution, bypass behavior, and frontend add/weight/remove controls.
 - Public node mappings for `DossImageComparer`, `DossSaveImage`, `DossWorkflowTimerAndAlarm`,
-  `DossLTXMotionSettings`, `DossLTXMotionStudio`, and `DossLTXResolveMotionTracks`.
+  `DossLTXMotionSettings`, `DossLTXMotionStudio`, `DossLTXResolveMotionTracks`, and
+  `DossMultiLoraLoader`.
 - LTX 2.5 duration/frame math, motion-plan validation, stale-source fencing,
   normalized/static paths, interpolation, and one coordinate per output frame.
 - Doss Motion Settings saved-value restoration, visible-control synchronization,
@@ -42,10 +44,10 @@ The tests cover:
   unclipped-text behavior, selection-only outline, font catalog, formatting controls,
   explicit outline/shadow switches, and absence from backend prompt execution.
 
-Current source result on 2026-08-21:
+Current source result on 2026-08-26:
 
 ```text
-65 passed
+70 passed
 ```
 
 `node --check` also passes for every JavaScript file in `js/`. The Motion Settings and
@@ -174,3 +176,17 @@ Browser autoplay rules may block alarm playback until the user has interacted wi
    starting value, enables its related controls, and allows its color and numeric values to change.
 7. Use Save and Save and Fit to Text and confirm both preserve the intended text without clipping.
 8. Save/reload the workflow and confirm the label persists but never appears in the executable prompt.
+
+## Manual ComfyUI Check: Doss Multi-LoRA Loader
+
+1. Restart ComfyUI and search for `Doss Multi-LoRA Loader` under `⚡ Doss Node Suite`.
+2. Connect MODEL and CLIP from a compatible checkpoint loader and connect both outputs downstream.
+3. Add multiple LoRA rows and confirm each row offers an installed filename, enable checkbox,
+   separate MODEL and CLIP strengths, and a remove button.
+4. Confirm strengths default to `1.00`, display two decimal places, and accept valid finite values.
+5. Disable a row and confirm it is visibly subdued and does not modify MODEL or CLIP during execution.
+6. Reorder the configured stack by removing and adding rows, then confirm enabled LoRAs apply in visible order.
+7. Save and reload the workflow and confirm every filename, enabled state, and strength persists.
+8. Confirm hidden stack/version data never appears as visible text over the node.
+9. Click Refresh and confirm the filename menus reflect the current installed LoRA inventory.
+10. Select a missing or invalid file and confirm execution fails with a clear error rather than silently substituting a file.

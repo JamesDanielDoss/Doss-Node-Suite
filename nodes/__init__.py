@@ -4,6 +4,7 @@ from .ltx_motion import (
     DossLTXMotionStudio,
     DossLTXResolveMotionTracks,
 )
+from .multi_lora_loader import DossMultiLoraLoader
 from .save_image import DossSaveImage
 from .workflow_timer_and_alarm import DossWorkflowTimerAndAlarm
 
@@ -13,6 +14,7 @@ __all__ = [
     "DossLTXMotionSettings",
     "DossLTXMotionStudio",
     "DossLTXResolveMotionTracks",
+    "DossMultiLoraLoader",
     "DossSaveImage",
     "DossWorkflowTimerAndAlarm",
     "choose_comparison_images",

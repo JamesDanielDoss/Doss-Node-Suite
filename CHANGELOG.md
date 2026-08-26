@@ -4,6 +4,12 @@ All notable changes to Doss Node Suite will be documented in this file.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-26
+
+### Added
+
+- Added `Doss Multi-LoRA Loader`, with an ordered add/remove/enable interface, separate two-decimal MODEL and CLIP weights, visibly subdued bypassed rows, hidden persisted stack data, exact installed-file selection, sequential MODEL/CLIP application, and fail-closed validation.
+
 ### Fixed
 
 - Resynchronized every visible Doss Motion Settings control after ComfyUI restores a saved workflow, preventing the custom panel from displaying stale defaults while its hidden executable widgets contain the saved values.

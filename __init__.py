@@ -5,6 +5,10 @@ try:
         DossLTXMotionStudio,
         DossLTXResolveMotionTracks,
     )
+    from .nodes.multi_lora_loader import (
+        DossMultiLoraLoader,
+        register_doss_multi_lora_routes,
+    )
     from .nodes.save_image import DossSaveImage, register_doss_save_image_routes
     from .nodes.workflow_timer_and_alarm import DossWorkflowTimerAndAlarm
 except ImportError:  # pragma: no cover - supports direct pytest collection from repo root.
@@ -14,6 +18,10 @@ except ImportError:  # pragma: no cover - supports direct pytest collection from
         DossLTXMotionStudio,
         DossLTXResolveMotionTracks,
     )
+    from nodes.multi_lora_loader import (
+        DossMultiLoraLoader,
+        register_doss_multi_lora_routes,
+    )
     from nodes.save_image import DossSaveImage, register_doss_save_image_routes
     from nodes.workflow_timer_and_alarm import DossWorkflowTimerAndAlarm
 
@@ -21,12 +29,14 @@ except ImportError:  # pragma: no cover - supports direct pytest collection from
 WEB_DIRECTORY = "./js"
 
 register_doss_save_image_routes()
+register_doss_multi_lora_routes()
 
 NODE_CLASS_MAPPINGS = {
     "DossImageComparer": DossImageComparer,
     "DossLTXMotionSettings": DossLTXMotionSettings,
     "DossLTXMotionStudio": DossLTXMotionStudio,
     "DossLTXResolveMotionTracks": DossLTXResolveMotionTracks,
+    "DossMultiLoraLoader": DossMultiLoraLoader,
     "DossSaveImage": DossSaveImage,
     "DossWorkflowTimerAndAlarm": DossWorkflowTimerAndAlarm,
 }
@@ -36,6 +46,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
     "DossLTXMotionStudio": "Doss Motion Studio | LTX 2.5",
     "DossLTXResolveMotionTracks": "Doss Resolve Motion Tracks | LTX 2.5",
+    "DossMultiLoraLoader": "Doss Multi-LoRA Loader",
     "DossSaveImage": "Doss Save Image",
     "DossWorkflowTimerAndAlarm": "Doss Workflow Timer and Alarm",
 }

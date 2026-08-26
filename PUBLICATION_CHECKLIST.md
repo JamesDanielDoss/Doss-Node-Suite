@@ -7,12 +7,6 @@
 - Node pack display name: `Doss Node Suite`
 - GitHub repository: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
 
-## Repository Locations
-
-- Active development folder: `C:\AI\Doss-Node-Suite`
-- Published staging folder: `C:\AI\Published_ComfyUI_Node_Packs\Doss-Node-Suite`
-- Live runtime install target: `C:\AI\ComfyUI\custom_nodes\ComfyUI-Doss-Node-Suite`
-
 ## Required Node Pack Files
 
 - `__init__.py`
@@ -101,6 +95,18 @@ The top-level `__init__.py` must export:
 - Display name: `Doss Label Maker`
 - Resizable free-floating text with selection-only bounds and a double-click customization panel
 
+### Doss Multi-LoRA Loader
+
+- Class: `DossMultiLoraLoader`
+- Display name: `Doss Multi-LoRA Loader`
+- Category: `⚡ Doss Node Suite`
+- Inputs: `model`, `clip`, and hidden versioned LoRA-stack data
+- Outputs: `model`, `clip`
+- Ordered add/remove/enable interface with exact installed-file selection
+- Separate two-decimal MODEL and CLIP strengths for every LoRA
+- Disabled rows are visibly subdued and bypassed during execution
+- Version 1 stacks migrate safely to the version 2 MODEL/CLIP strength schema
+
 ## Registry Preparation Checklist
 
 1. Confirm `pyproject.toml` has `[project]` metadata.
@@ -115,14 +121,14 @@ The top-level `__init__.py` must export:
 10. Run a package mapping import check.
 11. Fresh clone the GitHub repo into ComfyUI `custom_nodes`.
 12. Restart ComfyUI and confirm the shipped nodes load.
-13. Confirm public backend mappings exactly match `node_list.json` and include the three LTX 2.5 motion nodes.
+13. Confirm public backend mappings exactly match `node_list.json` and include the three LTX 2.5 motion nodes and `DossMultiLoraLoader`.
 14. Confirm Doss Label Maker registers in the frontend but never appears in the executable prompt.
 15. Confirm no `DossFileNameFormatter` references are active.
 
 ## User Install Instructions
 
 ```powershell
-cd C:\AI\ComfyUI\custom_nodes
+cd <ComfyUI installation>\custom_nodes
 git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-Node-Suite
 ```
 
@@ -132,6 +138,7 @@ Search for `Doss Workflow Timer and Alarm` to place the visual timer node.
 Search for `Doss Motion Settings | LTX 2.5`, `Doss Motion Studio | LTX 2.5`, and
 `Doss Resolve Motion Tracks | LTX 2.5` to place the motion-control nodes.
 Search for `Doss Label Maker` to place the frontend-only canvas label.
+Search for `Doss Multi-LoRA Loader` to place the ordered multi-LoRA stack.
 
 ## Fresh Clone Testing Checklist
 
@@ -159,6 +166,11 @@ Search for `Doss Label Maker` to place the frontend-only canvas label.
 22. Zoom and resize Motion Studio and confirm its starting image remains fully contained at the source aspect ratio.
 23. Confirm Motion Studio path editing, point selection, and preview scrubbing remain aligned after graph zoom changes.
 24. Place Doss Label Maker, customize it, save/reload, and confirm it remains excluded from prompt execution.
+25. Place Doss Multi-LoRA Loader and confirm Add LoRA, Remove, Refresh, and row enable controls work.
+26. Confirm every LoRA row has separate MODEL and CLIP strengths displayed to two decimal places.
+27. Disable a row and confirm its controls are visibly subdued and the LoRA is bypassed during execution.
+28. Save/reload a version 2 stack and confirm filenames, order, enabled state, and both strengths persist.
+29. Load a legacy version 1 stack and confirm its single strength migrates to both MODEL and CLIP strengths.
 
 ## Public Safety Checklist
 
