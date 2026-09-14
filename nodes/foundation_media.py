@@ -7,12 +7,12 @@ from PIL import Image, ImageDraw, ImageFont
 
 try:
     from ..core.controls import indices as parse_indices, json_text, redact
-    from ..core.media import components_checked, finish_audio, join_videos, video_info
+    from ..core.media import components_checked, encoded_media_info, finish_audio, join_videos, video_info
     from ..core.records import reserve_output, run_record, write_record
     from ..core.tensors import finite_number
 except ImportError:
     from core.controls import indices as parse_indices, json_text, redact
-    from core.media import components_checked, finish_audio, join_videos, video_info
+    from core.media import components_checked, encoded_media_info, finish_audio, join_videos, video_info
     from core.records import reserve_output, run_record, write_record
     from core.tensors import finite_number
 from .foundation_image import integer, number
@@ -141,7 +141,9 @@ class DossVideoOutputPack(MediaNode):
             video.save_to(str(path), format=Types.VideoContainer(container), codec=Types.VideoCodec(codec), metadata=redact({"prompt": prompt, **(extra_pnginfo or {})}) if save_run_record else None)
             output = build_preview_image_payload(path)
             record["outputs"] = [output]
-            if save_run_record: write_record(path.with_name(path.name + ".doss.json"), record)
+            if save_run_record:
+                record["encoding"] = encoded_media_info(path)
+                write_record(path.with_name(path.name + ".doss.json"), record)
         except Exception:
             # Only remove the file reserved by this invocation.
             path.unlink(missing_ok=True)

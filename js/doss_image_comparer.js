@@ -242,8 +242,9 @@ class DossImageComparerWidget {
     const imageA = getInputEntry(this.entries, "image_a");
     const imageB = getInputEntry(this.entries, "image_b") || imageA;
 
-    drawImageInBounds(ctx, imageA, x, y, panelWidth, height);
-    drawImageInBounds(ctx, imageB, x + panelWidth + gap, y, panelWidth, height);
+    const labels = this.node.dossTakeLabels;
+    drawImageInBounds(ctx, imageA && { ...imageA, label: labels?.[0] || imageA.label }, x, y, panelWidth, height);
+    drawImageInBounds(ctx, imageB && { ...imageB, label: labels?.[1] || imageB.label }, x + panelWidth + gap, y, panelWidth, height);
   }
 
   drawSlider(ctx, node, x, y, width, height) {

@@ -1,5 +1,9 @@
 # Doss Node Suite Publication Checklist
 
+For the expansion, follow the [current publication procedure](docs/publication.md) and [validation record](docs/validation-0.7.0.md). The 0.6.0 Registry ban still requires a verified owner-visible reason and resolution; the release gate prevents premature publishing.
+
+[GitHub](https://github.com/JamesDanielDoss/Doss-Node-Suite) · [Existing Comfy Registry listing](https://registry.comfy.org/nodes/doss-node-suite) · [Hugging Face](https://huggingface.co/jamesdanieldoss)
+
 ## Registry Identity
 
 - Publisher ID: `jamesdossai`

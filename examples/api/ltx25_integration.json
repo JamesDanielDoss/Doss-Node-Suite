@@ -1,0 +1,373 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "DossMultiLoraLoader",
+      "inputs": {
+        "lora_stack_json": "{\"version\":2,\"entries\":[]}",
+        "model": [
+          "1",
+          0
+        ],
+        "clip": [
+          "2",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "DossPromptRecipe",
+      "inputs": {
+        "sections": "[{\"name\": \"Subject\", \"text\": \"A small wooden sailboat drifting on a calm mountain lake at sunrise\"}, {\"name\": \"Camera\", \"text\": \"The camera slowly tracks right, realistic reflections and natural motion\"}, {\"name\": \"Sound\", \"text\": \"Gentle water and light wind, no music, no speech\"}]",
+        "separator": ", ",
+        "prefix": "",
+        "suffix": ""
+      }
+    },
+    "7": {
+      "class_type": "DossLTXMotionSettings",
+      "inputs": {
+        "positive_prompt": [
+          "6",
+          0
+        ],
+        "duration_seconds": 1,
+        "negative_prompt": "blurry, cartoon, text, watermark",
+        "seed": 42,
+        "motion_strength": 1.0,
+        "image_adherence": 0.7,
+        "fps": "24"
+      }
+    },
+    "8": {
+      "class_type": "DossResolutionPlan",
+      "inputs": {
+        "aspect_width": 4,
+        "aspect_height": 3,
+        "long_edge": 256,
+        "multiple": 64,
+        "rounding": "nearest"
+      }
+    },
+    "9": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": [
+          "7",
+          0
+        ],
+        "clip": [
+          "5",
+          1
+        ]
+      }
+    },
+    "10": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": [
+          "7",
+          1
+        ],
+        "clip": [
+          "5",
+          1
+        ]
+      }
+    },
+    "11": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "frame_rate": [
+          "7",
+          3
+        ],
+        "positive": [
+          "9",
+          0
+        ],
+        "negative": [
+          "10",
+          0
+        ]
+      }
+    },
+    "12": {
+      "class_type": "LTXVDualCFGGuider",
+      "inputs": {
+        "video_cfg": 1,
+        "audio_cfg": 1,
+        "model": [
+          "5",
+          0
+        ],
+        "positive": [
+          "11",
+          0
+        ],
+        "negative": [
+          "11",
+          1
+        ]
+      }
+    },
+    "13": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": [
+          "8",
+          0
+        ],
+        "height": [
+          "8",
+          1
+        ],
+        "length": [
+          "7",
+          4
+        ],
+        "batch_size": 1
+      }
+    },
+    "14": {
+      "class_type": "LTXVEmptyLatentAudio",
+      "inputs": {
+        "frames_number": [
+          "7",
+          4
+        ],
+        "batch_size": 1,
+        "frame_rate": [
+          "7",
+          3
+        ],
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "15": {
+      "class_type": "LTXVConcatAVLatent",
+      "inputs": {
+        "video_latent": [
+          "13",
+          0
+        ],
+        "audio_latent": [
+          "14",
+          0
+        ]
+      }
+    },
+    "16": {
+      "class_type": "DossSamplingPreset",
+      "inputs": {
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "euler_ancestral",
+        "scheduler": "normal",
+        "denoise": 1
+      }
+    },
+    "17": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": [
+          "16",
+          2
+        ]
+      }
+    },
+    "18": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": [
+          "7",
+          5
+        ]
+      }
+    },
+    "19": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1.0, 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "20": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "18",
+          0
+        ],
+        "guider": [
+          "12",
+          0
+        ],
+        "sampler": [
+          "17",
+          0
+        ],
+        "sigmas": [
+          "19",
+          0
+        ],
+        "latent_image": [
+          "15",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "LTXVSeparateAVLatent",
+      "inputs": {
+        "av_latent": [
+          "20",
+          1
+        ]
+      }
+    },
+    "22": {
+      "class_type": "VAEDecodeTiled",
+      "inputs": {
+        "tile_size": 256,
+        "overlap": 64,
+        "temporal_size": 32,
+        "temporal_overlap": 8,
+        "samples": [
+          "21",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "23": {
+      "class_type": "LTXVAudioVAEDecode",
+      "inputs": {
+        "samples": [
+          "21",
+          1
+        ],
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "24": {
+      "class_type": "DossAudioFinish",
+      "inputs": {
+        "start": 0,
+        "duration": 0,
+        "gain_db": 0,
+        "normalize": true,
+        "peak_db": -1,
+        "fade_in": 0.02,
+        "fade_out": 0.02,
+        "audio": [
+          "23",
+          0
+        ]
+      }
+    },
+    "25": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": [
+          "7",
+          3
+        ],
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "22",
+          0
+        ],
+        "audio": [
+          "24",
+          0
+        ]
+      }
+    },
+    "26": {
+      "class_type": "DossVideoOutputPack",
+      "inputs": {
+        "filename": "LTX25_Integration",
+        "save_location": "Doss/Examples",
+        "container": "mp4",
+        "codec": "h264",
+        "save_run_record": true,
+        "run_details": "{\"purpose\":\"RTX 3090 integration\",\"sampling\":\"official distilled 8-step sigmas\",\"lora_stack\":\"empty passthrough\"}",
+        "video": [
+          "25",
+          0
+        ]
+      }
+    },
+    "27": {
+      "class_type": "DossShotSheet",
+      "inputs": {
+        "indices": "",
+        "count": 4,
+        "columns": 4,
+        "tile_width": 128,
+        "max_frames": 64,
+        "video": [
+          "25",
+          0
+        ]
+      }
+    },
+    "28": {
+      "class_type": "DossSaveImage",
+      "inputs": {
+        "filename": "LTX25_ShotSheet",
+        "save_location": "Doss/Examples",
+        "file_format": "PNG",
+        "save_metadata": true,
+        "save_metadata_text_file": false,
+        "save_run_record": true,
+        "run_details": "{}",
+        "image": [
+          "27",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "One-second LTX-2.5 integration at 256\u00d7192 and 24 fps. Requires the four named installed models. No download is performed.",
+    "requires_models": true
+  }
+}

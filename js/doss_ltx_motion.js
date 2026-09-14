@@ -931,6 +931,8 @@ function setupStudio(node) {
 function installWelcomeEnhancement() {
   const enhance = () => {
     try {
+      // Setup runs before ComfyUI's graph getter is ready on a fresh page.
+      if (!app.canvas) return;
       if (!app.graph?._nodes?.some((node) => node.comfyClass === STUDIO_NODE || node.type === STUDIO_NODE)) return;
       const welcome = document.querySelector('[data-testid="linear-welcome"]');
       if (!welcome || welcome.dataset.dossLtxWelcome === "1") return;

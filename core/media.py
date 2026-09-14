@@ -55,6 +55,20 @@ def video_info(video):
     return {"width": width, "height": height, "fps": float(fps), "duration_seconds": duration, "frames": int(video.get_frame_count())}
 
 
+def encoded_media_info(path):
+    """Inspect muxed stream timing, without decoding frames or audio."""
+    import av
+    streams = []
+    with av.open(str(path)) as container:
+        for stream in container.streams:
+            if stream.type not in ("video", "audio"): continue
+            item = {"type": stream.type, "codec": stream.codec_context.name, "duration_seconds": float(stream.duration * stream.time_base) if stream.duration is not None else None, "start_seconds": float(stream.start_time * stream.time_base) if stream.start_time is not None else None}
+            if stream.type == "video": item.update(width=stream.codec_context.width, height=stream.codec_context.height, fps=str(stream.average_rate), frames=stream.frames)
+            else: item.update(sample_rate=stream.codec_context.sample_rate, channels=stream.codec_context.channels)
+            streams.append(item)
+    return {"streams": streams, "timing_note": "Encoded audio duration can differ by codec frame padding; stream timing is reported as muxed."}
+
+
 def components_checked(video, max_frames=256):
     info = video_info(video)
     if not 1 <= max_frames <= 4096: raise ValueError("Frame limit must be 1..4096.")

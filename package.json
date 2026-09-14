@@ -8,5 +8,5 @@
     "check": "tsc --noEmit",
     "test": "node --test tests/test_hub.mjs && node tests/test_multi_lora_loader_frontend.mjs && node tests/test_ltx_motion_frontend.mjs && node tests/test_ltx_motion_studio_frontend.mjs"
   },
-  "devDependencies": {"typescript": "~5.9.3"}
+  "devDependencies": {"typescript": "5.9.3"}
 }

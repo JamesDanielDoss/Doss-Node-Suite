@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "registry_060_reason_verified": false,
+  "registry_review_resolved": false,
+  "registry_evidence": "",
+  "rtx_ltx_verified": true,
+  "coexistence_verified": true,
+  "validation_evidence": "docs/validation-0.7.0.md"
+}

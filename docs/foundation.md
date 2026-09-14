@@ -278,7 +278,7 @@ Practical advantage: Keep related sampler settings together and wire standard ty
 
 Inputs: steps: INT; cfg: FLOAT; sampler_name: choice; scheduler: choice; denoise: FLOAT
 
-Outputs: steps: INT; cfg: FLOAT; sampler_name: STRING; scheduler: STRING; denoise: FLOAT; settings_json: STRING
+Outputs: steps: INT; cfg: FLOAT; sampler_name: COMBO; scheduler: COMBO; denoise: FLOAT; settings_json: STRING
 
 ## Doss Resolution Plan
 

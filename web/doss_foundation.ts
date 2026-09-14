@@ -33,7 +33,7 @@ app.registerExtension({
         const result = configured?.apply(this, args); synchronizeType(this); return result;
       };
     }
-    const reportNodes = new Set(["DossPromptRecipe", "DossValueSchedule", "DossModelInventory", "DossResolutionPlan", "DossInspector", "DossTableInput"]);
+    const reportNodes = new Set(["DossPromptRecipe", "DossValueSchedule", "DossModelInventory", "DossResolutionPlan", "DossInspector", "DossTableInput", "DossImageComparer", "DossAudioFinish", "DossClipTrim", "DossClipJoin", "DossVideoOutputPack"]);
     if (!reportNodes.has(data.name)) return;
     const executed = nodeType.prototype.onExecuted;
     nodeType.prototype.onExecuted = function(message: any) {

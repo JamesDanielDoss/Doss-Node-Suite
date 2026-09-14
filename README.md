@@ -1,10 +1,30 @@
 # Doss Node Suite
 
-Doss Node Suite is a public ComfyUI custom node pack focused on practical visual workflow tools.
+Doss Node Suite is a free, MIT-licensed ComfyUI toolkit for images, masks, video, audio, prompts, generation, workflow organization, and review.
 
-GitHub: `https://github.com/JamesDanielDoss/Doss-Node-Suite`
+[GitHub · source, commits, issues, releases](https://github.com/JamesDanielDoss/Doss-Node-Suite) · [Comfy Registry · existing doss-node-suite listing](https://registry.comfy.org/nodes/doss-node-suite) · [Hugging Face · James Daniel Doss](https://huggingface.co/jamesdanieldoss)
 
-Current shipped nodes:
+## 0.7.0 expansion candidate
+
+The expansion adds **25 processing nodes** to the existing eight tools: **33 tools total**, including the frontend-only Label Maker. The optional **Doss Hub** sidebar provides search, favorites, packaged and personal presets, connection guides, examples, model inventory, diagnostics, and links to this project's existing destinations. Insertion, preset application, and grouping support ComfyUI undo. All processing nodes also work through normal node menus and API prompts with the Hub disabled.
+
+| Area | New tools |
+| --- | --- |
+| Image | Canvas Prep, Image Transform, Layer Composite, Color Match |
+| Masks | Mask Refine, Mask Combine, Mask Preview, Mask From Channels |
+| Video and audio | Clip Trim, Clip Join, Shot Sheet, Audio Finish |
+| Prompts | Prompt Recipe, Text Toolkit, Seed Sequence, Value Schedule |
+| Generation | Model Inventory, Sampling Preset, Resolution Plan |
+| Workflow | Typed Switch, Batch Select, Batch Join, Table Input |
+| Review and output | Inspector, Video Output Pack |
+
+Multi-LoRA Loader gains reorder controls while retaining independent model/CLIP weights and schema migrations. Image Comparer gains take labels and supplied settings while retaining both pass-through outputs. Save Image keeps its formats and controls and adds optional `.doss.json` run records and exclusive output-name reservations.
+
+[Tool guide and practical advantages](docs/foundation.md) · [Category workflows](examples/) · [Executable API examples](examples/api/) · [Validation](docs/validation-0.7.0.md) · [Publication and Registry review](docs/publication.md) · [Next expansion stages](docs/roadmap.md)
+
+**Publication status:** this branch is a release candidate. The existing Registry currently serves 0.3.2 and marks 0.6.0 banned without a public explanation. The 0.7.0 publishing workflow is gated on resolving the actual publisher-visible review. This branch does not imply Registry approval.
+
+## Existing tools preserved
 
 - **Doss Label Maker**: adds fully customizable, resizable free-floating text to the workflow without entering prompt execution.
 - **Doss Image Comparer**: compares two IMAGE inputs visually and passes IMAGE tensors through.
@@ -24,7 +44,19 @@ cd <ComfyUI installation>\custom_nodes
 git clone https://github.com/JamesDanielDoss/Doss-Node-Suite.git ComfyUI-Doss-Node-Suite
 ```
 
-Then restart ComfyUI.
+Using the Python interpreter managed by your ComfyUI installation, install this suite's declared dependencies:
+
+```powershell
+<ComfyUI Python> -m pip install -r custom_nodes/ComfyUI-Doss-Node-Suite/requirements.txt
+```
+
+Then restart ComfyUI and refresh the browser. Hub JavaScript and styles ship compiled; **Node.js is not needed to install or run the suite**. This package does not install, replace, or pin ComfyUI's managed PyTorch/CUDA build. Processing requires the Torch environment supplied by ComfyUI. No node downloads models or installs packages during execution.
+
+The native VIDEO workflows are tested with ComfyUI **0.35.1** and frontend **1.51.10**. Update ComfyUI before using those examples if its native VIDEO interface is unavailable. Model-free category examples create small synthetic inputs. The LoRA and LTX integration examples require your own installed models; they never fetch weights. See the [official LTX-2.5 model page](https://huggingface.co/Lightricks/LTX-2.5) for model files and terms.
+
+Existing Registry users should update through the **same** `doss-node-suite` listing once 0.7.0 is active. Do not install two copies of Doss under different custom-node folders.
+
+Personal favorites and presets live in the active ComfyUI user's `doss/hub-v1.json`, separately from packaged defaults in `catalog.json`. Presets contain widget values; they do not embed connected models or tensors.
 
 Find the nodes by searching for `Doss`, or browse:
 

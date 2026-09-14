@@ -34,13 +34,13 @@
         },
         {
           "name": "sampler_name",
-          "type": "STRING",
+          "type": "COMBO",
           "links": [],
           "slot_index": 2
         },
         {
           "name": "scheduler",
-          "type": "STRING",
+          "type": "COMBO",
           "links": [],
           "slot_index": 3
         },

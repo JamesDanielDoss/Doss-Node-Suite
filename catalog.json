@@ -604,8 +604,8 @@
       "outputs": [
         "steps: INT",
         "cfg: FLOAT",
-        "sampler_name: STRING",
-        "scheduler: STRING",
+        "sampler_name: COMBO",
+        "scheduler: COMBO",
         "denoise: FLOAT",
         "settings_json: STRING"
       ],

@@ -137,9 +137,9 @@ class DossImageComparerTests(unittest.TestCase):
 
         self.assertIn('const imageA = getInputEntry(this.entries, "image_a")', body)
         self.assertIn('const imageB = getInputEntry(this.entries, "image_b") || imageA', body)
-        self.assertIn("drawImageInBounds(ctx, imageA, x, y, panelWidth, height)", body)
+        self.assertIn("drawImageInBounds(ctx, imageA && { ...imageA, label: labels?.[0] || imageA.label }, x, y, panelWidth, height)", body)
         self.assertIn(
-            "drawImageInBounds(ctx, imageB, x + panelWidth + gap, y, panelWidth, height)",
+            "drawImageInBounds(ctx, imageB && { ...imageB, label: labels?.[1] || imageB.label }, x + panelWidth + gap, y, panelWidth, height)",
             body,
         )
         self.assertNotIn("drawBadge", body)
