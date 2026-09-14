@@ -180,10 +180,9 @@ class DossSaveImageTests(unittest.TestCase):
     def test_save_location_rejects_paths_outside_output(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             output_dir = Path(temp_dir)
-            with self.assertRaises(ValueError):
-                resolve_save_directory("..", output_dir)
-            with self.assertRaises(ValueError):
-                resolve_save_directory("C:/Temp", output_dir)
+            for location in ("..", "C:/Temp", "C:Temp", "//server/share/folder", "/tmp/doss"):
+                with self.subTest(location=location), self.assertRaises(ValueError):
+                    resolve_save_directory(location, output_dir)
 
     def test_save_location_root_aliases_resolve_to_output_root(self):
         with tempfile.TemporaryDirectory() as temp_dir:

@@ -51,4 +51,5 @@ jobs:
       - run: python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
       - run: git clone --depth 1 --branch v0.35.1 https://github.com/Comfy-Org/ComfyUI.git ../comfy-validation
       - run: python -m pip install -r ../comfy-validation/requirements.txt -r requirements.txt
-      - run: python scripts/native_validation.py --comfy-root ../comfy-validation
+      - run: python scripts/build_release.py
+      - run: python scripts/native_validation.py --comfy-root ../comfy-validation --archive dist/doss-node-suite-0.7.0.zip

@@ -13,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     path = ROOT / "dist" / ("doss-node-suite-" + json.loads((ROOT / "catalog.json").read_text())["version"] + ".zip")
     with tempfile.TemporaryDirectory() as temporary, zipfile.ZipFile(path) as archive:
-        root = Path(temporary)
+        # Windows runners may return an 8.3 TEMP path; compare resolved paths.
+        root = Path(temporary).resolve()
         for name in archive.namelist(): assert (root / name).resolve().is_relative_to(root)
         archive.extractall(root)
         manifest = json.loads((root / "release-manifest.json").read_text())

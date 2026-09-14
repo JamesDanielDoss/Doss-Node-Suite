@@ -15,7 +15,7 @@ Exact contracts and original example workflows are stored under `tests/fixtures/
 
 ## Local automated and native checks
 
-- **149 Python tests and 6 subtests passed.** Coverage includes geometry alignment, shape and batch rejection, tensor preservation, masks, deterministic seeds/schedules, parsing bounds, lazy switching, audio clipping/fades, video joins, path safety, run records, catalogue completeness, and legacy contracts.
+- **149 Python tests and 11 subtests passed.** Coverage includes geometry alignment, shape and batch rejection, tensor preservation, masks, deterministic seeds/schedules, parsing bounds, lazy switching, audio clipping/fades, video joins, path safety, run records, catalogue completeness, and legacy contracts. Cross-platform CI caught and prompted fixes for foreign absolute paths and Windows short TEMP-path normalization.
 - Frontend Hub model tests and the existing Multi-LoRA, Motion Settings, and Motion Studio lifecycle harnesses passed. LoRA reordering now has an additional whole-record test.
 - **40 model-free API examples passed**, covering each applicable processing node and all nine category workflows. The standalone LoRA example requires a user checkpoint; the separate LTX integration fixture requires four named installed models.
 - A native API test selected one branch while its unselected branch deliberately raised an error if evaluated; the workflow succeeded.
@@ -34,7 +34,7 @@ The muxed video contains **25 H.264 frames, 256×192, 24 fps, 1.041667 seconds**
 
 ## Browser and coexistence
 
-Observed in the actual ComfyUI frontend: branded Hub rendering, 33-tool catalogue, category expansion, multiword search, node insertion, Ctrl+Z undo, preset saving, favorites, example insertion with connected numeric widgets, execution, schedule curve rendering, and saving the resulting workflow. The saved workflow restored without missing nodes.
+Observed in the actual ComfyUI frontend: branded Hub rendering, 33-tool catalogue, category expansion, multiword search, node insertion, Ctrl+Z undo, preset saving, favorites, example insertion with connected numeric widgets, execution, schedule curve rendering, and saving the resulting workflow. The saved workflow restored without missing nodes. The Save Image and Image Comparer workflows packaged in 0.3.2 and 0.6.0 are byte-identical across versions; both were loaded, saved, and restored in the current frontend with their legacy control values preserved. A workflow containing Label Maker executed successfully: the label was present in saved workflow metadata and absent from the executable API prompt.
 
 Coexistence versions: KJNodes `d3cfe21625e5170126ce06fbfcfe1d88108688c3`; Pixaroma `2fe16a657e32aa6f7d4cfd0354cf184991545bac`. All **32 Doss, 260 KJNodes, and 81 Pixaroma backend nodes** loaded together. All model-free Doss examples passed in that installation, and a mixed Doss → KJNodes → Pixaroma workflow returned the expected width. KJNodes' optional Triton VAE node was unavailable because Triton is not installed. Pixaroma's banner requires UTF-8 console output on this Windows shell, so the validation server uses `python -X utf8`.
 

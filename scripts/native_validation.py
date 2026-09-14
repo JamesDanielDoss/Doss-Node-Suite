@@ -2,11 +2,11 @@
 from __future__ import annotations
 import argparse
 import json
-import os
 import subprocess
 import sys
 import tempfile
 import time
+import zipfile
 from pathlib import Path
 
 from run_examples import execute, request
@@ -28,7 +28,7 @@ def checks(server):
 
 
 def main():
-    parser = argparse.ArgumentParser(); parser.add_argument("--comfy-root", type=Path); parser.add_argument("--server"); args = parser.parse_args()
+    parser = argparse.ArgumentParser(); parser.add_argument("--comfy-root", type=Path); parser.add_argument("--server"); parser.add_argument("--archive", type=Path); args = parser.parse_args()
     if args.server: checks(args.server); return
     if not args.comfy_root: parser.error("Provide --server or --comfy-root")
     comfy = args.comfy_root.resolve()
@@ -36,14 +36,20 @@ def main():
         root = Path(temp)
         for name in ("input", "output", "user", "custom_nodes"): (root / name).mkdir()
         link = root / "custom_nodes" / "doss-node-suite"
-        if os.name == "nt":
-            # Copy runtime source rather than requiring Windows symlink privileges.
+        link.mkdir()
+        if args.archive:
+            with zipfile.ZipFile(args.archive.resolve()) as archive:
+                for name in archive.namelist():
+                    if not (link / name).resolve().is_relative_to(link.resolve()):
+                        raise ValueError("Archive path escapes the custom-node directory")
+                archive.extractall(link)
+        else:
+            # Both platforms test a runtime-only installation, without relying on
+            # a source checkout, development files, or symlink privileges.
             import shutil
             from build_release import runtime_files
-            link.mkdir()
             for name in runtime_files():
                 target = link / name; target.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(ROOT / name, target)
-        else: link.symlink_to(ROOT, target_is_directory=True)
         config = root / "paths.yaml"; config.write_text("doss_test:\n  custom_nodes: " + (root / "custom_nodes").as_posix() + "\n")
         args = [sys.executable, str(comfy / "main.py"), "--cpu", "--listen", "127.0.0.1", "--port", "8195", "--disable-auto-launch", "--disable-api-nodes", "--extra-model-paths-config", str(config), "--database-url", "sqlite:///" + (root / "user" / "comfyui.db").as_posix()]
         for name in ("input", "output", "user"): args += ["--" + name + "-directory", str(root / name)]

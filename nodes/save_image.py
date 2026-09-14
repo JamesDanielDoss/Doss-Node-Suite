@@ -4,7 +4,7 @@ import json
 import os
 import re
 from datetime import datetime
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from typing import Any
 
 import numpy as np
@@ -70,8 +70,9 @@ def validate_file_format(file_format: str) -> str:
 
 
 def _has_drive_or_absolute_path(value: str) -> bool:
-    path = Path(value)
-    return path.is_absolute() or bool(path.drive)
+    # Workflows travel between Windows and Linux. Reject foreign drive paths
+    # consistently instead of treating C:/Temp as a relative POSIX directory.
+    return value.startswith("/") or Path(value).is_absolute() or bool(PureWindowsPath(value).drive)
 
 
 def normalize_output_relative_path(save_location: Any) -> str:
