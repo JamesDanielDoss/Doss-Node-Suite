@@ -1,0 +1,250 @@
+{
+  "last_node_id": 5,
+  "last_link_id": 4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "EmptyImage",
+      "pos": [
+        60,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyImage"
+      },
+      "widgets_values": [
+        128,
+        96,
+        12,
+        3377305
+      ]
+    },
+    {
+      "id": 2,
+      "type": "EmptyAudio",
+      "pos": [
+        440,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyAudio"
+      },
+      "widgets_values": [
+        1,
+        24000,
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "type": "CreateVideo",
+      "pos": [
+        820,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VIDEO",
+          "type": "VIDEO",
+          "links": [
+            3
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CreateVideo"
+      },
+      "widgets_values": [
+        12,
+        "auto",
+        "sRGB"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "DossClipTrim",
+      "pos": [
+        1200,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "video",
+          "type": "VIDEO",
+          "links": [
+            4
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "report",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DossClipTrim"
+      },
+      "widgets_values": [
+        "seconds",
+        0,
+        0
+      ]
+    },
+    {
+      "id": 5,
+      "type": "DossInspector",
+      "pos": [
+        60,
+        600
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "value",
+          "type": "*",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value",
+          "type": "*",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "report_json",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DossInspector"
+      },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      1,
+      "AUDIO"
+    ],
+    [
+      3,
+      3,
+      0,
+      4,
+      0,
+      "VIDEO"
+    ],
+    [
+      4,
+      4,
+      0,
+      5,
+      0,
+      "VIDEO"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "doss": {
+      "schema_version": 1,
+      "description": "Trim native VIDEO by time or frame index while retaining synchronized audio.",
+      "requires_models": false
+    }
+  },
+  "version": 0.4
+}

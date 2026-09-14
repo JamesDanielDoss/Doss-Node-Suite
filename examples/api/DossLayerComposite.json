@@ -1,0 +1,53 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 13399859
+      }
+    },
+    "3": {
+      "class_type": "DossLayerComposite",
+      "inputs": {
+        "x": 0,
+        "y": 0,
+        "opacity": 1,
+        "blend": "normal",
+        "background": [
+          "1",
+          0
+        ],
+        "foreground": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "3",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Place a masked layer with opacity and blending, and reuse the resulting coverage mask.",
+    "requires_models": false
+  }
+}

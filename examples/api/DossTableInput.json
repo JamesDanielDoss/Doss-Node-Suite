@@ -1,0 +1,26 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossTableInput",
+      "inputs": {
+        "table": "prompt,seed\nA sailboat at sunrise,42\nA cabin in snow,43",
+        "format": "csv",
+        "row_index": 0
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Drive indexed experiments from embedded CSV or JSON without another file dependency.",
+    "requires_models": false
+  }
+}

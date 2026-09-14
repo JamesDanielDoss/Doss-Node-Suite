@@ -1,0 +1,107 @@
+{
+  "last_node_id": 2,
+  "last_link_id": 1,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "DossPromptRecipe",
+      "pos": [
+        60,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "prompt",
+          "type": "STRING",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "recipe_json",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DossPromptRecipe"
+      },
+      "widgets_values": [
+        "[{\"name\":\"Subject\",\"text\":\"A small sailboat on a mountain lake\"},{\"name\":\"Light\",\"text\":\"Soft sunrise light\"}]",
+        ", ",
+        "",
+        ""
+      ]
+    },
+    {
+      "id": 2,
+      "type": "DossInspector",
+      "pos": [
+        440,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "value",
+          "type": "*",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value",
+          "type": "*",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "report_json",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DossInspector"
+      },
+      "widgets_values": []
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "doss": {
+      "schema_version": 1,
+      "description": "Keep named sections and their enabled states alongside an exact assembled prompt preview.",
+      "requires_models": false
+    }
+  },
+  "version": 0.4
+}

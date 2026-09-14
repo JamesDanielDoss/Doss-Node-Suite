@@ -1,0 +1,39 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "SolidMask",
+      "inputs": {
+        "value": 0.7,
+        "width": 128,
+        "height": 96
+      }
+    },
+    "2": {
+      "class_type": "DossMaskRefine",
+      "inputs": {
+        "grow": 0,
+        "feather": 0,
+        "apply_threshold": false,
+        "threshold": 0.5,
+        "mask": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Combine signed growth, feathering, and optional threshold in a single ordered operation.",
+    "requires_models": false
+  }
+}

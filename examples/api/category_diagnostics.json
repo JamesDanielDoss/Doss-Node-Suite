@@ -1,0 +1,52 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 3,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "PreviewImage",
+      "inputs": {
+        "images": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossModelInventory",
+      "inputs": {
+        "category": "loras",
+        "contains": ""
+      }
+    },
+    "5": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "4",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Inspect an image batch and check installed LoRA filenames without loading weights.",
+    "requires_models": false
+  }
+}

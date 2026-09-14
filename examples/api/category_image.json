@@ -1,0 +1,76 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "SolidMask",
+      "inputs": {
+        "value": 0.7,
+        "width": 128,
+        "height": 96
+      }
+    },
+    "3": {
+      "class_type": "DossCanvasPrep",
+      "inputs": {
+        "width": 192,
+        "height": 192,
+        "mode": "fit",
+        "background": "#000000",
+        "image": [
+          "1",
+          0
+        ],
+        "mask": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossImageTransform",
+      "inputs": {
+        "x": 0,
+        "y": 0,
+        "rotation": 12,
+        "scale": 0.9,
+        "image": [
+          "3",
+          0
+        ],
+        "mask": [
+          "3",
+          1
+        ]
+      }
+    },
+    "5": {
+      "class_type": "DossSaveImage",
+      "inputs": {
+        "filename": "Canvas",
+        "save_location": "Doss/Examples",
+        "file_format": "PNG",
+        "save_metadata": true,
+        "save_metadata_text_file": false,
+        "save_run_record": true,
+        "run_details": "{}",
+        "image": [
+          "4",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Prepare image and mask together, transform them, then save a PNG and run record.",
+    "requires_models": false
+  }
+}

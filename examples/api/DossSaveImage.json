@@ -1,0 +1,34 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossSaveImage",
+      "inputs": {
+        "filename": "Doss_Example",
+        "save_location": "Doss/Examples",
+        "file_format": "PNG",
+        "save_metadata": true,
+        "save_metadata_text_file": false,
+        "save_run_record": true,
+        "run_details": "{}",
+        "image": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Keep the existing seven formats and output paths, with optional structured run records.",
+    "requires_models": false
+  }
+}

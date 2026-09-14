@@ -1,0 +1,57 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 12,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "3": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": 12,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "1",
+          0
+        ],
+        "audio": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossVideoOutputPack",
+      "inputs": {
+        "filename": "Doss_Take",
+        "save_location": "Doss/Examples",
+        "container": "mp4",
+        "codec": "h264",
+        "save_run_record": true,
+        "run_details": "{}",
+        "video": [
+          "3",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Save native video and audio with collision-safe paths and a record of timing and encoding settings.",
+    "requires_models": false
+  }
+}

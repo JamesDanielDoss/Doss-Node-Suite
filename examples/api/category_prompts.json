@@ -1,0 +1,56 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossPromptRecipe",
+      "inputs": {
+        "sections": "[{\"name\":\"Subject\",\"text\":\"A small sailboat on a mountain lake\"},{\"name\":\"Light\",\"text\":\"Soft sunrise light\"}]",
+        "separator": ", ",
+        "prefix": "",
+        "suffix": ""
+      }
+    },
+    "2": {
+      "class_type": "DossTextToolkit",
+      "inputs": {
+        "text": [
+          "1",
+          0
+        ],
+        "operation": "replace",
+        "argument": "sailboat",
+        "replacement": "canoe"
+      }
+    },
+    "3": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossValueSchedule",
+      "inputs": {
+        "keyframes": "[[0,0],[24,1],[48,0]]",
+        "index": 12,
+        "interpolation": "linear"
+      }
+    },
+    "5": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "4",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Assemble a named prompt recipe, replace one subject, and inspect a deterministic value schedule.",
+    "requires_models": false
+  }
+}

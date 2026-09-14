@@ -1,0 +1,942 @@
+{
+  "schema_version": 1,
+  "version": "0.7.0",
+  "links": {
+    "GitHub · source & commits": "https://github.com/JamesDanielDoss/Doss-Node-Suite",
+    "Comfy Registry · existing listing": "https://registry.comfy.org/nodes/doss-node-suite",
+    "Hugging Face · James Daniel Doss": "https://huggingface.co/jamesdanieldoss"
+  },
+  "nodes": [
+    {
+      "id": "DossCanvasPrep",
+      "name": "Doss Canvas Prep",
+      "category": "Image",
+      "description": "Fit, fill, or stretch an image and mask together. Fit pads; fill center-crops. An absent mask means the entire source is selected.",
+      "advantage": "One geometry operation keeps image and mask aligned through resize, center crop, or padding.",
+      "aliases": [
+        "CanvasPrep",
+        "Image"
+      ],
+      "example": "DossCanvasPrep.json",
+      "inputs": [
+        "image: IMAGE",
+        "width: INT",
+        "height: INT",
+        "mode: choice",
+        "background: STRING",
+        "mask: MASK"
+      ],
+      "outputs": [
+        "image: IMAGE",
+        "mask: MASK"
+      ],
+      "presets": [
+        {
+          "name": "Square 1024",
+          "values": {
+            "width": 1024,
+            "height": 1024,
+            "mode": "fit"
+          }
+        },
+        {
+          "name": "Portrait 9:16",
+          "values": {
+            "width": 576,
+            "height": 1024,
+            "mode": "fill"
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossImageTransform",
+      "name": "Doss Image Transform",
+      "category": "Image",
+      "description": "Translate, rotate clockwise, and scale an image and its mask around their center with identical geometry. Exposed edges become zero.",
+      "advantage": "Translate, rotate, and scale the image and its mask with the same sampling grid.",
+      "aliases": [
+        "ImageTransform",
+        "Image"
+      ],
+      "example": "DossImageTransform.json",
+      "inputs": [
+        "image: IMAGE",
+        "x: FLOAT",
+        "y: FLOAT",
+        "rotation: FLOAT",
+        "scale: FLOAT",
+        "mask: MASK"
+      ],
+      "outputs": [
+        "image: IMAGE",
+        "mask: MASK"
+      ],
+      "presets": [
+        {
+          "name": "Reset transform",
+          "values": {
+            "x": 0,
+            "y": 0,
+            "rotation": 0,
+            "scale": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossLayerComposite",
+      "name": "Doss Layer Composite",
+      "category": "Image",
+      "description": "Place a foreground using pixel offsets and an optional white-is-selected mask. Supports singleton foreground batches and RGBA alpha.",
+      "advantage": "Place a masked layer with opacity and blending, and reuse the resulting coverage mask.",
+      "aliases": [
+        "LayerComposite",
+        "Image"
+      ],
+      "example": "DossLayerComposite.json",
+      "inputs": [
+        "background: IMAGE",
+        "foreground: IMAGE",
+        "x: INT",
+        "y: INT",
+        "opacity: FLOAT",
+        "blend: choice",
+        "mask: MASK"
+      ],
+      "outputs": [
+        "image: IMAGE",
+        "coverage: MASK"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossColorMatch",
+      "name": "Doss Color Match",
+      "category": "Image",
+      "description": "Match per-channel RGB means and standard deviations to a reference. Strength blends the correction; alpha is preserved. Connect to Doss Image Comparer to review.",
+      "advantage": "Blend per-channel reference statistics by strength without loading a color model.",
+      "aliases": [
+        "ColorMatch",
+        "Image"
+      ],
+      "example": "DossColorMatch.json",
+      "inputs": [
+        "image: IMAGE",
+        "reference: IMAGE",
+        "strength: FLOAT"
+      ],
+      "outputs": [
+        "image: IMAGE"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossImageComparer",
+      "name": "Doss Image Comparer",
+      "category": "Image",
+      "description": "Compare two images visually and pass the selected tensors through.",
+      "advantage": "Name two takes, show supplied settings, and keep both original pass-through outputs.",
+      "aliases": [
+        "ImageComparer",
+        "Image"
+      ],
+      "example": "DossImageComparer.json",
+      "inputs": [
+        "image_a: IMAGE",
+        "comparer_mode: choice",
+        "image_b: IMAGE",
+        "label_a: STRING",
+        "label_b: STRING",
+        "settings_json: STRING"
+      ],
+      "outputs": [
+        "image_a: IMAGE",
+        "image_b: IMAGE"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossMaskRefine",
+      "name": "Doss Mask Refine",
+      "category": "Masks",
+      "description": "Refine in this order: grow/shrink, Gaussian feather, optional threshold. White pixels select an area.",
+      "advantage": "Combine signed growth, feathering, and optional threshold in a single ordered operation.",
+      "aliases": [
+        "MaskRefine",
+        "Masks"
+      ],
+      "example": "DossMaskRefine.json",
+      "inputs": [
+        "mask: MASK",
+        "grow: INT",
+        "feather: INT",
+        "apply_threshold: BOOLEAN",
+        "threshold: FLOAT"
+      ],
+      "outputs": [
+        "mask: MASK"
+      ],
+      "presets": [
+        {
+          "name": "Soft edge",
+          "values": {
+            "grow": 4,
+            "feather": 8,
+            "apply_threshold": false
+          }
+        },
+        {
+          "name": "Reset refine",
+          "values": {
+            "grow": 0,
+            "feather": 0,
+            "apply_threshold": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossMaskCombine",
+      "name": "Doss Mask Combine",
+      "category": "Masks",
+      "description": "Combine equal-sized masks: union=max, intersection=min, subtract=clamped A-B, difference=abs(A-B). A single mask can broadcast over a batch.",
+      "advantage": "Choose four explicit mask operations with strict spatial validation and singleton broadcast.",
+      "aliases": [
+        "MaskCombine",
+        "Masks"
+      ],
+      "example": "DossMaskCombine.json",
+      "inputs": [
+        "mask_a: MASK",
+        "mask_b: MASK",
+        "operation: choice"
+      ],
+      "outputs": [
+        "mask: MASK"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossMaskPreview",
+      "name": "Doss Mask Preview",
+      "category": "Masks",
+      "description": "Create a colored mask overlay and pass the original mask through. Connect overlay to Preview Image or Doss Image Comparer.",
+      "advantage": "Preview a colored overlay while passing the original mask onward unchanged.",
+      "aliases": [
+        "MaskPreview",
+        "Masks"
+      ],
+      "example": "DossMaskPreview.json",
+      "inputs": [
+        "image: IMAGE",
+        "mask: MASK",
+        "color: STRING",
+        "opacity: FLOAT"
+      ],
+      "outputs": [
+        "overlay: IMAGE",
+        "mask: MASK"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossMaskFromChannels",
+      "name": "Doss Mask From Channels",
+      "category": "Masks",
+      "description": "Select pixels within an inclusive channel/luminance range. Alpha requires an RGBA image; core Load Image supplies transparency separately as a mask.",
+      "advantage": "Select an inclusive range from RGB, alpha, or luminance with optional inversion.",
+      "aliases": [
+        "MaskFromChannels",
+        "Masks"
+      ],
+      "example": "DossMaskFromChannels.json",
+      "inputs": [
+        "image: IMAGE",
+        "channel: choice",
+        "low: FLOAT",
+        "high: FLOAT",
+        "invert: BOOLEAN"
+      ],
+      "outputs": [
+        "mask: MASK"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossClipTrim",
+      "name": "Doss Clip Trim",
+      "category": "Video",
+      "description": "Trim a native video in seconds or frames. End is exclusive; end=0 means the end of the clip. Audio follows the same range.",
+      "advantage": "Trim native VIDEO by time or frame index while retaining synchronized audio.",
+      "aliases": [
+        "ClipTrim",
+        "Video"
+      ],
+      "example": "DossClipTrim.json",
+      "inputs": [
+        "video: VIDEO",
+        "units: choice",
+        "start: FLOAT",
+        "end: FLOAT"
+      ],
+      "outputs": [
+        "video: VIDEO",
+        "report: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossClipJoin",
+      "name": "Doss Clip Join",
+      "category": "Video",
+      "description": "Join two compatible native clips and align audio to the frame boundary. Materializes short clips in memory; max_frames limits the combined output.",
+      "advantage": "Check clip compatibility and align audio sample boundaries before joining.",
+      "aliases": [
+        "ClipJoin",
+        "Video"
+      ],
+      "example": "DossClipJoin.json",
+      "inputs": [
+        "a: VIDEO",
+        "b: VIDEO",
+        "max_frames: INT"
+      ],
+      "outputs": [
+        "video: VIDEO",
+        "report: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossShotSheet",
+      "name": "Doss Shot Sheet",
+      "category": "Video",
+      "description": "Make a labeled contact sheet plus selected IMAGE frames from a short native video. Enter indices/slices or leave blank for evenly spaced samples. The source remains unchanged.",
+      "advantage": "Get timestamped contact sheets and the exact selected frame batch together.",
+      "aliases": [
+        "ShotSheet",
+        "Video"
+      ],
+      "example": "DossShotSheet.json",
+      "inputs": [
+        "video: VIDEO",
+        "indices: STRING",
+        "count: INT",
+        "columns: INT",
+        "tile_width: INT",
+        "max_frames: INT"
+      ],
+      "outputs": [
+        "sheet: IMAGE",
+        "frames: IMAGE",
+        "timestamps_json: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossLTXMotionSettings",
+      "name": "Doss Motion Settings | LTX 2.5",
+      "category": "Video",
+      "description": "Keep LTX prompt, duration, frame count, seed, and motion controls together.",
+      "advantage": "Keep LTX prompt, duration, frame count, seed, and motion controls together.",
+      "aliases": [
+        "LTXMotionSettings",
+        "Video"
+      ],
+      "example": "DossLTXMotionSettings.json",
+      "inputs": [
+        "positive_prompt: STRING",
+        "duration_seconds: FLOAT",
+        "negative_prompt: STRING",
+        "seed: INT",
+        "motion_strength: FLOAT",
+        "image_adherence: FLOAT",
+        "fps: choice"
+      ],
+      "outputs": [
+        "positive_prompt: STRING",
+        "negative_prompt: STRING",
+        "duration_seconds: FLOAT",
+        "fps: FLOAT",
+        "frame_count: INT",
+        "seed: INT",
+        "motion_strength: FLOAT",
+        "image_adherence: FLOAT"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossLTXMotionStudio",
+      "name": "Doss Motion Studio | LTX 2.5",
+      "category": "Video",
+      "description": "Draw and restore LTX motion tracks directly over the source image.",
+      "advantage": "Draw and restore LTX motion tracks directly over the source image.",
+      "aliases": [
+        "LTXMotionStudio",
+        "Video"
+      ],
+      "example": "DossLTXMotionStudio.json",
+      "inputs": [
+        "image: IMAGE",
+        "motion_plan: STRING",
+        "source_ref: STRING"
+      ],
+      "outputs": [
+        "image: IMAGE",
+        "motion_plan: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossLTXResolveMotionTracks",
+      "name": "Doss Resolve Motion Tracks | LTX 2.5",
+      "category": "Video",
+      "description": "Resolve the saved motion plan against explicit source geometry and frame count.",
+      "advantage": "Resolve the saved motion plan against explicit source geometry and frame count.",
+      "aliases": [
+        "LTXResolveMotionTracks",
+        "Video"
+      ],
+      "example": "DossLTXResolveMotionTracks.json",
+      "inputs": [
+        "image: IMAGE",
+        "motion_plan: STRING",
+        "frame_count: INT"
+      ],
+      "outputs": [
+        "tracks: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossAudioFinish",
+      "name": "Doss Audio Finish",
+      "category": "Audio",
+      "description": "Trim, apply gain or per-item peak normalization, then fade. Silence stays silent. Samples over full scale are reported instead of silently clipped. Duration=0 keeps the remainder.",
+      "advantage": "Trim, gain, normalize, and fade together, with feedback when samples exceed full scale.",
+      "aliases": [
+        "AudioFinish",
+        "Audio"
+      ],
+      "example": "DossAudioFinish.json",
+      "inputs": [
+        "audio: AUDIO",
+        "start: FLOAT",
+        "duration: FLOAT",
+        "gain_db: FLOAT",
+        "normalize: BOOLEAN",
+        "peak_db: FLOAT",
+        "fade_in: FLOAT",
+        "fade_out: FLOAT"
+      ],
+      "outputs": [
+        "audio: AUDIO",
+        "report: STRING"
+      ],
+      "presets": [
+        {
+          "name": "Peak -1 dBFS",
+          "values": {
+            "normalize": true,
+            "peak_db": -1,
+            "gain_db": 0
+          }
+        },
+        {
+          "name": "Short fades",
+          "values": {
+            "fade_in": 0.05,
+            "fade_out": 0.1
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossPromptRecipe",
+      "name": "Doss Prompt Recipe",
+      "category": "Prompts",
+      "description": "Assemble ordered named sections. JSON entries use name, text, and optional enabled. Returns exact text and a recipe record; no AI or model is needed.",
+      "advantage": "Keep named sections and their enabled states alongside an exact assembled prompt preview.",
+      "aliases": [
+        "PromptRecipe",
+        "Prompts"
+      ],
+      "example": "DossPromptRecipe.json",
+      "inputs": [
+        "sections: STRING",
+        "separator: STRING",
+        "prefix: STRING",
+        "suffix: STRING"
+      ],
+      "outputs": [
+        "prompt: STRING",
+        "recipe_json: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossTextToolkit",
+      "name": "Doss Text Toolkit",
+      "category": "Prompts",
+      "description": "Clean whitespace, replace literal text, join strings, or extract a dotted JSON path (arrays use numeric indices). Never evaluates code or regular expressions.",
+      "advantage": "Use literal text operations and JSON extraction without expressions or custom scripts.",
+      "aliases": [
+        "TextToolkit",
+        "Prompts"
+      ],
+      "example": "DossTextToolkit.json",
+      "inputs": [
+        "text: STRING",
+        "operation: choice",
+        "argument: STRING",
+        "replacement: STRING"
+      ],
+      "outputs": [
+        "text: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossSeedSequence",
+      "name": "Doss Seed Sequence",
+      "category": "Prompts",
+      "description": "Derive a repeatable seed from base + index × step, wrapping at 2^53. This range round-trips exactly through browser workflow JSON.",
+      "advantage": "Reproduce any indexed experiment directly, without relying on queue history.",
+      "aliases": [
+        "SeedSequence",
+        "Prompts"
+      ],
+      "example": "DossSeedSequence.json",
+      "inputs": [
+        "base_seed: INT",
+        "index: INT",
+        "step: INT"
+      ],
+      "outputs": [
+        "seed: INT"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossValueSchedule",
+      "name": "Doss Value Schedule",
+      "category": "Prompts",
+      "description": "Evaluate ordered [index,value] keyframes with linear or stepped interpolation. Holds endpoints outside the range; supplies curve data to the node preview.",
+      "advantage": "Evaluate explicit linear or stepped keyframes and inspect the curve on the node.",
+      "aliases": [
+        "ValueSchedule",
+        "Prompts"
+      ],
+      "example": "DossValueSchedule.json",
+      "inputs": [
+        "keyframes: STRING",
+        "index: FLOAT",
+        "interpolation: choice"
+      ],
+      "outputs": [
+        "value: FLOAT",
+        "schedule_json: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossModelInventory",
+      "name": "Doss Model Inventory",
+      "category": "Generation",
+      "description": "List installed model names by category without loading weights, downloading files, or exposing absolute filesystem paths. Refreshes each run.",
+      "advantage": "Inspect model availability without loading weights or changing the installation.",
+      "aliases": [
+        "ModelInventory",
+        "Generation"
+      ],
+      "example": "DossModelInventory.json",
+      "inputs": [
+        "category: choice",
+        "contains: STRING"
+      ],
+      "outputs": [
+        "inventory_json: STRING",
+        "count: INT"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossMultiLoraLoader",
+      "name": "Doss Multi-LoRA Loader",
+      "category": "Generation",
+      "description": "Add, remove, enable, and weight multiple LoRAs in one ordered loader. Each enabled LoRA is applied to MODEL and CLIP in displayed order.",
+      "advantage": "Reorder an entire LoRA stack with independent model and CLIP weights and legacy schema migration.",
+      "aliases": [
+        "MultiLoraLoader",
+        "Generation"
+      ],
+      "example": "DossMultiLoraLoader.json",
+      "inputs": [
+        "model: MODEL",
+        "clip: CLIP",
+        "lora_stack_json: STRING"
+      ],
+      "outputs": [
+        "model: MODEL",
+        "clip: CLIP"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossSamplingPreset",
+      "name": "Doss Sampling Preset",
+      "category": "Generation",
+      "description": "Keep sampling parameters together while wiring each value to standard sampler inputs. Saves exact settings, without changing the model or assuming an optimal preset.",
+      "advantage": "Keep related sampler settings together and wire standard typed outputs to core samplers.",
+      "aliases": [
+        "SamplingPreset",
+        "Generation"
+      ],
+      "example": "DossSamplingPreset.json",
+      "inputs": [
+        "steps: INT",
+        "cfg: FLOAT",
+        "sampler_name: choice",
+        "scheduler: choice",
+        "denoise: FLOAT"
+      ],
+      "outputs": [
+        "steps: INT",
+        "cfg: FLOAT",
+        "sampler_name: STRING",
+        "scheduler: STRING",
+        "denoise: FLOAT",
+        "settings_json: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossResolutionPlan",
+      "name": "Doss Resolution Plan",
+      "category": "Generation",
+      "description": "Set a target long edge and aspect ratio, then snap dimensions to an explicit multiple. Reports the resulting aspect error; does not infer model requirements.",
+      "advantage": "Choose aspect ratio and divisibility explicitly and inspect the resulting aspect error.",
+      "aliases": [
+        "ResolutionPlan",
+        "Generation"
+      ],
+      "example": "DossResolutionPlan.json",
+      "inputs": [
+        "aspect_width: INT",
+        "aspect_height: INT",
+        "long_edge: INT",
+        "multiple: choice",
+        "rounding: choice"
+      ],
+      "outputs": [
+        "width: INT",
+        "height: INT",
+        "report: STRING"
+      ],
+      "presets": [
+        {
+          "name": "Landscape / 64",
+          "values": {
+            "aspect_width": 16,
+            "aspect_height": 9,
+            "long_edge": 1024,
+            "multiple": 64
+          }
+        },
+        {
+          "name": "Portrait / 32",
+          "values": {
+            "aspect_width": 9,
+            "aspect_height": 16,
+            "long_edge": 1024,
+            "multiple": 32
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossTypedSwitch",
+      "name": "Doss Typed Switch",
+      "category": "Workflow",
+      "description": "Select A or B of an explicit native type. Only the selected branch executes. Change data_type before connecting; incompatible links are rejected.",
+      "advantage": "Choose a native data type and evaluate only the selected upstream branch.",
+      "aliases": [
+        "TypedSwitch",
+        "Workflow"
+      ],
+      "example": "DossTypedSwitch.json",
+      "inputs": [
+        "data_type: choice",
+        "select: choice",
+        "a: *",
+        "b: *"
+      ],
+      "outputs": [
+        "selected: *"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossBatchSelect",
+      "name": "Doss Batch Select",
+      "category": "Workflow",
+      "description": "Select image or mask items using comma-separated indices and slices such as 0,2,4:10:2. Negative indices count from the end; duplicates preserve requested order.",
+      "advantage": "Pick exact image or mask takes, slices, and repeated indices in the requested order.",
+      "aliases": [
+        "BatchSelect",
+        "Workflow"
+      ],
+      "example": "DossBatchSelect.json",
+      "inputs": [
+        "data_type: choice",
+        "batch: IMAGE,MASK",
+        "indices: STRING"
+      ],
+      "outputs": [
+        "selected: *",
+        "selection_json: STRING"
+      ],
+      "presets": [
+        {
+          "name": "First take",
+          "values": {
+            "indices": "0"
+          }
+        },
+        {
+          "name": "Last take",
+          "values": {
+            "indices": "-1"
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossBatchJoin",
+      "name": "Doss Batch Join",
+      "category": "Workflow",
+      "description": "Concatenate two compatible image or mask batches. Dimensions, channels, dtype, and device must agree. Never silently resizes or converts your inputs.",
+      "advantage": "Join compatible image or mask batches with a count and clear mismatch errors.",
+      "aliases": [
+        "BatchJoin",
+        "Workflow"
+      ],
+      "example": "DossBatchJoin.json",
+      "inputs": [
+        "data_type: choice",
+        "a: IMAGE,MASK",
+        "b: IMAGE,MASK"
+      ],
+      "outputs": [
+        "batch: *",
+        "count: INT"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossTableInput",
+      "name": "Doss Table Input",
+      "category": "Workflow",
+      "description": "Select one row from CSV with a header or a JSON array of objects. Pair row_json with Text Toolkit → json_field; row_index is explicit and repeatable.",
+      "advantage": "Drive indexed experiments from embedded CSV or JSON without another file dependency.",
+      "aliases": [
+        "TableInput",
+        "Workflow"
+      ],
+      "example": "DossTableInput.json",
+      "inputs": [
+        "table: STRING",
+        "format: choice",
+        "row_index: INT"
+      ],
+      "outputs": [
+        "row_json: STRING",
+        "row_count: INT"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossWorkflowTimerAndAlarm",
+      "name": "Doss Workflow Timer and Alarm",
+      "category": "Workflow",
+      "description": "Watch queue lifecycle and hear a completion alarm without adding processing wires.",
+      "advantage": "Watch queue lifecycle and hear a completion alarm without adding processing wires.",
+      "aliases": [
+        "WorkflowTimerAndAlarm",
+        "Workflow"
+      ],
+      "example": "DossWorkflowTimerAndAlarm.json",
+      "inputs": [
+        "timer_label: STRING",
+        "show_timer_label: BOOLEAN",
+        "show_status: BOOLEAN",
+        "show_milliseconds: BOOLEAN",
+        "hide_node_ui: BOOLEAN",
+        "font_size: INT",
+        "font_color: STRING",
+        "background_color: STRING",
+        "background_opacity: FLOAT",
+        "border_color: STRING",
+        "border_radius: INT",
+        "alarm_enabled: BOOLEAN",
+        "alarm_sound: choice",
+        "alarm_volume: INT"
+      ],
+      "outputs": [],
+      "presets": []
+    },
+    {
+      "id": "DossInspector",
+      "name": "Doss Inspector",
+      "category": "Diagnostics",
+      "description": "Inspect tensor dimensions, devices, ranges, and non-finite counts without changing the input. Reports structure rather than prompt text, credentials, or tensor contents.",
+      "advantage": "Inspect shape, batch, dtype, ranges, and non-finite counts while passing the value through.",
+      "aliases": [
+        "Inspector",
+        "Diagnostics"
+      ],
+      "example": "DossInspector.json",
+      "inputs": [
+        "value: *"
+      ],
+      "outputs": [
+        "value: *",
+        "report_json: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "DossSaveImage",
+      "name": "Doss Save Image",
+      "category": "Output",
+      "description": "Save images to the ComfyUI output folder or an output subfolder.",
+      "advantage": "Keep the existing seven formats and output paths, with optional structured run records.",
+      "aliases": [
+        "SaveImage",
+        "Output"
+      ],
+      "example": "DossSaveImage.json",
+      "inputs": [
+        "image: IMAGE",
+        "filename: STRING",
+        "save_location: STRING",
+        "file_format: choice",
+        "save_metadata: BOOLEAN",
+        "save_metadata_text_file: BOOLEAN",
+        "save_run_record: BOOLEAN",
+        "run_details: STRING"
+      ],
+      "outputs": [
+        "image: IMAGE"
+      ],
+      "presets": [
+        {
+          "name": "PNG with run record",
+          "values": {
+            "file_format": "PNG",
+            "save_run_record": true,
+            "save_location": "Doss"
+          }
+        }
+      ]
+    },
+    {
+      "id": "DossVideoOutputPack",
+      "name": "Doss Video Output Pack",
+      "category": "Output",
+      "description": "Save a native video with synchronized audio and an optional versioned run record, inside ComfyUI output. Uses native encoding and collision-safe filenames.",
+      "advantage": "Save native video and audio with collision-safe paths and a record of timing and encoding settings.",
+      "aliases": [
+        "VideoOutputPack",
+        "Output"
+      ],
+      "example": "DossVideoOutputPack.json",
+      "inputs": [
+        "video: VIDEO",
+        "filename: STRING",
+        "save_location: STRING",
+        "container: choice",
+        "codec: choice",
+        "save_run_record: BOOLEAN",
+        "run_details: STRING"
+      ],
+      "outputs": [
+        "video: VIDEO",
+        "relative_path: STRING"
+      ],
+      "presets": []
+    },
+    {
+      "id": "Doss Label Maker",
+      "name": "Doss Label Maker",
+      "category": "Workflow",
+      "description": "Add styled canvas labels without adding executable prompt nodes.",
+      "advantage": "Organize the canvas with saved typography, colors, and text; labels stay out of API prompts.",
+      "aliases": [
+        "annotation",
+        "title",
+        "DossCanvasLabel"
+      ],
+      "inputs": [],
+      "outputs": [],
+      "presets": []
+    }
+  ],
+  "workflows": [
+    {
+      "name": "Image essentials",
+      "category": "Image",
+      "file": "category_image.json",
+      "description": "Prepare image and mask together, transform them, then save a PNG and run record."
+    },
+    {
+      "name": "Masks essentials",
+      "category": "Masks",
+      "file": "category_masks.json",
+      "description": "Extract, refine, and review a mask while preserving the mask output for further use."
+    },
+    {
+      "name": "Video essentials",
+      "category": "Video",
+      "file": "category_video.json",
+      "description": "Trim a one-second clip with audio, join two takes, review timestamps, and export video."
+    },
+    {
+      "name": "Audio essentials",
+      "category": "Audio",
+      "file": "category_audio.json",
+      "description": "Finish a silent test clip, inspect its shape, and preview the result. Replace Empty Audio with your recording."
+    },
+    {
+      "name": "Prompts essentials",
+      "category": "Prompts",
+      "file": "category_prompts.json",
+      "description": "Assemble a named prompt recipe, replace one subject, and inspect a deterministic value schedule."
+    },
+    {
+      "name": "Generation essentials",
+      "category": "Generation",
+      "file": "category_generation.json",
+      "description": "Plan dimensions, indexed seeds, and reusable sampler settings without loading any weights."
+    },
+    {
+      "name": "Workflow essentials",
+      "category": "Workflow",
+      "file": "category_workflow.json",
+      "description": "Join two takes, select an explicit index, then route only the selected branch."
+    },
+    {
+      "name": "Diagnostics essentials",
+      "category": "Diagnostics",
+      "file": "category_diagnostics.json",
+      "description": "Inspect an image batch and check installed LoRA filenames without loading weights."
+    },
+    {
+      "name": "Output essentials",
+      "category": "Output",
+      "file": "category_output.json",
+      "description": "Export image and video deliverables with matching structured run records in one output folder."
+    }
+  ]
+}

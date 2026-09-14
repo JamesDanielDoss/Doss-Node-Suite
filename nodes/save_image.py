@@ -11,6 +11,13 @@ import numpy as np
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 
+try:
+    from ..core.controls import redact
+    from ..core.records import run_record, write_record
+except ImportError:
+    from core.controls import redact
+    from core.records import run_record, write_record
+
 
 DEFAULT_FILENAME = "ComfyUI"
 DEFAULT_SAVE_LOCATION = "output"
@@ -183,8 +190,8 @@ def build_metadata_payload(
         "batch_index": batch_index,
         "node_settings": node_settings,
         "metadata_available": metadata_available,
-        "prompt": prompt,
-        "extra_pnginfo": extra_pnginfo,
+        "prompt": redact(prompt),
+        "extra_pnginfo": redact(extra_pnginfo),
     }
 
 
@@ -223,10 +230,10 @@ def _png_metadata(prompt: Any = None, extra_pnginfo: Any = None) -> PngInfo | No
     metadata = PngInfo()
     added = False
     if prompt is not None:
-        metadata.add_text("prompt", json.dumps(prompt, default=str))
+        metadata.add_text("prompt", json.dumps(redact(prompt), default=str))
         added = True
     if extra_pnginfo:
-        for key, value in extra_pnginfo.items():
+        for key, value in redact(extra_pnginfo).items():
             metadata.add_text(str(key), json.dumps(value, default=str))
             added = True
     return metadata if added else None
@@ -347,6 +354,10 @@ class DossSaveImage:
                 "save_metadata": ("BOOLEAN", {"default": True}),
                 "save_metadata_text_file": ("BOOLEAN", {"default": False}),
             },
+            "optional": {
+                "save_run_record": ("BOOLEAN", {"default": False, "tooltip": "Save an additional .doss.json record with known settings and supplied run details."}),
+                "run_details": ("STRING", {"default": "{}", "multiline": True}),
+            },
             "hidden": {
                 "prompt": "PROMPT",
                 "extra_pnginfo": "EXTRA_PNGINFO",
@@ -370,14 +381,16 @@ class DossSaveImage:
         save_metadata_text_file=False,
         prompt=None,
         extra_pnginfo=None,
+        save_run_record=False,
+        run_details="{}",
     ):
+        record = run_record({}, [], run_details, prompt, (extra_pnginfo or {}).get("workflow")) if save_run_record else None
         safe_stem, filename_changed = sanitize_filename_stem(filename)
         normalized_format = validate_file_format(file_format)
         extension = FORMAT_EXTENSIONS[normalized_format]
         output_dir = resolve_save_directory(save_location)
         output_root = get_comfy_output_directory()
         batch_count = _batch_length(image)
-        paths = build_batch_paths(output_dir, safe_stem, extension, batch_count)
         saved_files = []
         preview_images = []
 
@@ -390,9 +403,18 @@ class DossSaveImage:
             "save_metadata_text_file": bool(save_metadata_text_file),
         }
 
-        for batch_index, path in enumerate(paths):
+        try:
+            from ..core.records import reserve_output
+        except ImportError:
+            from core.records import reserve_output
+        for batch_index in range(batch_count):
             pil_image = tensor_to_pil(_batch_item(image, batch_index))
-            save_pil_image(pil_image, path, normalized_format, bool(save_metadata), prompt, extra_pnginfo)
+            path = reserve_output(output_dir, safe_stem, extension)
+            try:
+                save_pil_image(pil_image, path, normalized_format, bool(save_metadata), prompt, extra_pnginfo)
+            except Exception:
+                path.unlink(missing_ok=True)
+                raise
             payload = build_metadata_payload(
                 path,
                 normalized_format,
@@ -417,6 +439,9 @@ class DossSaveImage:
                     "batch_index": batch_index,
                 }
             )
+            if record is not None:
+                item_record = {**record, "settings": node_settings, "outputs": [preview_images[-1]], "batch_index": batch_index}
+                write_record(path.with_name(path.name + ".doss.json"), item_record)
 
         ui = {"images": preview_images, "saved_files": saved_files}
         if filename_changed:

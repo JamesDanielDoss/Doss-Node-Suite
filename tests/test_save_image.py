@@ -1,3 +1,4 @@
+from legacy_contract import legacy
 import importlib.util
 import sys
 import tempfile
@@ -282,7 +283,7 @@ class DossSaveImageTests(unittest.TestCase):
         spec.loader.exec_module(module)
 
         self.assertEqual(
-            set(module.NODE_CLASS_MAPPINGS),
+            set(legacy(module.NODE_CLASS_MAPPINGS)),
             {
                 "DossImageComparer",
                 "DossLTXMotionSettings",
@@ -294,7 +295,7 @@ class DossSaveImageTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            module.NODE_DISPLAY_NAME_MAPPINGS,
+            legacy(module.NODE_DISPLAY_NAME_MAPPINGS),
             {
                 "DossImageComparer": "Doss Image Comparer",
                 "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
@@ -306,7 +307,7 @@ class DossSaveImageTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            {name: node.CATEGORY for name, node in module.NODE_CLASS_MAPPINGS.items()},
+            {name: node.CATEGORY for name, node in legacy(module.NODE_CLASS_MAPPINGS).items()},
             {
                 "DossImageComparer": "⚡ Doss Node Suite",
                 "DossLTXMotionSettings": "⚡ Doss Node Suite/LTX-2.5",

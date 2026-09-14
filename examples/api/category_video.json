@@ -1,0 +1,106 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 12,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "3": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": 12,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "1",
+          0
+        ],
+        "audio": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossClipTrim",
+      "inputs": {
+        "units": "frames",
+        "start": 2,
+        "end": 10,
+        "video": [
+          "3",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "DossClipJoin",
+      "inputs": {
+        "max_frames": 256,
+        "a": [
+          "4",
+          0
+        ],
+        "b": [
+          "4",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "DossShotSheet",
+      "inputs": {
+        "indices": "",
+        "count": 4,
+        "columns": 4,
+        "tile_width": 128,
+        "max_frames": 256,
+        "video": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "PreviewImage",
+      "inputs": {
+        "images": [
+          "6",
+          0
+        ]
+      }
+    },
+    "8": {
+      "class_type": "DossVideoOutputPack",
+      "inputs": {
+        "filename": "Joined",
+        "save_location": "Doss/Examples",
+        "container": "mp4",
+        "codec": "h264",
+        "save_run_record": true,
+        "run_details": "{}",
+        "video": [
+          "5",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Trim a one-second clip with audio, join two takes, review timestamps, and export video.",
+    "requires_models": false
+  }
+}

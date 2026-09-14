@@ -1,0 +1,28 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossResolutionPlan",
+      "inputs": {
+        "aspect_width": 16,
+        "aspect_height": 9,
+        "long_edge": 1024,
+        "multiple": 1,
+        "rounding": "nearest"
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Choose aspect ratio and divisibility explicitly and inspect the resulting aspect error.",
+    "requires_models": false
+  }
+}

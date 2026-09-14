@@ -1,0 +1,27 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossTextToolkit",
+      "inputs": {
+        "text": "  A   sailboat  at sunrise  ",
+        "operation": "cleanup",
+        "argument": "",
+        "replacement": ""
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Use literal text operations and JSON extraction without expressions or custom scripts.",
+    "requires_models": false
+  }
+}

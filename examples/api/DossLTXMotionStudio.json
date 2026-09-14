@@ -1,0 +1,38 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossLTXMotionStudio",
+      "inputs": {
+        "motion_plan": "{\"schemaVersion\": 1, \"source\": {\"ref\": \"\", \"width\": 128, \"height\": 96}, \"stale\": false, \"tracks\": [{\"id\": \"track-1\", \"name\": \"Example track\", \"color\": \"#ef4444\", \"points\": [{\"x\": 0.2, \"y\": 0.5}, {\"x\": 0.8, \"y\": 0.5}]}]}",
+        "source_ref": "",
+        "image": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Draw and restore LTX motion tracks directly over the source image.",
+    "requires_models": false
+  }
+}

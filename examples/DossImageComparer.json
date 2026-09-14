@@ -1,0 +1,154 @@
+{
+  "last_node_id": 3,
+  "last_link_id": 2,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "EmptyImage",
+      "pos": [
+        60,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyImage"
+      },
+      "widgets_values": [
+        128,
+        96,
+        1,
+        3377305
+      ]
+    },
+    {
+      "id": 2,
+      "type": "EmptyImage",
+      "pos": [
+        440,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyImage"
+      },
+      "widgets_values": [
+        128,
+        96,
+        1,
+        13399859
+      ]
+    },
+    {
+      "id": 3,
+      "type": "DossImageComparer",
+      "pos": [
+        820,
+        80
+      ],
+      "size": [
+        340,
+        360
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image_a",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "name": "image_b",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image_a",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "image_b",
+          "type": "IMAGE",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DossImageComparer"
+      },
+      "widgets_values": [
+        "Side By Side",
+        "A: Teal",
+        "B: Orange",
+        "{}"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      1,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "doss": {
+      "schema_version": 1,
+      "description": "Name two takes, show supplied settings, and keep both original pass-through outputs.",
+      "requires_models": false
+    }
+  },
+  "version": 0.4
+}

@@ -1,3 +1,4 @@
+from legacy_contract import legacy
 import importlib.util
 import json
 import sys
@@ -64,9 +65,9 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
             "DossSaveImage",
             "DossWorkflowTimerAndAlarm",
         }
-        self.assertEqual(set(module.NODE_CLASS_MAPPINGS), expected)
+        self.assertEqual(set(legacy(module.NODE_CLASS_MAPPINGS)), expected)
         self.assertEqual(
-            module.NODE_DISPLAY_NAME_MAPPINGS,
+            legacy(module.NODE_DISPLAY_NAME_MAPPINGS),
             {
                 "DossImageComparer": "Doss Image Comparer",
                 "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
@@ -84,7 +85,7 @@ class DossWorkflowTimerAndAlarmTests(unittest.TestCase):
         node_list = json.loads(node_list_path.read_text(encoding="utf-8"))
 
         self.assertEqual(
-            node_list,
+            legacy(node_list),
             {
                 "DossImageComparer": "Doss Image Comparer",
                 "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",

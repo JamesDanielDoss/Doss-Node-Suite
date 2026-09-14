@@ -1,0 +1,26 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossValueSchedule",
+      "inputs": {
+        "keyframes": "[[0,0],[24,1],[48,0]]",
+        "index": 12,
+        "interpolation": "linear"
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Evaluate explicit linear or stepped keyframes and inspect the curve on the node.",
+    "requires_models": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossWorkflowTimerAndAlarm",
+      "inputs": {
+        "timer_label": "Workflow Timer",
+        "show_timer_label": true,
+        "show_status": true,
+        "show_milliseconds": false,
+        "hide_node_ui": false,
+        "font_size": 28,
+        "font_color": "#ffffff",
+        "background_color": "#111111",
+        "background_opacity": 0.85,
+        "border_color": "#3b82f6",
+        "border_radius": 8,
+        "alarm_enabled": true,
+        "alarm_sound": "Ping",
+        "alarm_volume": 70
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "3": {
+      "class_type": "PreviewImage",
+      "inputs": {
+        "images": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Watch queue lifecycle and hear a completion alarm without adding processing wires.",
+    "requires_models": false
+  }
+}

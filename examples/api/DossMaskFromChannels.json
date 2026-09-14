@@ -1,0 +1,40 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossMaskFromChannels",
+      "inputs": {
+        "channel": "luminance",
+        "low": 0.5,
+        "high": 1,
+        "invert": false,
+        "image": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Select an inclusive range from RGB, alpha, or luminance with optional inversion.",
+    "requires_models": false
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 13399859
+      }
+    },
+    "3": {
+      "class_type": "DossBatchJoin",
+      "inputs": {
+        "data_type": "IMAGE",
+        "a": [
+          "1",
+          0
+        ],
+        "b": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossBatchSelect",
+      "inputs": {
+        "data_type": "IMAGE",
+        "indices": "1",
+        "batch": [
+          "3",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 0
+      }
+    },
+    "6": {
+      "class_type": "DossTypedSwitch",
+      "inputs": {
+        "data_type": "IMAGE",
+        "select": "a",
+        "a": [
+          "4",
+          0
+        ],
+        "b": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "PreviewImage",
+      "inputs": {
+        "images": [
+          "6",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Join two takes, select an explicit index, then route only the selected branch.",
+    "requires_models": false
+  }
+}
