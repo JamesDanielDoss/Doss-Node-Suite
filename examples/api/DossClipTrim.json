@@ -1,0 +1,63 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 12,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "3": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": 12,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "1",
+          0
+        ],
+        "audio": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossClipTrim",
+      "inputs": {
+        "units": "seconds",
+        "start": 0,
+        "end": 0,
+        "video": [
+          "3",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "4",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Trim native VIDEO by time or frame index while retaining synchronized audio.",
+    "requires_models": false
+  }
+}

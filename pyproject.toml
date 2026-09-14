@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "doss-node-suite"
-version = "0.6.0"
-description = "Custom ComfyUI nodes for practical image, LoRA, workflow timing, and LTX-2.5 motion-control workflows."
+version = "0.7.0"
+description = "Doss Hub and 33 practical ComfyUI tools for images, masks, video, audio, prompts, generation, and workflow review."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
@@ -26,7 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
-dependencies = []
+dependencies = ["numpy>=1.25", "Pillow>=10.1", "av>=14"]
 
 [project.optional-dependencies]
 dev = [
@@ -36,20 +36,27 @@ dev = [
 [project.urls]
 Repository = "https://github.com/JamesDanielDoss/Doss-Node-Suite"
 Issues = "https://github.com/JamesDanielDoss/Doss-Node-Suite/issues"
+Registry = "https://registry.comfy.org/nodes/doss-node-suite"
+"Hugging Face" = "https://huggingface.co/jamesdanieldoss"
 
 [tool.comfy]
 PublisherId = "jamesdossai"
 DisplayName = "Doss Node Suite"
 
 [tool.setuptools]
-packages = ["doss_node_suite", "doss_node_suite.nodes"]
+packages = ["doss_node_suite", "doss_node_suite.nodes", "doss_node_suite.core"]
 package-dir = { doss_node_suite = "." }
 include-package-data = true
 
 [tool.setuptools.package-data]
 doss_node_suite = [
     "js/*.js",
+    "js/*.css",
+    "catalog.json",
     "node_list.json",
+    "examples/*.json",
+    "examples/api/*.json",
+    "docs/*.md",
 ]
 
 [tool.pytest.ini_options]

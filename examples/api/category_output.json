@@ -1,0 +1,82 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossSaveImage",
+      "inputs": {
+        "filename": "Recorded",
+        "save_location": "Doss/Examples",
+        "file_format": "PNG",
+        "save_metadata": true,
+        "save_metadata_text_file": false,
+        "save_run_record": true,
+        "run_details": "{\"project\":\"Foundation examples\",\"take\":1}",
+        "image": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 12,
+        "color": 3377305
+      }
+    },
+    "4": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "5": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": 12,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "3",
+          0
+        ],
+        "audio": [
+          "4",
+          0
+        ]
+      }
+    },
+    "6": {
+      "class_type": "DossVideoOutputPack",
+      "inputs": {
+        "filename": "Recorded",
+        "save_location": "Doss/Examples",
+        "container": "mp4",
+        "codec": "h264",
+        "save_run_record": true,
+        "run_details": "{}",
+        "video": [
+          "5",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Export image and video deliverables with matching structured run records in one output folder.",
+    "requires_models": false
+  }
+}

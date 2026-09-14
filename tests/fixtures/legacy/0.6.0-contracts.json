@@ -1,0 +1,373 @@
+{
+  "version": "0.6.0",
+  "archive_sha256": "024be5cb0730db658d2e41ea5e7714d1a2a1439097cc29133beb5394ebd098f2",
+  "nodes": {
+    "DossImageComparer": {
+      "inputs": {
+        "required": {
+          "image_a": [
+            "IMAGE"
+          ],
+          "comparer_mode": [
+            [
+              "Side By Side",
+              "Slider"
+            ],
+            {
+              "default": "Side By Side"
+            }
+          ]
+        },
+        "optional": {
+          "image_b": [
+            "IMAGE"
+          ]
+        },
+        "hidden": {
+          "prompt": "PROMPT",
+          "extra_pnginfo": "EXTRA_PNGINFO"
+        }
+      },
+      "outputs": [
+        "IMAGE",
+        "IMAGE"
+      ],
+      "name": "Doss Image Comparer",
+      "category": "⚡ Doss Node Suite",
+      "function": "compare_images"
+    },
+    "DossLTXMotionSettings": {
+      "inputs": {
+        "required": {
+          "positive_prompt": [
+            "STRING",
+            {
+              "default": "",
+              "multiline": true
+            }
+          ],
+          "duration_seconds": [
+            "FLOAT",
+            {
+              "default": 5.0,
+              "min": 1.0,
+              "max": 20.0,
+              "step": 0.5
+            }
+          ],
+          "negative_prompt": [
+            "STRING",
+            {
+              "default": "",
+              "multiline": true
+            }
+          ],
+          "seed": [
+            "INT",
+            {
+              "default": 42,
+              "min": 0,
+              "max": 9223372036854775807,
+              "control_after_generate": true
+            }
+          ],
+          "motion_strength": [
+            "FLOAT",
+            {
+              "default": 1.0,
+              "min": 0.0,
+              "max": 1.5,
+              "step": 0.05
+            }
+          ],
+          "image_adherence": [
+            "FLOAT",
+            {
+              "default": 0.7,
+              "min": 0.0,
+              "max": 1.0,
+              "step": 0.05
+            }
+          ],
+          "fps": [
+            [
+              "24",
+              "30"
+            ],
+            {
+              "default": "24"
+            }
+          ]
+        }
+      },
+      "outputs": [
+        "STRING",
+        "STRING",
+        "FLOAT",
+        "FLOAT",
+        "INT",
+        "INT",
+        "FLOAT",
+        "FLOAT"
+      ],
+      "name": "Doss Motion Settings | LTX 2.5",
+      "category": "⚡ Doss Node Suite/LTX-2.5",
+      "function": "build_settings"
+    },
+    "DossLTXMotionStudio": {
+      "inputs": {
+        "required": {
+          "image": [
+            "IMAGE"
+          ],
+          "motion_plan": [
+            "STRING",
+            {
+              "default": "{\"schemaVersion\":1,\"source\":{\"ref\":\"\",\"width\":0,\"height\":0},\"stale\":false,\"tracks\":[]}",
+              "multiline": false
+            }
+          ],
+          "source_ref": [
+            "STRING",
+            {
+              "default": "",
+              "multiline": false
+            }
+          ]
+        }
+      },
+      "outputs": [
+        "IMAGE",
+        "STRING"
+      ],
+      "name": "Doss Motion Studio | LTX 2.5",
+      "category": "⚡ Doss Node Suite/LTX-2.5",
+      "function": "validate_and_pass"
+    },
+    "DossLTXResolveMotionTracks": {
+      "inputs": {
+        "required": {
+          "image": [
+            "IMAGE"
+          ],
+          "motion_plan": [
+            "STRING",
+            {
+              "default": "",
+              "multiline": false
+            }
+          ],
+          "frame_count": [
+            "INT",
+            {
+              "default": 121,
+              "min": 9,
+              "max": 10000
+            }
+          ]
+        }
+      },
+      "outputs": [
+        "STRING"
+      ],
+      "name": "Doss Resolve Motion Tracks | LTX 2.5",
+      "category": "⚡ Doss Node Suite/LTX-2.5",
+      "function": "resolve"
+    },
+    "DossMultiLoraLoader": {
+      "inputs": {
+        "required": {
+          "model": [
+            "MODEL"
+          ],
+          "clip": [
+            "CLIP"
+          ],
+          "lora_stack_json": [
+            "STRING",
+            {
+              "default": "{\"version\":2,\"entries\":[]}",
+              "multiline": false,
+              "tooltip": "Persisted Doss Multi-LoRA stack. Edit it with the controls inside the node."
+            }
+          ]
+        }
+      },
+      "outputs": [
+        "MODEL",
+        "CLIP"
+      ],
+      "name": "Doss Multi-LoRA Loader",
+      "category": "⚡ Doss Node Suite",
+      "function": "load_lora_stack"
+    },
+    "DossSaveImage": {
+      "inputs": {
+        "required": {
+          "image": [
+            "IMAGE"
+          ],
+          "filename": [
+            "STRING",
+            {
+              "default": "ComfyUI",
+              "multiline": false
+            }
+          ],
+          "save_location": [
+            "STRING",
+            {
+              "default": "output",
+              "multiline": false
+            }
+          ],
+          "file_format": [
+            [
+              "JPEG",
+              "PNG",
+              "PDF",
+              "WEBP",
+              "TIFF",
+              "ICO",
+              "BMP"
+            ],
+            {
+              "default": "PNG"
+            }
+          ],
+          "save_metadata": [
+            "BOOLEAN",
+            {
+              "default": true
+            }
+          ],
+          "save_metadata_text_file": [
+            "BOOLEAN",
+            {
+              "default": false
+            }
+          ]
+        },
+        "hidden": {
+          "prompt": "PROMPT",
+          "extra_pnginfo": "EXTRA_PNGINFO"
+        }
+      },
+      "outputs": [
+        "IMAGE"
+      ],
+      "name": "Doss Save Image",
+      "category": "⚡ Doss Node Suite",
+      "function": "save_image"
+    },
+    "DossWorkflowTimerAndAlarm": {
+      "inputs": {
+        "required": {
+          "timer_label": [
+            "STRING",
+            {
+              "default": "Workflow Timer",
+              "multiline": false
+            }
+          ],
+          "show_timer_label": [
+            "BOOLEAN",
+            {
+              "default": true
+            }
+          ],
+          "show_status": [
+            "BOOLEAN",
+            {
+              "default": true
+            }
+          ],
+          "show_milliseconds": [
+            "BOOLEAN",
+            {
+              "default": false
+            }
+          ],
+          "hide_node_ui": [
+            "BOOLEAN",
+            {
+              "default": false
+            }
+          ],
+          "font_size": [
+            "INT",
+            {
+              "default": 28,
+              "min": 12,
+              "max": 96
+            }
+          ],
+          "font_color": [
+            "STRING",
+            {
+              "default": "#ffffff",
+              "multiline": false
+            }
+          ],
+          "background_color": [
+            "STRING",
+            {
+              "default": "#111111",
+              "multiline": false
+            }
+          ],
+          "background_opacity": [
+            "FLOAT",
+            {
+              "default": 0.85,
+              "min": 0.0,
+              "max": 1.0
+            }
+          ],
+          "border_color": [
+            "STRING",
+            {
+              "default": "#3b82f6",
+              "multiline": false
+            }
+          ],
+          "border_radius": [
+            "INT",
+            {
+              "default": 8,
+              "min": 0,
+              "max": 32
+            }
+          ],
+          "alarm_enabled": [
+            "BOOLEAN",
+            {
+              "default": true
+            }
+          ],
+          "alarm_sound": [
+            [
+              "Ping",
+              "Beep"
+            ],
+            {
+              "default": "Ping"
+            }
+          ],
+          "alarm_volume": [
+            "INT",
+            {
+              "default": 70,
+              "min": 0,
+              "max": 100
+            }
+          ]
+        }
+      },
+      "outputs": [],
+      "name": "Doss Workflow Timer and Alarm",
+      "category": "⚡ Doss Node Suite",
+      "function": "noop"
+    }
+  }
+}

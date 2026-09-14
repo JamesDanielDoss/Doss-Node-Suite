@@ -10,3 +10,8 @@ env/
 build/
 dist/
 *.egg-info/
+node_modules/
+dist/
+build/
+*.egg-info/
+.coverage

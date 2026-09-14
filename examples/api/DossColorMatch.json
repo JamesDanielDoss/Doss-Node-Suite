@@ -1,0 +1,50 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 13399859
+      }
+    },
+    "3": {
+      "class_type": "DossColorMatch",
+      "inputs": {
+        "strength": 1,
+        "image": [
+          "1",
+          0
+        ],
+        "reference": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "3",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Blend per-channel reference statistics by strength without loading a color model.",
+    "requires_models": false
+  }
+}

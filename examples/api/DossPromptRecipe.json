@@ -1,0 +1,27 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossPromptRecipe",
+      "inputs": {
+        "sections": "[{\"name\":\"Subject\",\"text\":\"A small sailboat on a mountain lake\"},{\"name\":\"Light\",\"text\":\"Soft sunrise light\"}]",
+        "separator": ", ",
+        "prefix": "",
+        "suffix": ""
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Keep named sections and their enabled states alongside an exact assembled prompt preview.",
+    "requires_models": false
+  }
+}

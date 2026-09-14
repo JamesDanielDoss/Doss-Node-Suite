@@ -1,1 +1,4 @@
-# No third-party runtime dependencies are required for the initial node.
+# PyTorch is supplied by ComfyUI. Do not replace its managed Torch/CUDA build.
+numpy>=1.25
+Pillow>=10.1
+av>=14

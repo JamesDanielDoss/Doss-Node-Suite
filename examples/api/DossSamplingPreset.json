@@ -1,0 +1,28 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossSamplingPreset",
+      "inputs": {
+        "steps": 20,
+        "cfg": 7,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Keep related sampler settings together and wire standard typed outputs to core samplers.",
+    "requires_models": false
+  }
+}

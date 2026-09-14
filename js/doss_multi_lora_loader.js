@@ -98,7 +98,7 @@ async function setupNode(node) {
   }
 
   function fitHeight() {
-    const height = 190 + Math.max(1, state.stack.entries.length) * 46;
+    const height = 190 + Math.max(1, state.stack.entries.length) * 90;
     node.setSize?.([Math.max(node.size?.[0] || 520, 520), Math.max(height, 236)]);
   }
 
@@ -164,7 +164,22 @@ async function setupNode(node) {
         commit();
         render();
       };
-      row.append(enabled, select, strengthModel, strengthClip, remove);
+      const order = el("div", { display: "flex", flexDirection: "column", gap: "2px" });
+      const up = button("↑"), down = button("↓");
+      up.title = "Move LoRA earlier";
+      down.title = "Move LoRA later";
+      up.disabled = index === 0;
+      down.disabled = index === state.stack.entries.length - 1;
+      const move = (offset) => {
+        const target = index + offset;
+        if (target < 0 || target >= state.stack.entries.length) return;
+        [state.stack.entries[index], state.stack.entries[target]] = [state.stack.entries[target], state.stack.entries[index]];
+        commit(); render();
+      };
+      up.onclick = () => move(-1);
+      down.onclick = () => move(1);
+      order.append(up, down, remove);
+      row.append(enabled, select, strengthModel, strengthClip, order);
       rows.append(row);
     });
     fitHeight();
@@ -203,7 +218,7 @@ async function setupNode(node) {
   node.addDOMWidget("doss_multi_lora_stack", "DossMultiLoraStack", root, {
     serialize: false,
     hideOnZoom: false,
-    getMinHeight: () => 190 + Math.max(1, state.stack.entries.length) * 46,
+    getMinHeight: () => 190 + Math.max(1, state.stack.entries.length) * 90,
   });
 
   const originalConfigure = node.onConfigure;

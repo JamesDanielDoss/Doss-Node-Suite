@@ -1,0 +1,52 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "SolidMask",
+      "inputs": {
+        "value": 0.7,
+        "width": 128,
+        "height": 96
+      }
+    },
+    "3": {
+      "class_type": "DossImageTransform",
+      "inputs": {
+        "x": 0,
+        "y": 0,
+        "rotation": 20,
+        "scale": 0.8,
+        "image": [
+          "1",
+          0
+        ],
+        "mask": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "3",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Translate, rotate, and scale the image and its mask with the same sampling grid.",
+    "requires_models": false
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 13399859
+      }
+    },
+    "3": {
+      "class_type": "DossImageComparer",
+      "inputs": {
+        "comparer_mode": "Side By Side",
+        "label_a": "A: Teal",
+        "label_b": "B: Orange",
+        "settings_json": "{}",
+        "image_a": [
+          "1",
+          0
+        ],
+        "image_b": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Name two takes, show supplied settings, and keep both original pass-through outputs.",
+    "requires_models": false
+  }
+}

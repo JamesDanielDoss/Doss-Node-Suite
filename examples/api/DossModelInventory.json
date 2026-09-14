@@ -1,0 +1,25 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossModelInventory",
+      "inputs": {
+        "category": "all",
+        "contains": ""
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Inspect model availability without loading weights or changing the installation.",
+    "requires_models": false
+  }
+}

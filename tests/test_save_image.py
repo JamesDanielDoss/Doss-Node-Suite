@@ -1,3 +1,4 @@
+from legacy_contract import legacy
 import importlib.util
 import sys
 import tempfile
@@ -179,10 +180,9 @@ class DossSaveImageTests(unittest.TestCase):
     def test_save_location_rejects_paths_outside_output(self):
         with tempfile.TemporaryDirectory() as temp_dir:
             output_dir = Path(temp_dir)
-            with self.assertRaises(ValueError):
-                resolve_save_directory("..", output_dir)
-            with self.assertRaises(ValueError):
-                resolve_save_directory("C:/Temp", output_dir)
+            for location in ("..", "C:/Temp", "C:Temp", "//server/share/folder", "/tmp/doss"):
+                with self.subTest(location=location), self.assertRaises(ValueError):
+                    resolve_save_directory(location, output_dir)
 
     def test_save_location_root_aliases_resolve_to_output_root(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -282,7 +282,7 @@ class DossSaveImageTests(unittest.TestCase):
         spec.loader.exec_module(module)
 
         self.assertEqual(
-            set(module.NODE_CLASS_MAPPINGS),
+            set(legacy(module.NODE_CLASS_MAPPINGS)),
             {
                 "DossImageComparer",
                 "DossLTXMotionSettings",
@@ -294,7 +294,7 @@ class DossSaveImageTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            module.NODE_DISPLAY_NAME_MAPPINGS,
+            legacy(module.NODE_DISPLAY_NAME_MAPPINGS),
             {
                 "DossImageComparer": "Doss Image Comparer",
                 "DossLTXMotionSettings": "Doss Motion Settings | LTX 2.5",
@@ -306,7 +306,7 @@ class DossSaveImageTests(unittest.TestCase):
             },
         )
         self.assertEqual(
-            {name: node.CATEGORY for name, node in module.NODE_CLASS_MAPPINGS.items()},
+            {name: node.CATEGORY for name, node in legacy(module.NODE_CLASS_MAPPINGS).items()},
             {
                 "DossImageComparer": "⚡ Doss Node Suite",
                 "DossLTXMotionSettings": "⚡ Doss Node Suite/LTX-2.5",

@@ -1,0 +1,98 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 12,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "3": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": 12,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "1",
+          0
+        ],
+        "audio": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 12,
+        "color": 3377305
+      }
+    },
+    "5": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "6": {
+      "class_type": "CreateVideo",
+      "inputs": {
+        "fps": 12,
+        "bit_depth": "auto",
+        "color_space": "sRGB",
+        "images": [
+          "4",
+          0
+        ],
+        "audio": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "DossClipJoin",
+      "inputs": {
+        "max_frames": 256,
+        "a": [
+          "3",
+          0
+        ],
+        "b": [
+          "6",
+          0
+        ]
+      }
+    },
+    "8": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "7",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Check clip compatibility and align audio sample boundaries before joining.",
+    "requires_models": false
+  }
+}

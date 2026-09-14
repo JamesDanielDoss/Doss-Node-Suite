@@ -1,0 +1,26 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossSeedSequence",
+      "inputs": {
+        "base_seed": 0,
+        "index": 0,
+        "step": 1
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Reproduce any indexed experiment directly, without relying on queue history.",
+    "requires_models": false
+  }
+}

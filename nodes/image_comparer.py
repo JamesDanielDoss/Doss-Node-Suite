@@ -67,6 +67,9 @@ class DossImageComparer(ComfyPreviewImage):
             },
             "optional": {
                 "image_b": ("IMAGE",),
+                "label_a": ("STRING", {"default": "A: Original"}),
+                "label_b": ("STRING", {"default": "B: Result"}),
+                "settings_json": ("STRING", {"default": "{}", "multiline": True, "tooltip": "Optional supplied comparison settings. Displayed without changing the images."}),
             },
             "hidden": {
                 "prompt": "PROMPT",
@@ -79,7 +82,7 @@ class DossImageComparer(ComfyPreviewImage):
     FUNCTION = "compare_images"
     CATEGORY = "⚡ Doss Node Suite"
     OUTPUT_NODE = True
-    DESCRIPTION = "Compare two images visually and pass the selected tensors through."
+    DESCRIPTION = "Compare two images visually; both input tensors pass through unchanged. Use Batch Select to choose explicit takes."
 
     def compare_images(
         self,
@@ -88,6 +91,9 @@ class DossImageComparer(ComfyPreviewImage):
         image_b=None,
         prompt=None,
         extra_pnginfo=None,
+        label_a="A: Original",
+        label_b="B: Result",
+        settings_json="{}",
     ):
         comparer_mode = normalize_comparer_mode(comparer_mode)
         output_a, output_b = choose_comparison_images(image_a, image_b)
@@ -96,6 +102,8 @@ class DossImageComparer(ComfyPreviewImage):
             "a_images": self._preview_images(output_a, "doss.compare.a.", prompt, extra_pnginfo),
             "b_images": self._preview_images(output_b, "doss.compare.b.", prompt, extra_pnginfo),
             "comparer_mode": [comparer_mode],
+            "doss_take_labels": [str(label_a)[:120], str(label_b)[:120]],
+            "text": [str(settings_json)[:4000]] if settings_json.strip() != "{}" else [],
         }
 
         return {

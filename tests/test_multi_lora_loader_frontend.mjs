@@ -96,3 +96,16 @@ assert.equal(stackWidget.type, "converted-widget");
 assert.equal(stackWidget.hidden, true);
 assert.equal(typeof stackWidget.draw, "function");
 assert.ok(node.size[0] >= 520);
+
+// Reordering must move the whole independently weighted record, not just its name.
+add.onclick(); add.onclick();
+const selects = descendants(root).filter(element => element.tagName === "select");
+selects[1].value = "folder/second.safetensors"; selects[1].onchange();
+const weights = descendants(root).filter(element => element.type === "number");
+weights[2].value = "0.35"; weights[2].onchange();
+const earlier = descendants(root).filter(element => element.title === "Move LoRA earlier");
+assert.equal(earlier[0].disabled, true); earlier[1].onclick();
+stack = JSON.parse(stackWidget.value);
+assert.equal(stack.entries[0].name, "folder/second.safetensors");
+assert.equal(stack.entries[0].strength_model, 0.35);
+assert.equal(stack.entries[1].name, "first.safetensors");

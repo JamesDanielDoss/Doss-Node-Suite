@@ -242,8 +242,9 @@ class DossImageComparerWidget {
     const imageA = getInputEntry(this.entries, "image_a");
     const imageB = getInputEntry(this.entries, "image_b") || imageA;
 
-    drawImageInBounds(ctx, imageA, x, y, panelWidth, height);
-    drawImageInBounds(ctx, imageB, x + panelWidth + gap, y, panelWidth, height);
+    const labels = this.node.dossTakeLabels;
+    drawImageInBounds(ctx, imageA && { ...imageA, label: labels?.[0] || imageA.label }, x, y, panelWidth, height);
+    drawImageInBounds(ctx, imageB && { ...imageB, label: labels?.[1] || imageB.label }, x + panelWidth + gap, y, panelWidth, height);
   }
 
   drawSlider(ctx, node, x, y, width, height) {
@@ -281,8 +282,14 @@ class DossImageComparerWidget {
     ctx.restore();
 
     const labelPadding = 8;
-    drawBadge(ctx, "A: Original", x + labelPadding, y + labelPadding);
-    drawBadge(ctx, "B: Result", x + width - labelPadding, y + labelPadding, "right");
+    const labels = this.node.dossTakeLabels;
+    if (labels) {
+      drawBadge(ctx, labels[0], x + labelPadding, y + labelPadding);
+      drawBadge(ctx, labels[1], x + width - labelPadding, y + labelPadding, "right");
+    } else {
+      drawBadge(ctx, "A: Original", x + labelPadding, y + labelPadding);
+      drawBadge(ctx, "B: Result", x + width - labelPadding, y + labelPadding, "right");
+    }
   }
 
   computeSize(width) {
@@ -336,6 +343,7 @@ app.registerExtension({
           mode: output?.comparer_mode,
           images: buildImageEntries(output),
         };
+        this.dossTakeLabels = output?.doss_take_labels;
       } catch (error) {
         console.warn("[Doss Image Comparer] Could not render preview data.", error);
       }

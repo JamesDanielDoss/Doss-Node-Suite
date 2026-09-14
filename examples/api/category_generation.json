@@ -1,0 +1,79 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossResolutionPlan",
+      "inputs": {
+        "aspect_width": 16,
+        "aspect_height": 9,
+        "long_edge": 256,
+        "multiple": 32,
+        "rounding": "nearest"
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": [
+          "1",
+          0
+        ],
+        "height": [
+          "1",
+          1
+        ],
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "3": {
+      "class_type": "DossSamplingPreset",
+      "inputs": {
+        "steps": 20,
+        "cfg": 7,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "denoise": 1
+      }
+    },
+    "4": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "3",
+          5
+        ]
+      }
+    },
+    "5": {
+      "class_type": "DossSeedSequence",
+      "inputs": {
+        "base_seed": 42,
+        "index": 3,
+        "step": 1
+      }
+    },
+    "6": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "PreviewImage",
+      "inputs": {
+        "images": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Plan dimensions, indexed seeds, and reusable sampler settings without loading any weights.",
+    "requires_models": false
+  }
+}

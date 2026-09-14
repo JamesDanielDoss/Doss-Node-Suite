@@ -1,0 +1,42 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyAudio",
+      "inputs": {
+        "duration": 1,
+        "sample_rate": 24000,
+        "channels": 2
+      }
+    },
+    "2": {
+      "class_type": "DossAudioFinish",
+      "inputs": {
+        "start": 0,
+        "duration": 0,
+        "gain_db": 0,
+        "normalize": false,
+        "peak_db": -1,
+        "fade_in": 0,
+        "fade_out": 0,
+        "audio": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Trim, gain, normalize, and fade together, with feedback when samples exceed full scale.",
+    "requires_models": false
+  }
+}

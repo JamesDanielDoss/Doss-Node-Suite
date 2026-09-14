@@ -1,0 +1,30 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "DossLTXMotionSettings",
+      "inputs": {
+        "positive_prompt": "",
+        "duration_seconds": 5.0,
+        "negative_prompt": "",
+        "seed": 42,
+        "motion_strength": 1.0,
+        "image_adherence": 0.7,
+        "fps": "24"
+      }
+    },
+    "2": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "1",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Keep LTX prompt, duration, frame count, seed, and motion controls together.",
+    "requires_models": false
+  }
+}

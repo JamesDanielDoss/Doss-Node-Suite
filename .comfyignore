@@ -6,6 +6,15 @@ __pycache__/
 *.pyc
 .pytest_cache/
 tests/
+node_modules/
+web/
+scripts/
+dist/
+build/
+*.egg-info/
+package.json
+pnpm-lock.yaml
+tsconfig.json
 *.log
 .DS_Store
 Thumbs.db

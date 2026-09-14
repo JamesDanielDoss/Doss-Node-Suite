@@ -1,0 +1,50 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "SolidMask",
+      "inputs": {
+        "value": 0.7,
+        "width": 128,
+        "height": 96
+      }
+    },
+    "3": {
+      "class_type": "DossMaskPreview",
+      "inputs": {
+        "color": "#35d5a4",
+        "opacity": 0.5,
+        "image": [
+          "1",
+          0
+        ],
+        "mask": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "3",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Preview a colored overlay while passing the original mask onward unchanged.",
+    "requires_models": false
+  }
+}

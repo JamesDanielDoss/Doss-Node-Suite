@@ -1,0 +1,51 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 3,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 3,
+        "color": 3377305
+      }
+    },
+    "3": {
+      "class_type": "DossTypedSwitch",
+      "inputs": {
+        "data_type": "IMAGE",
+        "select": "a",
+        "a": [
+          "1",
+          0
+        ],
+        "b": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "3",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Choose a native data type and evaluate only the selected upstream branch.",
+    "requires_models": false
+  }
+}

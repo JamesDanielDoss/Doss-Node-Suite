@@ -1,0 +1,68 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 1,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossMaskFromChannels",
+      "inputs": {
+        "channel": "luminance",
+        "low": 0.2,
+        "high": 1,
+        "invert": false,
+        "image": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "DossMaskRefine",
+      "inputs": {
+        "grow": -6,
+        "feather": 4,
+        "apply_threshold": false,
+        "threshold": 0.5,
+        "mask": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "DossMaskPreview",
+      "inputs": {
+        "color": "#35d5a4",
+        "opacity": 0.5,
+        "image": [
+          "1",
+          0
+        ],
+        "mask": [
+          "3",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "PreviewImage",
+      "inputs": {
+        "images": [
+          "4",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Extract, refine, and review a mask while preserving the mask output for further use.",
+    "requires_models": false
+  }
+}

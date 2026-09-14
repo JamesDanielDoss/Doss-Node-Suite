@@ -1,0 +1,38 @@
+{
+  "prompt": {
+    "1": {
+      "class_type": "EmptyImage",
+      "inputs": {
+        "width": 128,
+        "height": 96,
+        "batch_size": 3,
+        "color": 3377305
+      }
+    },
+    "2": {
+      "class_type": "DossBatchSelect",
+      "inputs": {
+        "data_type": "IMAGE",
+        "indices": "-1,0",
+        "batch": [
+          "1",
+          0
+        ]
+      }
+    },
+    "3": {
+      "class_type": "DossInspector",
+      "inputs": {
+        "value": [
+          "2",
+          0
+        ]
+      }
+    }
+  },
+  "doss_example": {
+    "schema_version": 1,
+    "description": "Pick exact image or mask takes, slices, and repeated indices in the requested order.",
+    "requires_models": false
+  }
+}

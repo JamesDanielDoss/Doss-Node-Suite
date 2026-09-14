@@ -4,6 +4,14 @@ All notable changes to Doss Node Suite will be documented in this file.
 
 ## [Unreleased]
 
+### 0.7.0 expansion candidate
+
+- Added 25 processing nodes for coordinated image/mask operations, native video and audio finishing, deterministic prompts and controls, model inventory, sampling settings, batch workflows, inspection, and organized video output.
+- Added the optional Doss Hub with 33 tools, search, favorites, per-user presets, help, examples, diagnostics, and undoable insertion and grouping. Compiled assets ship with the package.
+- Added LoRA reordering, supplied comparison labels/settings, and optional versioned image/video run records. Existing identifiers, sockets, saved controls, exports, and MIT licensing remain preserved.
+- Added published 0.3.2/0.6.0 contract fixtures, executable examples, Windows/Linux checks, native integration tooling, packaging checks, benchmarks, and a manually triggered release workflow.
+- Registry publication is gated on resolving the actual 0.6.0 rejection through the existing publisher account.
+
 ## [0.6.0] - 2026-08-26
 
 ### Added
