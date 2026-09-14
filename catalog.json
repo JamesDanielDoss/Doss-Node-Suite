@@ -135,7 +135,7 @@
       "id": "DossImageComparer",
       "name": "Doss Image Comparer",
       "category": "Image",
-      "description": "Compare two images visually and pass the selected tensors through.",
+      "description": "Compare two images visually; both input tensors pass through unchanged. Use Batch Select to choose explicit takes.",
       "advantage": "Name two takes, show supplied settings, and keep both original pass-through outputs.",
       "aliases": [
         "ImageComparer",

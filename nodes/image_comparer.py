@@ -82,7 +82,7 @@ class DossImageComparer(ComfyPreviewImage):
     FUNCTION = "compare_images"
     CATEGORY = "⚡ Doss Node Suite"
     OUTPUT_NODE = True
-    DESCRIPTION = "Compare two images visually and pass the selected tensors through."
+    DESCRIPTION = "Compare two images visually; both input tensors pass through unchanged. Use Batch Select to choose explicit takes."
 
     def compare_images(
         self,

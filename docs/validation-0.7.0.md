@@ -20,7 +20,7 @@ Exact contracts and original example workflows are stored under `tests/fixtures/
 - **40 model-free API examples passed**, covering each applicable processing node and all nine category workflows. The standalone LoRA example requires a user checkpoint; the separate LTX integration fixture requires four named installed models.
 - A native API test selected one branch while its unselected branch deliberately raised an error if evaluated; the workflow succeeded.
 - Wheel and source distribution builds passed. The installable custom-node ZIP passed runtime hash checks and imported all 32 backend nodes from a fresh temporary directory, including compiled Hub assets, catalogue, guides, and examples.
-- Windows/Linux automation is configured for Python 3.10 and 3.13, plus a clean native ComfyUI 0.35.1 integration job. Remote results must be recorded after the workflow executes.
+- [GitHub Actions run 34809369600](https://github.com/JamesDanielDoss/Doss-Node-Suite/actions/runs/34809369600) passed all five jobs for code revision `d0d983615fb41e2d194128ae0504387cdfa99739`: Windows and Ubuntu on Python 3.10/3.13, plus a clean ComfyUI 0.35.1 installation from the runtime ZIP. The same ZIP installation test also passed locally on Windows. Subsequent commits have their own PR checks.
 
 ## RTX 3090 / LTX-2.5
 
@@ -38,7 +38,7 @@ Observed in the actual ComfyUI frontend: branded Hub rendering, 33-tool catalogu
 
 Coexistence versions: KJNodes `d3cfe21625e5170126ce06fbfcfe1d88108688c3`; Pixaroma `2fe16a657e32aa6f7d4cfd0354cf184991545bac`. All **32 Doss, 260 KJNodes, and 81 Pixaroma backend nodes** loaded together. All model-free Doss examples passed in that installation, and a mixed Doss → KJNodes → Pixaroma workflow returned the expected width. KJNodes' optional Triton VAE node was unavailable because Triton is not installed. Pixaroma's banner requires UTF-8 console output on this Windows shell, so the validation server uses `python -X utf8`.
 
-Frontend coexistence passed node/example insertion, preset and favorite persistence in a fresh page, keyboard tab navigation, grouping and undo, and workflow restoration. Disabling only `Doss.Hub` removed the sidebar; the restored Doss generation/schedule workflow still executed successfully. The Hub was then restored in the isolated test profile. A host early-graph-access console warning remains under investigation; no Doss execution or sidebar failure reproduced in a fresh page. No unrelated upstream package code was modified. Final published-archive installation remains pending Registry review.
+Frontend coexistence passed node/example insertion, preset and favorite persistence in a fresh page, keyboard tab navigation, grouping and undo, and workflow restoration. Disabling only `Doss.Hub` removed the sidebar; the restored Doss generation/schedule workflow still executed successfully. A separate installation from the runtime ZIP rendered the Hub and its three verified About links. The host emitted `ComfyApp graph accessed before initialization` even with every Doss frontend extension disabled; no Doss execution or sidebar failure reproduced in a fresh page. All Doss extension settings were restored in the isolated test profiles. No unrelated upstream package code was modified. Final published-archive installation remains pending Registry review.
 
 ## Measurements
 
@@ -55,4 +55,4 @@ Allocator figures exclude framework context, driver reservations, and unrelated 
 
 ## Publication checks still pending
 
-The actual owner-visible Registry rejection reason, its verified resolution, and publisher credential are unavailable. The public Registry remains on 0.3.2 with 0.6.0 banned. Publication and final Manager update verification must wait for that review to be resolved under the existing `jamesdossai/doss-node-suite` identity.
+The authenticated publisher and 0.6.0 detail panel were inspected: neither the owner UI nor the specific-version API supplied a rejection reason. An existing masked publisher key is listed, but its value and repository secret remain unverified. The Registry remains on 0.3.2 with 0.6.0 banned. Publication and final Manager update verification must wait for the actual review reason and verified resolution under the existing `jamesdossai/doss-node-suite` identity.
